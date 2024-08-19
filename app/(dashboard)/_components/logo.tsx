@@ -18,14 +18,14 @@ export const Logo = ({ imageUrl, imageUrlDark, link }: LogoProps) => {
 
   return (
     <AspectRatio ratio={21 / 9}>
-    <Link target={link ?? ""} href={link ?? ""}>
+    <Link className="flex justify-center" target={link ?? ""} href={link ?? ""}>
       <Image
         priority
         height={200}
         width={200}
         alt="logo"
         src={imageUrlNew ?? ""}
-        className="h-full w-full object-contain"
+        className="h-32 w-32 object-contain"
       />
     </Link>
     </AspectRatio>
