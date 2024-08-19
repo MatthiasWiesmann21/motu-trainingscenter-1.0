@@ -10,8 +10,10 @@ export const MobileSidebarChat = (props: any) => {
       <SheetTrigger className="pr-4 transition hover:opacity-75 md:hidden">
         <Menu />
       </SheetTrigger>
-      <SheetContent side="left" className=" w-full bg-white p-0">
-        <SidebarChat serverId={serverId} />
+      <SheetContent side="left" className="bg-white p-0">
+        <div className="w-full">
+          <SidebarChat serverId={serverId} />
+        </div>
       </SheetContent>
     </Sheet>
   );

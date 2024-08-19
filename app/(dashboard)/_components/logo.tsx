@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface LogoProps {
   imageUrl: string;
@@ -17,17 +16,16 @@ export const Logo = ({ imageUrl, imageUrlDark, link }: LogoProps) => {
   const imageUrlNew = theme === "dark" ? imageUrlDark : imageUrl;
 
   return (
-    <AspectRatio ratio={21 / 9}>
-    <Link className="flex justify-center" target={link ?? ""} href={link ?? ""}>
+    <Link target={link ?? ""} href={link ?? ""} className="w-full">
+      {" "}
       <Image
         priority
-        height={200}
+        height={100}
         width={200}
         alt="logo"
         src={imageUrlNew ?? ""}
-        className="h-32 w-32 object-contain"
+        className="object-contain"
       />
     </Link>
-    </AspectRatio>
   );
 };

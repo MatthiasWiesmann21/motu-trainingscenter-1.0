@@ -1,7 +1,3 @@
-import Image from "next/image";
-import { Logo } from "./logo";
-import { SidebarRoutes } from "./sidebar-routes";
-import { NavigationSidebar } from "@/components/navigation/navigation-sidebar";
 import { ServerSidebar } from "@/components/server/server-sidebar";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -32,9 +28,6 @@ export const SidebarChat = async ({ serverId }: { serverId: string }) => {
   }
   return (
     <div className="flex h-full w-full flex-row overflow-y-auto border-r bg-white shadow-sm dark:bg-[#1e1f22] ">
-      <div className="">
-        <NavigationSidebar />
-      </div>
       <div className="">
         <ServerSidebar serverId={serverId} />
       </div>

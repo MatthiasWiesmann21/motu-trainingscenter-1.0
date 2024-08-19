@@ -143,24 +143,24 @@ const PolygonChart = ({
   return (
     <TooltipProvider>
       <div className="graphParent flex justify-between">
-        <div className="mr-2 w-full min-w-[510px] rounded border dark:border-[#221b2e] dark:bg-[#0D071A]">
+        <div className="mr-2 w-full min-w-xs rounded border dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
           </div>
           <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
-            <p className="w-[35%] text-sm">
+            <p className="w-[35%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>
-            <p className="w-[25%] text-sm">
+            <p className="w-[25%] text-xs">
               {currentLanguage.dashboard_popularChapter_courseName_text}
             </p>
-            <p className="w-[10%] text-sm">
+            <p className="w-[10%] text-xs">
               {currentLanguage.dashboard_popularChapter_likes_text}
             </p>
-            <p className="w-[15%] text-sm">
+            <p className="w-[15%] text-xs">
               {currentLanguage.dashboard_popularChapter_comments_text}
             </p>
-            <p className="w-[10%] text-sm">
+            <p className="w-[10%] text-xs">
               {currentLanguage.dashboard_popularChapter_action_text}
             </p>
           </div>
