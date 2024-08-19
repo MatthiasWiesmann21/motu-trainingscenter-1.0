@@ -15,8 +15,8 @@ import Link from "@/components/link";
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "VideoPlattform",
-  description: "Perfect Solution for paid Video Courses",
+  title: "Clubyte",
+  description: "Bring your Community together.",
 };
 
 export default function RootLayout({

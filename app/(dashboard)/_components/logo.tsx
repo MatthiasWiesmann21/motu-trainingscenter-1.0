@@ -25,7 +25,7 @@ export const Logo = ({ imageUrl, imageUrlDark, link }: LogoProps) => {
         width={200}
         alt="logo"
         src={imageUrlNew ?? ""}
-        className="h-full w-full object-cover"
+        className="h-full w-full object-contain"
       />
     </Link>
     </AspectRatio>
