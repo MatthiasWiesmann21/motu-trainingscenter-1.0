@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     const url =
       new URL(request.url)?.origin === "http://localhost:3000"
-        ? "https://cludev1.clubyte.live"
+        ? "https://motu.clubyte.live"
         : new URL(request.url)?.origin;
 
     // Fetch the container where the domain matches the URL
