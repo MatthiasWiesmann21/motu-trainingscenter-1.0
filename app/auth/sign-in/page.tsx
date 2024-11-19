@@ -81,7 +81,7 @@ export default function SignIn() {
   };
 
   const renderRight = () => {
-    return <Image alt="SignIn-Image" priority src={getSignInImage()} width={1280} height={720} className="h-full w-full" />
+    return <Image alt="SignIn-Image" priority src={getSignInImage() || ""} width={1280} height={720} className="h-full w-full" />
   };
 
   const renderGoogleIcon = () => {
