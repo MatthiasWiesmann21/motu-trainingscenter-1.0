@@ -1,0 +1,626 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+model Container {
+  id            String  @id @default(uuid())
+  active        Boolean @default(true)
+  name          String  @unique
+  domain        String? @unique
+  clientMail    String? @db.Text
+  link          String? @db.Text
+  icon          String? @db.Text
+  imageUrl      String? @db.Text
+  imageUrlDark  String? @db.Text
+  clientPackage String? @db.Text
+  maxCourses    Int?    @default(0)
+
+  navPrimaryColor        String? @default("#e72192")
+  navBackgroundColor     String? @default("#f7d4f0")
+  navDarkPrimaryColor    String? @default("#e72192")
+  navDarkBackgroundColor String? @default("#f7d4f0")
+
+  PrimaryButtonColor     String? @default("#e72192")
+  DarkPrimaryButtonColor String? @default("#e72192")
+
+  ThemeColor     String? @default("#e72192")
+  DarkThemeColor String? @default("#e72192")
+
+  signUpImageUrl     String? @db.Text
+  darkSignUpImageUrl String? @db.Text
+
+  signInImageUrl     String? @db.Text
+  darkSignInImageUrl String? @db.Text
+
+  forgetPasswordImageUrl     String? @db.Text
+  darkForgetPasswordImageUrl String? @db.Text
+
+  courses    Course[]
+  categories Category[]
+  usergroups Usergroup[]
+  posts      Post[]
+  liveEvents LiveEvent[]
+  servers    Server[]
+  profiles   Profile[]
+  members    Member[]
+  channels   Channel[]
+  files      File[]
+  folders    Folder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Server {
+  id         String @id @default(uuid())
+  name       String
+  imageUrl   String @db.Text
+  inviteCode String @unique
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  members  Member[]
+  channels Channel[]
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+  @@index([containerId])
+}
+
+enum SubscriptionType {
+  MONTHLY
+  ANNUAL
+}
+
+model Profile {
+  id                    String           @id @default(cuid())
+  userId                String           @db.Text
+  name                  String?          @db.Text
+  imageUrl              String           @db.Text
+  email                 String           @db.Text
+  password              String?          @default("")
+  token                 String?          @default("")
+  emailVerified         Boolean          @default(false)
+  language              String?          @db.Text
+  isOnline              String           @default("Online")
+  role                  String           @default("USER")
+  isBanned              String           @default("NOT BANNED")
+  acceptedPrivacyPolicy Boolean          @default(false)
+  subscriptionType      SubscriptionType @default(MONTHLY)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
+  servers   Server[]
+  members   Member[]
+  channels  Channel[]
+  comments  Comment[]
+  likes     Like[]
+  favorites Favorite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([containerId])
+  @@index([usergroupId])
+}
+
+model Usergroup {
+  id                String  @id @default(uuid())
+  name              String  @unique
+  isPublished       Boolean @default(false)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  courses Course[]
+  posts   Post[]
+  LiveEvent LiveEvent[]
+  profiles   Profile[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([name])
+  @@index([containerId])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Member {
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  messages       Message[]
+  directMessages DirectMessage[]
+
+  conversationsInitiated Conversation[] @relation("MemberOne")
+  conversationsReceived  Conversation[] @relation("MemberTwo")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+  @@index([containerId])
+  @@index([serverId])
+}
+
+model UserHasCourse {
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id])
+  status   String @default("notStarted")
+
+  @@index([courseId])
+}
+
+model Course {
+  id           String  @id @default(uuid())
+  userId       String
+  title        String? @db.Text
+  description  String? @db.Text
+  imageUrl     String? @db.Text
+  price        Float?  @default(0)
+  isPublished  Boolean @default(false)
+  duration     String?
+  level        String?
+  isFeatured   Boolean @default(false)
+  isBestseller Boolean @default(false)
+  isNew        Boolean @default(false)
+
+  specialType String?
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
+  chapters    Chapter[]
+  attachments Attachment[]
+  purchases   Purchase[]
+  favorites   Favorite[]
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  UserHasCourse UserHasCourse[]
+
+  @@index([categoryId])
+  @@index([usergroupId])
+  @@index([containerId])
+  @@fulltext([title])
+}
+
+model Category {
+  id                String  @id @default(uuid())
+  name              String  @unique
+  colorCode         String  @default("#000000")
+  textColorCode     String  @default("#000000")
+  darkTextColorCode String  @default("#ffffff")
+  isPublished       Boolean @default(false)
+
+  isCourseCategory    Boolean @default(true)
+  isNewsCategory      Boolean @default(true)
+  isLiveEventCategory Boolean @default(true)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  courses Course[]
+  posts   Post[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  LiveEvent LiveEvent[]
+
+  @@index([name])
+  @@index([containerId])
+}
+
+model Attachment {
+  id   String @id @default(uuid())
+  name String @db.Text
+  url  String @db.Text
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+model Chapter {
+  id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  videoUrl    String? @db.Text
+  position    Int
+  duration    String?
+  level       String?
+  isPublished Boolean @default(false)
+  isFree      Boolean @default(false)
+  author      String? @db.Text
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  userProgress UserProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments  Comment[]
+  likes     Like[]
+  favorites Favorite[]
+
+  @@index([courseId])
+}
+
+model UserProgress {
+  id     String @id @default(uuid())
+  userId String
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  isCompleted Boolean @default(false)
+  progress    Float   @default(0.0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, chapterId])
+  @@index([chapterId])
+}
+
+model Purchase {
+  id     String @id @default(uuid())
+  userId String @default("")
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model StripeCustomer {
+  id               String @id @default(uuid())
+  userId           String @unique
+  stripeCustomerId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Document Uploading 
+
+model File {
+  id       String  @id @default(uuid())
+  type     String?
+  name     String
+  isPublic Boolean
+  key      String  @db.Text
+  userId   String
+  folderId String
+  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  containerId String?
+  container   Container? @relation(fields: [containerId], references: [id])
+
+  status FileStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([folderId])
+  @@index([containerId])
+}
+
+enum FileStatus {
+  PENDING
+  UPLOADED
+}
+
+model Folder {
+  id             String  @id @default(uuid())
+  name           String
+  isPublic       Boolean
+  key            String  @db.Text
+  userId         String
+  files          File[]
+  parentFolderId String?
+  parentFolder   Folder? @relation("SubFolders", fields: [parentFolderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  subFolders Folder[] @relation("SubFolders") // Define the opposite relation here
+
+  containerId String?
+  container   Container? @relation(fields: [containerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([parentFolderId])
+  @@index([containerId])
+}
+
+model Post {
+  id String @id @default(uuid())
+
+  publisherName     String? @db.Text
+  publisherImageUrl String? @db.Text
+
+  title            String    @db.Text
+  description      String?   @db.Text
+  imageUrl         String?   @db.Text
+  isPublished      Boolean   @default(false)
+  publishTime      DateTime?
+  scheduleDateTime DateTime?
+  isReminder       Boolean   @default(false)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
+  comments  Comment[]
+  likes     Like[]
+  favorites Favorite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([usergroupId])
+  @@index([containerId])
+  @@fulltext([title])
+}
+
+// TODO: Live Event Models
+
+model LiveEvent {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String   @db.Text
+  description String?  @db.Text
+  imageUrl    String?  @db.Text
+  videoUrl    String?  @db.Text
+  isStreamChat Boolean @default(true)
+  isPublished Boolean  @default(false)
+  isEnded     Boolean? @default(false)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  usergroupId String?
+  usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
+
+  comments  Comment[]
+  favorites Favorite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  startDateTime DateTime?
+  endDateTime   DateTime?
+
+  likes Like[]
+
+  @@index([categoryId])
+  @@index([usergroupId])
+  @@index([containerId])
+  @@fulltext([title])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id])
+
+  liveEventId String?
+  liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id])
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id])
+
+  parentCommentId String?
+  parentComment   Comment? @relation("SubComment", fields: [parentCommentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  subComment Comment[] @relation("SubComment") // Define the opposite relation here
+
+  likes Like[]
+
+  @@index([postId])
+  @@index([profileId])
+  @@index([parentCommentId])
+  @@index([liveEventId])
+  @@index([chapterId])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id])
+
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id])
+
+  commentId   String?
+  comment     Comment?   @relation(fields: [commentId], references: [id])
+  liveEventId String?
+  liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+  chapterId   String?
+  chapter     Chapter?   @relation(fields: [chapterId], references: [id])
+
+  @@unique([profileId, postId, commentId, liveEventId])
+  @@index([profileId])
+  @@index([postId])
+  @@index([commentId])
+  @@index([liveEventId])
+  @@index([chapterId])
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id])
+
+  postId      String?
+  post        Post?      @relation(fields: [postId], references: [id])
+  liveEventId String?
+  liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+  courseId    String?
+  course      Course?    @relation(fields: [courseId], references: [id])
+  chapterId   String?
+  chapter     Chapter?   @relation(fields: [chapterId], references: [id])
+
+  @@unique([profileId, postId, liveEventId])
+  @@index([profileId])
+  @@index([postId])
+  @@index([liveEventId])
+  @@index([chapterId])
+  @@index([courseId])
+}
+
+// TODO: Chat & Conversation Models
+
+enum ChannelType {
+  TEXT
+  AUDIO
+  VIDEO
+}
+
+model Channel {
+  id   String      @id @default(uuid())
+  name String
+  type ChannelType @default(TEXT)
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  containerId String
+  container   Container @relation(fields: [containerId], references: [id])
+
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+  @@index([containerId])
+  @@index([serverId])
+}
+
+model Message {
+  id      String @id @default(uuid())
+  content String @db.Text
+
+  fileUrl String? @db.Text
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([channelId])
+  @@index([memberId])
+}
+
+model Conversation {
+  id String @id @default(uuid())
+
+  memberOneId String
+  memberOne   Member @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+
+  memberTwoId String
+  memberTwo   Member @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+
+  directMessages DirectMessage[]
+
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberTwoId])
+}
+
+model DirectMessage {
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  fileUrl String? @db.Text
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  deleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([memberId])
+  @@index([conversationId])
+}

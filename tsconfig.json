@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "next-auth.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/(dashboard)/(routes)/live-event/page.jsx",
+    "app/(dashboard)/(routes)/documents/_components/nextcloud-iframe.jsx",
+    "app/(dashboard)/(routes)/documents/page.js",
+    "hooks/fetchFolderName.jsx",
+    "hooks/fetchFiles.js",
+    "app/(dashboard)/(routes)/documents/_components/CreateFolderButton.jsx",
+    "app/(dashboard)/(routes)/documents/_components/FileList.jsx",
+    "app/(dashboard)/(routes)/documents/_components/UploadButton.jsx",
+    "app/(dashboard)/(routes)/documents/createfile",
+    "app/(dashboard)/(routes)/chat/page.jsx",
+    "app/api/roles/admin/checkAdminRole.js",
+    "app/(dashboard)/_components/sidebar-routes.jsx"
+, "app/api/comment/update"  ],
+  "exclude": ["node_modules"]
+}
