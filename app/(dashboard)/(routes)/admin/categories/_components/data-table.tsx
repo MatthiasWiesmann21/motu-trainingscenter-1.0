@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useIsAdmin } from "@/lib/roleCheck"
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck"
 import { useLanguage } from "@/lib/check-language"
 import { useEffect } from "react"
 import { useModal } from "@/hooks/use-modal-store"
@@ -45,7 +45,7 @@ export function DataTable<TData, TValue>({
   const currentLanguage = useLanguage();
   const { onOpen } = useModal(); 
 
-  const isClientAdmin = profileRole === "CLIENT ADMIN";
+  const isClientAdmin = useIsClientAdmin();
   const isAdmin = useIsAdmin();
 
   const table = useReactTable({

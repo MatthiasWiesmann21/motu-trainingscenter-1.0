@@ -80,7 +80,7 @@ export default function SignUp() {
 
   const renderRight = () => {
     return (
-     <Image alt="ForgotPassword-Image" priority src={getForgotPasswordImage()} width={1280} height={720} className="w-full h-full" />
+     <Image alt="ForgotPassword-Image" priority src={getForgotPasswordImage() || ""} width={1280} height={720} className="w-full h-full" />
     );
   };
   const renderGoogleIcon = () => {

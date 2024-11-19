@@ -116,7 +116,7 @@ export default function SignUp() {
   };
 
   const renderRight = () => {
-    return <Image alt="SignUp-Image" priority src={getSignUpImage()} width={1280} height={720} className="w-full h-full" />; 
+    return <Image alt="SignUp-Image" priority src={getSignUpImage() || ""} width={1280} height={720} className="w-full h-full" />; 
   };
 
   const renderGoogleIcon = () => {
