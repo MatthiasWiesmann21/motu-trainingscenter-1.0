@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,9 +11,9 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import Link from "next/link"
-import { PlusCircle } from "lucide-react"
+} from "@tanstack/react-table";
+import Link from "next/link";
+import { PlusCircle } from "lucide-react";
 
 import {
   Table,
@@ -22,16 +22,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck"
-import { useLanguage } from "@/lib/check-language"
-import { useEffect } from "react"
-import { useModal } from "@/hooks/use-modal-store"
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
+import { useLanguage } from "@/lib/check-language";
+import { useEffect } from "react";
+import { useModal } from "@/hooks/use-modal-store";
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
   profileRole: string;
 }
 
@@ -41,9 +41,11 @@ export function DataTable<TData, TValue>({
   profileRole,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
   const currentLanguage = useLanguage();
-  const { onOpen } = useModal(); 
+  const { onOpen } = useModal();
 
   const isClientAdmin = useIsClientAdmin();
   const isAdmin = useIsAdmin();
@@ -61,11 +63,11 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  })
+  });
 
   return (
     <div>
-      <div className="flex items-center py-4 justify-between">
+      <div className="flex items-center justify-between py-4">
         <Input
           placeholder={currentLanguage.categories_search_placeholder_text}
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -74,29 +76,33 @@ export function DataTable<TData, TValue>({
           }
           className="max-w mr-3 border-[#000000] dark:border-[#ffffff]"
         />
-        {isAdmin || isClientAdmin && (
-            <Button className="w-64" onClick={() => onOpen("createCategory")}>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              {currentLanguage.categories_createCategory_button_text}
-            </Button>
-        )}
+        <Button className="w-64" onClick={() => onOpen("createCategory")}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          {currentLanguage.categories_createCategory_button_text}
+        </Button>
       </div>
       <div className="rounded-md border border-[#000000] dark:border-[#ffffff]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-[#000000] dark:border-[#ffffff]">
+              <TableRow
+                key={headerGroup.id}
+                className="border-[#000000] dark:border-[#ffffff]"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-[#000000] dark:text-[#ffffff]">
+                    <TableHead
+                      key={header.id}
+                      className="text-[#000000] dark:text-[#ffffff]"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -123,7 +129,10 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   {currentLanguage.categories_noCategories_text}
                 </TableCell>
               </TableRow>
@@ -150,5 +159,5 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
     </div>
-  )
+  );
 }

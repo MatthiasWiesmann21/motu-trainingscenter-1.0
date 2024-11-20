@@ -12,6 +12,11 @@ import { ImageForm } from "./_components/image-form";
 import Link from "next/link";
 import GoBackButton from "@/components/goBackButton";
 import { NewPasswordForm } from "./_components/newPassword-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
 
 const UserNamePage = async () => {
   const user = await currentProfile();

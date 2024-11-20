@@ -96,7 +96,7 @@ export const SidebarRoutes = ({
     },
     {
       icon: Library,
-      label: `${currentLanguage.nav_item_knowledge_hub}`,
+      label: `${currentLanguage.nav_item_knowledgeHub}`,
       href: "/knowledge-hub",
       isNew: false,
     },
