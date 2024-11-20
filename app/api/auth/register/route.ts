@@ -35,11 +35,11 @@ export async function POST(request: Request) {
     const container = await db.container.findFirst({
       where: { domain: url },
     });
-/*
+    
     if (!container?.id) {
       throw "Container not found for this domain";
     }
-*/
+    
     console.log("Token created for registration", token);
     const user = await db.profile.create({
       data: {
