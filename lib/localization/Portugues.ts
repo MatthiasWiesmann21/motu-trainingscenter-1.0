@@ -749,4 +749,5 @@ export const Portugues: Record<string, string> = {
   chapters_levelForm_edit: "Editar",
   chapters_levelForm_noLevel: "Sem Nível",
   chapters_levelForm_save: "Salvar",
+  user_DeleteProfileForm_title: "Excluir perfil",
 };

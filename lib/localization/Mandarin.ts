@@ -722,4 +722,5 @@ export const Mandarin: Record<string, string> = {
   chapters_levelForm_edit: "编辑",
   chapters_levelForm_noLevel: "无级别",
   chapters_levelForm_save: "保存",
+  user_DeleteProfileForm_title: "删除个人资料",
 };

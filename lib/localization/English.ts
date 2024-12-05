@@ -713,4 +713,5 @@ chapters_levelForm_cancel: "Cancel",
 chapters_levelForm_edit: "Edit",
 chapters_levelForm_noLevel: "No Level",
 chapters_levelForm_save: "Save",
+user_DeleteProfileForm_title: "Delete Profile",
 };

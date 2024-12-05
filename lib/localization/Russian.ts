@@ -744,4 +744,5 @@ export const Russian: Record<string, string> = {
   chapters_levelForm_edit: "Редактировать",
   chapters_levelForm_noLevel: "Без уровня",
   chapters_levelForm_save: "Сохранить",
+  user_DeleteProfileForm_title: "Удалить профиль",
 };
