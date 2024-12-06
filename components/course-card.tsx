@@ -98,7 +98,7 @@ export const CourseCard = ({
   const router = useRouter();
 
   const canAccess = isAdmin || isClientAdmin;
-  
+
   const onDelete = async () => {
     try {
       setIsLoading(true);
@@ -182,21 +182,23 @@ export const CourseCard = ({
           </Link>
 
           <div className="mt-3 flex w-full items-center justify-between">
-            <Tooltip>
-              <TooltipTrigger>
-                <span
-                  style={{ borderColor: categoryColorCode }}
-                  className="line-clamp-1 max-w-[150px] rounded-lg border-2 px-2 py-1 text-start text-xs"
-                >
-                  {category}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="whitespace-normal text-sm font-semibold">
-                  {category}
-                </p>
-              </TooltipContent>
-            </Tooltip>
+            {category && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <span
+                    style={{ borderColor: categoryColorCode }}
+                    className="line-clamp-1 max-w-[150px] rounded-lg border-2 px-2 py-1 text-start text-xs"
+                  >
+                    {category}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="whitespace-normal text-sm font-semibold">
+                    {category}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            )}
             <div className="flex items-center justify-between">
               {getAllCourses && (
                 <Star
@@ -217,7 +219,15 @@ export const CourseCard = ({
                   <Share2 width={16} height={16} />
                 </Button>
               </ShareLinkModal>
-              <CourseInfoModal description={description} title={title} chapters={chaptersLength} duration={duration} level={level} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}>
+              <CourseInfoModal
+                description={description}
+                title={title}
+                chapters={chaptersLength}
+                duration={duration}
+                level={level}
+                ThemeColor={ThemeColor}
+                DarkThemeColor={DarkThemeColor}
+              >
                 <Button
                   variant="ghost"
                   className="h-8 w-8 p-0"
