@@ -320,7 +320,7 @@ export const Russian: Record<string, string> = {
   customize_customizeCcontainer_title: "Настройте ваш контейнер",
   customize_customizeCcontainer_requiredFields:
     "Заполните все обязательные поля",
-  customize_customizeYourCcontainer: "Настройте ваш контейнер",
+  customize_customizeYourContainer: "Настройте ваш контейнер",
   requiredFields: "*обязательно",
   customize_AddImageTitle: "Добавьте изображение в качестве логотипа",
   chat_welcome_title: "Добро пожаловать в #",
