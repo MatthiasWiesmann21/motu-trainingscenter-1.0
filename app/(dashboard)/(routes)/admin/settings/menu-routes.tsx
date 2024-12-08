@@ -70,8 +70,8 @@ export const MenuRoutes = ({
           href={route.href}
           isNew={route.isNew}
           somethingImportant={route.somethingImportant}
-          ThemeColor={container?.ThemeColor!}
-          DarkThemeColor={container?.DarkThemeColor!}
+          themeColor={container?.ThemeColor!}
+          darkThemeColor={container?.DarkThemeColor!}
         />
       ))}
     </div>

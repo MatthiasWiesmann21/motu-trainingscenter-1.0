@@ -19,7 +19,6 @@ const ContainerSettingsPage = async () => {
     const userId = session?.user?.id;
     const currentLanguage = await languageServer();
     
-    
     if (!userId) {
         return redirect("/admin/customize");
     }
@@ -68,10 +67,10 @@ const ContainerSettingsPage = async () => {
             <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-y-2">
                     <h1 className="text-2xl font-medium">
-                        {currentLanguage?.customize_customizeContainer_title}
+                        {currentLanguage.customize_customizeContainer_title}
                     </h1>
                     <span className="text-sm text-slate-700 dark:text-[#ffffff]">
-                        {currentLanguage?.customize_customizeContainer_requiredFields} {completionText}
+                        {currentLanguage.customize_customizeContainer_requiredFields} {completionText}
                     </span>
                 </div>
             </div>
@@ -80,9 +79,9 @@ const ContainerSettingsPage = async () => {
                     <div className="flex items-center gap-x-2">
                         <IconBadge icon={LayoutGridIcon} />
                         <h2 className="text-xl">
-                            {currentLanguage?.customize_customizeYourContainer}
+                            {currentLanguage.customize_customizeYourContainer}
                         </h2>
-                        <span className="pl-1 text-xs text-rose-600">{currentLanguage?.requiredFields}</span>
+                        <span className="pl-1 text-xs text-rose-600">{currentLanguage.requiredFields}</span>
                     </div>
                     <LinkForm
                         initialData={{ link: container.link || "" }}
@@ -99,7 +98,7 @@ const ContainerSettingsPage = async () => {
                         <h2 className="text-xl">
                             {currentLanguage.customize_AddImageTitle}
                         </h2>
-                        <span className="pl-1 text-xs text-rose-600">{currentLanguage?.requiredFields}</span>
+                        <span className="pl-1 text-xs text-rose-600">{currentLanguage.requiredFields}</span>
                     </div>
                     <ImageForm
                         initialData={container}

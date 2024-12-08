@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ChapterTitleFormProps {
   initialData: {
@@ -26,7 +27,7 @@ interface ChapterTitleFormProps {
   };
   courseId: string;
   chapterId: string;
-};
+}
 
 const formSchema = z.object({
   title: z.string().min(1),
@@ -52,69 +53,90 @@ export const ChapterTitleForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values
+      );
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        {currentLanguage.chapter_TitleForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.chapter_TitleForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.chapter_TitleForm_edit}
-            </>
-          )}
-        </Button>
-      </div>
-      {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.title}
-        </p>
-      )}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <div>
+            {currentLanguage.chapter_TitleForm_title}
+            <span className="pl-2 text-xs text-rose-600">
+              {currentLanguage.requiredFields}
+            </span>
+          </div>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder={currentLanguage.chapter_TitleForm_placeholder}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={()=>onSubmit(form.getValues())}
-              >
-                {currentLanguage.chapter_TitleForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </div>
-  )
-}
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <p className="text-md font-medium">{initialData.title}</p>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isSubmitting}
+                        placeholder={
+                          currentLanguage.chapter_TitleForm_placeholder
+                        }
+                        className="text-md"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center justify-end space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleEdit}
+                  disabled={isSubmitting}
+                >
+                  {currentLanguage.commonButton_cancel}
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={!isValid || isSubmitting}
+                >
+                  {currentLanguage.commonButton_save}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </CardContent>
+    </Card>
+  );
+};

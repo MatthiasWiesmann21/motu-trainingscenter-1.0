@@ -8,7 +8,6 @@ import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Chapter } from "@prisma/client";
 
 import {
   Form,
@@ -17,30 +16,24 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
-import { useLanguage } from "@/lib/check-language";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/check-language";
+import { Profile } from "@prisma/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface AuthorFormProps {
-  initialData: Chapter;
-  courseId: string;
-  chapterId: string;
+interface MailFormProps {
+  initialData: Profile;
+  profileId: string;
 }
 
 const formSchema = z.object({
-  author: z.string().min(1, {
-    message: "Author is required",
+  email: z.string().min(1, {
+    message: "Mail is required",
   }),
 });
 
-export const AuthorForm = ({
-  initialData,
-  courseId,
-  chapterId,
-}: AuthorFormProps) => {
+export const MailForm = ({ initialData, profileId }: MailFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -49,20 +42,15 @@ export const AuthorForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      author: initialData?.author || "",
-    },
+    defaultValues: { email: initialData.email || "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}`,
-        values
-      );
-      toast.success("Chapter updated");
+      await axios.patch(`/api/profile/${profileId}`, values);
+      toast.success("E-mail updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -74,7 +62,7 @@ export const AuthorForm = ({
     <Card className="my-4 w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-xl">
-          <div>{currentLanguage.courses_authorForm_title}</div>
+          <span>{currentLanguage.user_MailForm_title}</span>
           <Button
             onClick={toggleEdit}
             variant="ghost"
@@ -91,22 +79,14 @@ export const AuthorForm = ({
       </CardHeader>
       <CardContent>
         {!isEditing && (
-          <p
-            className={cn(
-              "text-md font-medium",
-              !initialData.author && "italic text-slate-500"
-            )}
-          >
-            {initialData?.author ||
-              `${currentLanguage.chapters_levelForm_noAuthor}`}
-          </p>
+          <p className="text-md font-medium">{initialData.email}</p>
         )}
         {isEditing && (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
               <FormField
                 control={form.control}
-                name="author"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -114,7 +94,7 @@ export const AuthorForm = ({
                         {...field}
                         disabled={isSubmitting}
                         placeholder={
-                          currentLanguage.courses_authorForm_placeholder
+                          currentLanguage.profile_TitleForm_placeholder
                         }
                         className="text-md"
                       />

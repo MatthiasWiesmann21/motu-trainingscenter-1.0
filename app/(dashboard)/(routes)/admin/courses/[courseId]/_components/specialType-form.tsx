@@ -12,13 +12,20 @@ import { Course } from "@prisma/client";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/lib/check-language";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface SpecialTypeFormProps {
   initialData: Course;
@@ -64,83 +71,83 @@ export const SpecialTypeForm = ({
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        {currentLanguage.course_SpecialTypeForm_title} 
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-2 grid grid-cols-2 gap-4"
-        >
-          <FormField
-            control={form.control}
-            name="isNew"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormDescription>
-                    {currentLanguage.course_SpecialTypeForm_isNew}
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isFeatured"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormDescription>
-                    {currentLanguage.course_SpecialTypeForm_isFeatured}
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isBestseller"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormDescription>
-                    {currentLanguage.course_SpecialTypeForm_isBestseller}
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
-      <div className="flex items-center gap-x-2">
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>{currentLanguage.course_SpecialTypeForm_title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="isNew"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel>
+                      {currentLanguage.course_SpecialTypeForm_isNew}
+                    </FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel>
+                      {currentLanguage.course_SpecialTypeForm_isFeatured}
+                    </FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isBestseller"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel>
+                      {currentLanguage.course_SpecialTypeForm_isBestseller}
+                    </FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
         <Button
+          className="ml-auto"
           disabled={!isValid || isSubmitting}
           type="submit"
           onClick={() => onSubmit(form.getValues())}
         >
-          {currentLanguage.course_SpecialTypeForm_save}
+          {currentLanguage.post_CategoryTypeForm_save}
         </Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };

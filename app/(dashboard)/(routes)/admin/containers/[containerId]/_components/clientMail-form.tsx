@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ClientAdminFormProps {
   initialData: {
@@ -37,7 +39,7 @@ export const ClientMailForm = ({
   containerId
 }: ClientAdminFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -60,32 +62,32 @@ export const ClientMailForm = ({
     }
   }
 
-  return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Client Mail
-        <Button onClick={toggleEdit} variant="ghost">
+  return (  
+    <Card className="my-4 w-full">
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between text-xl">
+        <span>Client Mail</span>
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
           {isEditing ? (
-            <>Cancel</>
+            <X className="h-4 w-4" />
           ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Mail
-            </>
+            <Pencil className="h-4 w-4" />
           )}
         </Button>
-      </div>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
       {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.clientMail}
-        </p>
+        <p className="text-md font-medium">{initialData.clientMail}</p>
       )}
       {isEditing && (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="clientMail"
@@ -93,27 +95,38 @@ export const ClientMailForm = ({
                 <FormItem>
                   <FormControl>
                     <Input
+                      {...field}
                       disabled={isSubmitting}
                       placeholder="e.g. 'client.name@example.com'"
-                      {...field}
+                      className="text-md"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center justify-end space-x-2">
               <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={()=>onSubmit(form.getValues())}
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={toggleEdit}
+                disabled={isSubmitting}
               >
-                Save
+                {currentLanguage.commonButton_cancel}
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={!isValid || isSubmitting}
+              >
+                {currentLanguage.commonButton_save}
               </Button>
             </div>
           </form>
         </Form>
       )}
-    </div>
+    </CardContent>
+  </Card>
   )
 }

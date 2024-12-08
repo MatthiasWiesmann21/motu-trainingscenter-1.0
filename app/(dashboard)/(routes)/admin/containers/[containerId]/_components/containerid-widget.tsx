@@ -1,60 +1,81 @@
-"use client";
+"use client"
 
-import { Clipboard, EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import { Clipboard, EyeIcon, EyeOffIcon } from 'lucide-react'
+import { useState } from "react"
+import toast from "react-hot-toast"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 interface ContainerIdProps {
   initialData: {
-    id: string;
-  };
-};
+    id: string
+  }
+}
 
 export const ShowContainerId = ({ initialData }: ContainerIdProps) => {
-  const [isBlurred, setIsBlurred] = useState(true); // State to manage blur effect
+  const [isBlurred, setIsBlurred] = useState(true)
 
-  // Function to toggle blur effect
   const handleToggleBlur = () => {
-    setIsBlurred(!isBlurred);
-  };
+    setIsBlurred(!isBlurred)
+  }
 
-  // Function to copy container ID to clipboard
   const handleCopyId = async () => {
     try {
-      await navigator.clipboard.writeText(initialData.id);
-      toast.success("ID copied to clipboard!");
+      await navigator.clipboard.writeText(initialData.id)
+      toast.success("ID copied to clipboard!")
     } catch (error) {
-      console.error("Failed to copy ID", error);
-      toast.error("Failed to copy ID");
+      console.error("Failed to copy ID", error)
+      toast.error("Failed to copy ID")
     }
-  };
+  }
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Container Id   
-      </div>
-      <p className={`text-sm mt-2 ${isBlurred ? "blur-sm" : ""}`}>
-        {initialData.id}
-      </p>
-      <div className="flex justify-end pt-1">
-          <button
-            className="mr-2 bg-slate-800 hover:bg-slate-600 text-white font-sm py-1 px-1 rounded"
-            onClick={handleToggleBlur}
-          >
-            {isBlurred ? (
-              <EyeIcon />
-            ) : (
-              <EyeOffIcon />
+    <Card className="w-full my-4">
+      <CardHeader>
+        <CardTitle className='text-xl'>Container ID</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="relative bg-muted p-4 rounded-md overflow-hidden">
+          <p
+            className={cn(
+              "text-md font-mono transition-all duration-300",
+              isBlurred && "blur-sm select-none"
             )}
-          </button>
-          <button
-            className="bg-slate-800 hover:bg-slate-600 text-white font-sm py-1 px-1 rounded"
-            onClick={handleCopyId}
           >
-            <Clipboard />
-          </button>
+            {initialData.id}
+          </p>
+          {isBlurred && (
+            <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
+              <p className="text-sm text-muted-foreground">Hidden for security</p>
+            </div>
+          )}
         </div>
-    </div>
-  );
-};
+      </CardContent>
+      <CardFooter className="flex justify-end space-x-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleToggleBlur}
+          title={isBlurred ? "Show ID" : "Hide ID"}
+        >
+          {isBlurred ? (
+            <EyeIcon className="h-4 w-4" />
+          ) : (
+            <EyeOffIcon className="h-4 w-4" />
+          )}
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleCopyId}
+          title="Copy ID to clipboard"
+        >
+          <Clipboard className="h-4 w-4" />
+        </Button>
+      </CardFooter>
+    </Card>
+  )
+}
+

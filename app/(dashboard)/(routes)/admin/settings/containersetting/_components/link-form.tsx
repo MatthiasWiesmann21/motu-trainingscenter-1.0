@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LinkFormProps {
   initialData: {
@@ -62,31 +63,31 @@ export const LinkForm = ({
   }
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        {currentLanguage.customize_ContainerLinkForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
+  <Card className="my-4 w-full">
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between text-xl">
+        <span>{currentLanguage.customize_ContainerLinkForm_title}</span>
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
           {isEditing ? (
-            <>{currentLanguage.customize_ContainerLinkForm_cancel}</>
+            <X className="h-4 w-4" />
           ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.customize_ContainerLinkForm_edit}
-            </>
+            <Pencil className="h-4 w-4" />
           )}
         </Button>
-      </div>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
       {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.link}
-        </p>
+        <p className="text-md font-medium">{initialData.link}</p>
       )}
       {isEditing && (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="link"
@@ -94,27 +95,40 @@ export const LinkForm = ({
                 <FormItem>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
-                      placeholder={currentLanguage.customize_ContainerLinkForm_placeholder}
                       {...field}
+                      disabled={isSubmitting}
+                      placeholder={
+                        currentLanguage.customize_ContainerLinkForm_placeholder
+                      }
+                      className="text-md"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center justify-end space-x-2">
               <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={()=>onSubmit(form.getValues())}
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={toggleEdit}
+                disabled={isSubmitting}
               >
-                {currentLanguage.customize_ContainerLinkForm_save}
+                {currentLanguage.commonButton_cancel}
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={!isValid || isSubmitting}
+              >
+                {currentLanguage.commonButton_save}
               </Button>
             </div>
           </form>
         </Form>
       )}
-    </div>
+    </CardContent>
+  </Card>
   )
 }

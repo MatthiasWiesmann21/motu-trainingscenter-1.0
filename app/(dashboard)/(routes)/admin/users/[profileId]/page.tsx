@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
 import { Actions } from "./_components/actions";
 import { TitleForm } from "./_components/title-form";
-import { ShowUserMail } from "./_components/showUserMail";
+import { MailForm } from "./_components/mail-form";
 import { RoleForm } from "./_components/role-form";
 import { IsBannedForm } from "./_components/isBanned-form";
 import { languageServer } from "@/lib/check-language-server";
@@ -70,7 +70,7 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
               initialData={profile}
               profileId={profile.id}
             />
-            <ShowUserMail initialData={profile} profileId={profile.id} />
+            <MailForm initialData={profile} profileId={profile.id} />
             <RoleForm
               initialData={profile}
               profileId={profile.id}

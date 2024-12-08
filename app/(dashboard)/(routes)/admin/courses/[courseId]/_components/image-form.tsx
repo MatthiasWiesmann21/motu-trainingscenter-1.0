@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Pencil, PlusCircle, ImageIcon } from "lucide-react";
+import { Pencil, PlusCircle, ImageIcon, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useLanguage } from "@/lib/check-language";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface ImageFormProps {
   initialData: Course;
@@ -43,63 +50,76 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        <div>
-        {currentLanguage.course_imageForm_title}
-        <span className="pl-2 text-xs text-rose-600">
-          {currentLanguage.requiredFields}
-        </span>
-        </div>
-        <div>
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>{currentLanguage.courses_imageForm_cancel}</>}
-          {!isEditing && !initialData.imageUrl && (
-            <>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.courses_imageForm_add}
-            </>
-          )}
-          {!isEditing && initialData.imageUrl && (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.courses_imageForm_edit}
-            </>
-          )}
-        </Button>
-        </div>
-      </div>
-      {!isEditing &&
-        (!initialData.imageUrl ? (
-          <div className="flex h-60 items-center justify-center rounded-md bg-slate-200 dark:bg-slate-700">
-            <ImageIcon className="h-10 w-10 text-slate-500" />
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <div className="flex items-center">
+            {currentLanguage.course_imageForm_title}
+            <span className="pl-2 text-xs text-rose-600">
+              {currentLanguage.requiredFields}
+            </span>
           </div>
-        ) : (
-          <div className="relative mt-2 aspect-video">
-            <Image
-              priority
-              alt="Upload"
-              fill
-              className="rounded-md object-cover"
-              src={initialData.imageUrl}
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+          >
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : !initialData.imageUrl ? (
+              <PlusCircle className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing &&
+          (!initialData.imageUrl ? (
+            <div className="flex h-60 items-center justify-center rounded-md bg-muted">
+              <ImageIcon className="h-10 w-10 text-muted-foreground" />
+            </div>
+          ) : (
+            <div className="relative aspect-video">
+              <Image
+                alt="Container Icon"
+                fill
+                className="rounded-md object-cover"
+                src={initialData.imageUrl}
+              />
+            </div>
+          ))}
+        {isEditing && (
+          <div className="space-y-4">
+            <FileUpload
+              endpoint="courseImage"
+              onChange={(url) => {
+                if (url) {
+                  onSubmit({ imageUrl: url });
+                }
+              }}
             />
+            <p className="text-sm text-muted-foreground">
+              {currentLanguage.courses_imageForm_aspectRatioRecoomendation}
+            </p>
           </div>
-        ))}
+        )}
+      </CardContent>
       {isEditing && (
-        <div>
-          <FileUpload
-            endpoint="courseImage"
-            onChange={(url) => {
-              if (url) {
-                onSubmit({ imageUrl: url });
-              }
-            }}
-          />
-          <div className="mt-4 text-xs text-muted-foreground">
-            {currentLanguage.courses_imageForm_aspectRatioRecoomendation}
-          </div>
-        </div>
+        <CardFooter className="flex justify-between">
+          <Button variant="ghost" onClick={toggleEdit}>
+            {currentLanguage.commonButton_cancel}
+          </Button>
+          <Button
+            onClick={() => onSubmit({ imageUrl: initialData.imageUrl || "" })}
+            disabled={!initialData.imageUrl}
+          >
+            {currentLanguage.commonButton_save}
+          </Button>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 };

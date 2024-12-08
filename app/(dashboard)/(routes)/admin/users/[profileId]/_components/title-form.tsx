@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -20,11 +20,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { Profile } from "@prisma/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface TitleFormProps {
   initialData: Profile;
   profileId: string;
-};
+}
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -32,10 +33,7 @@ const formSchema = z.object({
   }),
 });
 
-export const TitleForm = ({
-  initialData,
-  profileId
-}: TitleFormProps) => {
+export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -44,7 +42,7 @@ export const TitleForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {name: initialData.name || ""}
+    defaultValues: { name: initialData.name || "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -58,62 +56,75 @@ export const TitleForm = ({
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        {currentLanguage.profile_TitleForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.profile_TitleForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.profile_TitleForm_edit}
-            </>
-          )}
-        </Button>
-      </div>
-      {!isEditing && (
-        <p className="text-sm mt-2 break-words">
-          {initialData.name}
-        </p>
-      )}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <span>{currentLanguage.profile_TitleForm_title}</span>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder={currentLanguage.profile_TitleForm_placeholder}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={()=>onSubmit(form.getValues())}
-              >
-                {currentLanguage.profile_TitleForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </div>
-  )
-}
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <p className="text-md font-medium">{initialData.name}</p>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isSubmitting}
+                        placeholder={
+                          currentLanguage.profile_TitleForm_placeholder
+                        }
+                        className="text-md"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center justify-end space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleEdit}
+                  disabled={isSubmitting}
+                >
+                  {currentLanguage.commonButton_cancel}
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={!isValid || isSubmitting}
+                >
+                  {currentLanguage.commonButton_save}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </CardContent>
+    </Card>
+  );
+};

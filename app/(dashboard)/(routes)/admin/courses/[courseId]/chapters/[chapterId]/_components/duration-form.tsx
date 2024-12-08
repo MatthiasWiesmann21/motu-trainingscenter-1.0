@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/lib/check-language";
 import { formatDuration } from "@/lib/formatDuration";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DurationFormProps {
   initialData: Chapter;
@@ -33,7 +34,11 @@ const formSchema = z.object({
   duration: z.string().min(0),
 });
 
-export const DurationForm = ({ initialData, courseId, chapterId }: DurationFormProps) => {
+export const DurationForm = ({
+  initialData,
+  courseId,
+  chapterId,
+}: DurationFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -45,13 +50,16 @@ export const DurationForm = ({ initialData, courseId, chapterId }: DurationFormP
     defaultValues: {
       duration: initialData?.duration || undefined,
     },
-  });  
+  });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values
+      );
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
@@ -60,68 +68,87 @@ export const DurationForm = ({ initialData, courseId, chapterId }: DurationFormP
     }
   };
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        {currentLanguage.course_durationForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.courses_durationForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.courses_durationForm_edit}
-            </>
-          )}
-        </Button>
-      </div>
-      {!isEditing && (
-        <p
-          className={cn(
-            "mt-2 text-sm",
-            !initialData.duration && "italic text-slate-500"
-          )}
-        >
-          {formatDuration(initialData.duration)}
-        </p>
-      )}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <div>
+            {currentLanguage.chapters_durationForm_title}
+            <span className="pl-2 text-xs text-rose-600">
+              {currentLanguage.requiredFields}
+            </span>
+          </div>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <FormField
-              control={form.control}
-              name="duration"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      disabled={isSubmitting}
-                      placeholder={
-                        currentLanguage.courses_durationForm_placeholder
-                      }
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={() => onSubmit(form.getValues())}
-              >
-                {currentLanguage.courses_durationForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </div>
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <p
+            className={cn(
+              "text-md font-medium",
+              !initialData.duration && "italic text-slate-500"
+            )}
+          >
+            {formatDuration(initialData.duration)}
+          </p>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="duration"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        disabled={isSubmitting}
+                        placeholder={
+                          currentLanguage.chapters_durationForm_placeholder
+                        }
+                        {...field}
+                        className="text-md"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center justify-end space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleEdit}
+                  disabled={isSubmitting}
+                >
+                  {currentLanguage.commonButton_cancel}
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={!isValid || isSubmitting}
+                  onClick={() => onSubmit(form.getValues())}
+                >
+                  {currentLanguage.commonButton_save}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </CardContent>
+    </Card>
   );
 };
