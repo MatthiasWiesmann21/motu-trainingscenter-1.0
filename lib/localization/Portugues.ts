@@ -764,4 +764,10 @@ export const Portugues: Record<string, string> = {
   customize_navDarkBackgroundColorForm_ColorLabel: "Cor de fundo da navegação para modo escuro",
   customize_ThemeColorForm_ColorLabel: "Cor do tema",
   customize_DarkThemeColorForm_ColorLabel: "Cor do tema escuro",
+  user_DeleteProfileForm_AlerTitle: "Aviso",
+  user_DeleteProfileForm_AlerDescription: "Excluir seu perfil é permanente e não pode ser desfeito. Todos os seus dados serão perdidos.",
+  user_DeleteProfileForm_ConfirmModalTitle: "Você tem certeza?",
+  user_DeleteProfileForm_ConfirmModalDescription: "Esta ação não pode ser desfeita. Sua conta será permanentemente excluída e seus dados serão removidos dos nossos servidores.",
+  user_DeleteProfileForm_ConfirmModalDeleteProfile: "Excluir perfil",
+  chapters_levelForm_noAuthor: "Sem autor",
 };

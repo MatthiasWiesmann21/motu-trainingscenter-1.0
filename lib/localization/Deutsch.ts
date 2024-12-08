@@ -729,4 +729,10 @@ customize_navDarkPrimaryColorForm_ColorLabel: "Primärfarbe der Navigation für 
 customize_navDarkBackgroundColorForm_ColorLabel: "Hintergrundfarbe der Navigation für den Dunkelmodus",
 customize_ThemeColorForm_ColorLabel: "Designfarbe",
 customize_DarkThemeColorForm_ColorLabel: "Dunkle Designfarbe",
+user_DeleteProfileForm_AlerTitle: "Warnung",
+user_DeleteProfileForm_AlerDescription: "Das Löschen Ihres Profils ist endgültig und kann nicht rückgängig gemacht werden. Alle Ihre Daten werden gelöscht.",
+user_DeleteProfileForm_ConfirmModalTitle: "Bist du sicher?",
+user_DeleteProfileForm_ConfirmModalDescription: "Diese Aktion kann nicht rückgängig gemacht werden. Ihr Konto wird dauerhaft gelöscht und Ihre Daten werden von unseren Servern entfernt.",
+user_DeleteProfileForm_ConfirmModalDeleteProfile: "Profil löschen",
+chapters_levelForm_noAuthor: "Kein Autor",
 };

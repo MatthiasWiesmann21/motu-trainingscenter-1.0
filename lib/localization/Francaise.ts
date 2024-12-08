@@ -772,4 +772,10 @@ export const Francaise: Record<string, string> = {
   customize_navDarkBackgroundColorForm_ColorLabel: "Couleur de fond de la navigation pour le mode sombre",
   customize_ThemeColorForm_ColorLabel: "Couleur du thème",
   customize_DarkThemeColorForm_ColorLabel: "Couleur du thème sombre",
+  user_DeleteProfileForm_AlerTitle: "Avertissement",
+  user_DeleteProfileForm_AlerDescription: "Supprimer votre profil est permanent et ne peut pas être annulé. Toutes vos données seront perdues.",
+  user_DeleteProfileForm_ConfirmModalTitle: "Êtes-vous sûr ?",
+  user_DeleteProfileForm_ConfirmModalDescription: "Cette action est irréversible. Cela supprimera définitivement votre compte et supprimera vos données de nos serveurs.",
+  user_DeleteProfileForm_ConfirmModalDeleteProfile: "Supprimer le profil",
+  chapters_levelForm_noAuthor: "Pas d'auteur",
 };

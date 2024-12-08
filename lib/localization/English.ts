@@ -728,4 +728,10 @@ customize_navDarkPrimaryColorForm_ColorLabel: "Navigation Primary Color for Dark
 customize_navDarkBackgroundColorForm_ColorLabel: "Navigation Background Color for Darkmode",
 customize_ThemeColorForm_ColorLabel: "Theme Color",
 customize_DarkThemeColorForm_ColorLabel: "Dark Theme Color",
+user_DeleteProfileForm_AlerTitle: "Warning",
+user_DeleteProfileForm_AlerDescription: "Deleting your profile is permanent and cannot be undone. All your data will be lost.",
+user_DeleteProfileForm_ConfirmModalTitle: "Are you sure?",
+user_DeleteProfileForm_ConfirmModalDescription: "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+user_DeleteProfileForm_ConfirmModalDeleteProfile: "Delete Profile",
+chapters_levelForm_noAuthor: "No Author",
 };

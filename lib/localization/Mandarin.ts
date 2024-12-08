@@ -737,4 +737,10 @@ export const Mandarin: Record<string, string> = {
   customize_navDarkBackgroundColorForm_ColorLabel: "暗模式下的导航背景颜色",
   customize_ThemeColorForm_ColorLabel: "主题颜色",
   customize_DarkThemeColorForm_ColorLabel: "暗主题颜色",
+  user_DeleteProfileForm_AlerTitle: "警告",
+  user_DeleteProfileForm_AlerDescription: "删除您的个人资料是永久性的，无法撤销。您的所有数据将丢失。",
+  user_DeleteProfileForm_ConfirmModalTitle: "您确定吗？",
+  user_DeleteProfileForm_ConfirmModalDescription: "此操作无法撤销。此操作将永久删除您的帐户，并从我们的服务器中删除您的数据。",
+  user_DeleteProfileForm_ConfirmModalDeleteProfile: "删除个人资料",
+  chapters_levelForm_noAuthor: "没有作者",
 };
