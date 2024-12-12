@@ -120,6 +120,7 @@ export const EmailForm = ({
                 type="submit"
                 size="sm"
                 disabled={!isValid || isSubmitting}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.commonButton_save}
               </Button>

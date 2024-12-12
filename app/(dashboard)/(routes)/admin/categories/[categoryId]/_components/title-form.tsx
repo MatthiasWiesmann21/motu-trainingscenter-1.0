@@ -122,6 +122,7 @@ export const TitleForm = ({
                 type="submit"
                 size="sm"
                 disabled={!isValid || isSubmitting}
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.categories_TitleForm_save}
               </Button>

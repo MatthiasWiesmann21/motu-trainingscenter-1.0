@@ -116,6 +116,7 @@ export const TitleForm = ({ initialData, liveEventId }: TitleFormProps) => {
                   type="submit"
                   size="sm"
                   disabled={!isValid || isSubmitting}
+                  onClick={() => onSubmit(form.getValues())}
                 >
                   {currentLanguage.commonButton_save}
                 </Button>
