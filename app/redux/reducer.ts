@@ -1,8 +1,8 @@
 "use client";
 
 const initialState = {
-  user: {} as any,
-  language: 'English',
+  user: null as any,
+  language: "English",
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -21,9 +21,9 @@ const reducer = (state = initialState, action: any) => {
         },
       };
     case "ClearUser":
-      return { ...state, user: {} };
+      return { ...state, user: null };
     case "SetLanguage":
-      return { ...state, language: action?.payload }
+      return { ...state, language: action?.payload };
     default:
       return state;
   }

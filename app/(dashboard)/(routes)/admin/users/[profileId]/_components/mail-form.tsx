@@ -19,22 +19,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
+import { Profile } from "@prisma/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface TitleFormProps {
-  initialData: {
-    title: string;
-  };
-  postId: string;
+interface MailFormProps {
+  initialData: Profile;
+  profileId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
+  email: z.string().min(1, {
+    message: "Mail is required",
   }),
 });
 
-export const TitleForm = ({ initialData, postId }: TitleFormProps) => {
+export const MailForm = ({ initialData, profileId }: MailFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -43,15 +42,15 @@ export const TitleForm = ({ initialData, postId }: TitleFormProps) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: { email: initialData.email || "" },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/posts/${postId}`, values);
-      toast.success("Post updated");
+      await axios.patch(`/api/profile/${profileId}`, values);
+      toast.success("E-mail updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -63,7 +62,7 @@ export const TitleForm = ({ initialData, postId }: TitleFormProps) => {
     <Card className="my-4 w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-xl">
-          <span>{currentLanguage.post_TitleForm_title}</span>
+          <span>{currentLanguage.user_MailForm_title}</span>
           <Button
             onClick={toggleEdit}
             variant="ghost"
@@ -80,21 +79,23 @@ export const TitleForm = ({ initialData, postId }: TitleFormProps) => {
       </CardHeader>
       <CardContent>
         {!isEditing && (
-          <p className="text-md font-medium">{initialData.title}</p>
+          <p className="text-md font-medium">{initialData.email}</p>
         )}
         {isEditing && (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
               <FormField
                 control={form.control}
-                name="title"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isSubmitting}
-                        placeholder={currentLanguage.post_TitleForm_placeholder}
+                        placeholder={
+                          currentLanguage.profile_TitleForm_placeholder
+                        }
                         className="text-md"
                       />
                     </FormControl>
@@ -116,7 +117,6 @@ export const TitleForm = ({ initialData, postId }: TitleFormProps) => {
                   type="submit"
                   size="sm"
                   disabled={!isValid || isSubmitting}
-                  onClick={() => onSubmit(form.getValues())}
                 >
                   {currentLanguage.commonButton_save}
                 </Button>

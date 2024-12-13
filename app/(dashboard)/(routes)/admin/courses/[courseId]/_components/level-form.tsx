@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { GraduationCap, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
 import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LevelFormProps {
   initialData: Course;
@@ -67,61 +68,69 @@ export const LevelForm = ({
   const selectedOption = options.find((option) => option.value === initialData.level);
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        {currentLanguage.courses_levelForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
+    <Card className="my-4 w-full">
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between text-xl">
+        <div className="flex items-center">
+          {currentLanguage.courses_levelForm_title}         
+        </div>
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
           {isEditing ? (
-            <>{currentLanguage.courses_levelForm_cancel}</>
+            <X className="h-4 w-4" />
           ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.courses_levelForm_edit}
-            </>
+            <Pencil className="h-4 w-4" />
           )}
         </Button>
-      </div>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
       {!isEditing && (
-        <p className={cn(
-          "text-sm mt-2",
-          !initialData.level && "text-slate-500 italic"
-        )}>
+        <p
+          className={cn(
+            "text-md font-medium",
+            !initialData.level && "italic text-muted-foreground"
+          )}
+        >
           {selectedOption?.label || `${currentLanguage.courses_levelForm_noLevel}`}
         </p>
       )}
       {isEditing && (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="level"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Combobox
-                      options={...options}
-                      {...field}
-                    />
+                    <Combobox options={options} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={()=>onSubmit(form.getValues())}
-              >
-                {currentLanguage.courses_levelForm_save}
-              </Button>
-            </div>
           </form>
         </Form>
       )}
-    </div>
+    </CardContent>
+    {isEditing && (
+      <CardFooter className="flex justify-end space-x-2">
+        <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+          {currentLanguage.commonButton_cancel}
+        </Button>
+        <Button
+          disabled={!isValid || isSubmitting}
+          onClick={() => onSubmit(form.getValues())}
+        >
+          {currentLanguage.commonButton_save}
+        </Button>
+      </CardFooter>
+    )}
+  </Card>
   )
 }

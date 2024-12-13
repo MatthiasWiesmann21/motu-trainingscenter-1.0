@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface TitleFormProps {
   initialData: {
@@ -61,65 +62,78 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center font-medium justify-between">
-        <div>
-        {currentLanguage.courses_titleForm_title}
-        <span className="pl-2 text-xs text-rose-600">
-          {currentLanguage.requiredFields}
-        </span>
-        </div>
-        <div>
-          {" "}
-          <Button onClick={toggleEdit} variant="ghost">
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <div>
+            {currentLanguage.courses_titleForm_title}
+            <span className="pl-2 text-xs text-rose-600">
+              {currentLanguage.requiredFields}
+            </span>
+          </div>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+          >
             {isEditing ? (
-              <>{currentLanguage.courses_titleForm_cancel}</>
+              <X className="h-4 w-4" />
             ) : (
-              <>
-                <Pencil className="mr-2 h-4 w-4" />
-                {currentLanguage.courses_titleForm_edit}
-              </>
+              <Pencil className="h-4 w-4" />
             )}
           </Button>
-        </div>
-      </div>
-      {!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder={
-                        currentLanguage.courses_titleForm_placeholder
-                      }
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={() => onSubmit(form.getValues())}
-              >
-                {currentLanguage.courses_titleForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <p className="text-md font-medium">{initialData.title}</p>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isSubmitting}
+                        placeholder={
+                          currentLanguage.courses_titleForm_placeholder
+                        }
+                        className="text-md"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center justify-end space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleEdit}
+                  disabled={isSubmitting}
+                >
+                  {currentLanguage.commonButton_cancel}
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={!isValid || isSubmitting}
+                  onClick={() => onSubmit(form.getValues())}
+                >
+                  {currentLanguage.commonButton_save}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </CardContent>
+    </Card>
   );
 };

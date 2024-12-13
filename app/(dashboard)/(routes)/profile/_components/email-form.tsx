@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
 import { Profile } from "@prisma/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface TitleFormProps {
   initialData: Profile;
@@ -61,31 +62,31 @@ export const EmailForm = ({
   }
 
   return (
-    <div className="mt-4 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        {currentLanguage.profile_EmailForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
+    <Card className="my-4 w-full">
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between text-xl">
+        <span>{currentLanguage.profile_EmailForm_title}</span>
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
           {isEditing ? (
-            <>{currentLanguage.profile_EmailForm_cancel}</>
+            <X className="h-4 w-4" />
           ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.profile_EmailForm_edit}
-            </>
+            <Pencil className="h-4 w-4" />
           )}
         </Button>
-      </div>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
       {!isEditing && (
-        <p className="text-sm mt-2">
-          {initialData.email}
-        </p>
+        <p className="text-md font-medium">{initialData.email}</p>
       )}
       {isEditing && (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="email"
@@ -93,26 +94,41 @@ export const EmailForm = ({
                 <FormItem>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
-                      placeholder={currentLanguage.profile_EmailForm_placeholder}
                       {...field}
+                      disabled={isSubmitting}
+                      placeholder={
+                        currentLanguage.profile_EmailForm_placeholder
+                      }
+                      className="text-md"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center justify-end space-x-2">
               <Button
-                disabled={!isValid || isSubmitting}
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={toggleEdit}
+                disabled={isSubmitting}
+              >
+                {currentLanguage.commonButton_cancel}
+              </Button>
+              <Button
                 type="submit"
-                onClick={()=>onSubmit(form.getValues())}>
-                {currentLanguage.profile_EmailForm_save}
+                size="sm"
+                disabled={!isValid || isSubmitting}
+                onClick={() => onSubmit(form.getValues())}
+              >
+                {currentLanguage.commonButton_save}
               </Button>
             </div>
           </form>
         </Form>
       )}
-    </div>
+    </CardContent>
+  </Card>
   )
 }

@@ -15,12 +15,20 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/lib/check-language";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface isStreamChatFormProps {
   initialData: LiveEvent;
@@ -62,45 +70,47 @@ export const IsStreamChatForm = ({
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        {currentLanguage.liveEvent_isStreamChatForm_title}
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-2 grid grid-cols-2 gap-4"
-        >
-          <FormField
-            control={form.control}
-            name="isStreamChat"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormDescription>
-                    {currentLanguage.liveEvent_isStreamChatForm_isStreamChat}
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
-      <div className="flex items-center gap-x-2">
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="text-xl">
+          {currentLanguage.liveEvent_isStreamChatForm_title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="isStreamChat"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-md">
+                      {currentLanguage.liveEvent_isStreamChatForm_isStreamChat}
+                    </FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
         <Button
+          className="ml-auto"
           disabled={!isValid || isSubmitting}
           type="submit"
           onClick={() => onSubmit(form.getValues())}
         >
-          {currentLanguage.liveEvent_isStreamChatForm_save}
+          {currentLanguage.commonButton_save}
         </Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };

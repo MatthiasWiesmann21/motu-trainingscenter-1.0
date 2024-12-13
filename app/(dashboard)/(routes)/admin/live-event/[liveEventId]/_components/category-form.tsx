@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X, Tag } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -15,16 +15,23 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
 import { useLanguage } from "@/lib/check-language";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface CategoryFormProps {
-  initialData: LiveEvent | Course | any;
+  initialData: LiveEvent | Course;
   liveEventId: string;
   options: { label: string; value: string }[];
 }
@@ -69,56 +76,70 @@ export const CategoryForm = ({
   );
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        {currentLanguage.liveEvent_CategoryForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.liveEvent_CategoryForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.liveEvent_CategoryForm_edit}
-            </>
-          )}
-        </Button>
-      </div>
-      {!isEditing && (
-        <p
-          className={cn(
-            "mt-2 text-sm",
-            !initialData.categoryId && "italic text-slate-500"
-          )}
-        >
-          {selectedOption?.label || "No category"}
-        </p>
-      )}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <span className="flex items-center">
+            <Tag className="mr-2 h-5 w-5" />
+            {currentLanguage.liveEvent_CategoryForm_title}
+          </span>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field } : any) => (
-                <FormItem>
-                  <FormControl>
-                    <Combobox options={...options} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit" onClick={()=>onSubmit(form.getValues())}>
-                {currentLanguage.liveEvent_CategoryForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <p
+            className={cn(
+              "text-md font-medium",
+              !initialData.categoryId && "italic text-muted-foreground"
+            )}
+          >
+            {selectedOption?.label || "No category"}
+          </p>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Combobox options={options} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        )}
+      </CardContent>
+      {isEditing && (
+        <CardFooter className="flex justify-end space-x-2">
+          <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+            {currentLanguage.liveEvent_CategoryForm_cancel}
+          </Button>
+          <Button
+            disabled={!isValid || isSubmitting}
+            onClick={() => onSubmit(form.getValues())}
+          >
+            {currentLanguage.liveEvent_CategoryForm_save}
+          </Button>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 };

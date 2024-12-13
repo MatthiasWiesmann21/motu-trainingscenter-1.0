@@ -21,9 +21,9 @@ export default function SignUp() {
 
   const getButtonColor = () => {
     if (theme === "dark") {
-      return container?.DarkPrimaryButtonColor;
+      return container?.DarkPrimaryButtonColor!;
     } else {
-      return container?.PrimaryButtonColor;
+      return container?.PrimaryButtonColor!;
     }
   };
 

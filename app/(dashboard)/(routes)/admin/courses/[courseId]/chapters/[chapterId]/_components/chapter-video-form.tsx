@@ -1,21 +1,20 @@
 "use client";
 import * as z from "zod";
 import axios from "axios";
-import { Pencil, PlusCircle, Video } from "lucide-react";
+import { Pencil, Video, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Chapter } from "@prisma/client";
-import Image from "next/image";
-import Select from "react-select";
 import { Button } from "@/components/ui/button";
-import vimeo from "@/assets/icons/Vimeo-Logo.png";
-import youtube from "@/assets/icons/Youtube-Logo.png";
-import utfs from "@/assets/icons/uploadthing-logo.svg";
 import UniversalPlayer from "@/pages/components/universalPlayer";
 import { useTheme } from "next-themes";
 import { UploadButton } from "@/utils/uploadthing";
 import AppSVGIcon from "@/components/appsvgicon";
+import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select";
+import { Input } from "@/components/ui/input";
 
 interface ChapterVideoFormProps {
   initialData: Chapter;
@@ -30,40 +29,33 @@ const formSchema = z.object({
 const options = [
   {
     value: "https://vimeo.com/",
-    label: (
-      <div className="flex items-center">
-        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"vimeo"} />
-        <p className="m-0">vimeo</p>
-      </div>
-    ),
+    label: "Vimeo",
+    icon: "vimeo",
   },
   {
     value: "https://www.youtube.com/",
-    label: (
-      <div className="flex items-center">
-        <AppSVGIcon customclass="mr-2 w-[32px]" icon={"youtube"} />
-        <p className="m-0">youtube</p>
-      </div>
-    ),
+    label: "YouTube",
+    icon: "youtube",
   },
   {
     value: "https://utfs.io/",
-    label: (
-      <div className="flex items-center">
-        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"uploadthing-logo"} />
-        <p className="m-0">Uploadthing</p>
-      </div>
-    ),
+    label: "Upload",
+    icon: "uploadthing-logo",
   },
 ];
 
-export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVideoFormProps) => {
+export const ChapterVideoForm = ({
+  initialData,
+  chapterId,
+  courseId,
+}: ChapterVideoFormProps) => {
   const { theme } = useTheme();
   const isDarkTheme = theme === "dark";
   const router = useRouter();
+  const currentLanguage = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [videoType, setVideoType] = useState<any>({});
-  const [videoUrl, setVideoUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState<string>("");
 
   useEffect(() => {
     if (initialData?.videoUrl) {
@@ -79,14 +71,10 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
       setVideoUrl(video);
       setVideoType(provider);
     }
-  }, []);
+  }, [initialData]);
 
   const VimeoPreview = ({ videoId }: { videoId: string }) => (
     <div className="h-[300px]">
-      {/* <EventModal
-        liveEventId={liveEventId}
-        endDateTime={initialData?.endDateTime}
-      /> */}
       <UniversalPlayer url={videoId} />
     </div>
   );
@@ -95,7 +83,10 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values
+      );
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
@@ -104,144 +95,106 @@ export const ChapterVideoForm = ({ initialData, chapterId, courseId }: ChapterVi
     }
   };
 
+  // Check if video preview is valid
+  const isPreviewAvailable = videoType && videoUrl && (videoType.value !== "https://utfs.io/" || videoUrl.trim() !== "");
+
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex mb-2 items-center justify-between font-medium">
-        Chapters Video
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : initialData.videoUrl ? (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit video
-            </>
-          ) : (
-            <>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add a video
-            </>
-          )}
-        </Button>
-      </div>
-
-      {!isEditing &&
-        (videoType && videoUrl ? (
-          <VimeoPreview videoId={`${videoUrl}`} />
-        ) : (
-          <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
-            <Video className="h-10 w-10 text-slate-500" />
-          </div>
-        ))}
-      {/* {console.log("videoType", videoType, "videoUrl", videoUrl)} */}
-
-      {isEditing && (
-        <>
-          <div
-            className="flex items-center justify-around"
-            // style={{ border: "10px solid red" }}
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <span className="flex items-center">
+            <Video className="mr-2 h-5 w-5" />
+            {currentLanguage.chapter_VideoForm_title}
+          </span>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <UploadButton
-              endpoint="chapterVideo"
-              onClientUploadComplete={(res: any) => {
-                // Do something with the response
-                setVideoType(options[3]);
-                setVideoUrl(
-                  res[0]?.url
-                );
-                // console.log(
-                //   "Files: ",
-                //   res[0]?.url
-                //     ?.split("/")
-                //     ?.filter((each: any, index: any) => index < 3)
-                //     ?.join("/")
-                // );
-                // console.log(
-                //   "Files: ",
-                //   res[0]?.url
-                //     ?.split("/")
-                //     ?.filter((each: any, index: any) => index > 2)
-                //     ?.join("/")
-                // );
-                // alert(`Upload Completed ${res[0]?.url}`);
-              }}
-              onUploadError={(error: Error) => {
-                // Do something with the error.
-                alert(`ERROR! ${error.message}`);
-              }}
-            />
-          </div>
-          <div>
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && videoType && videoUrl && (
+          <VimeoPreview videoId={videoUrl} />
+        )}
+        {isEditing && (
+          <div className="space-y-4">
             <Select
-              options={options}
-              onChange={(e: any) => setVideoType(e)}
-              value={videoType}
-              styles={{
-                control: (provided) => ({
-                  ...provided,
-                  backgroundColor: isDarkTheme
-                    ? "focusBackground"
-                    : "defaultBackground",
-                  color: "red",
-                }),
-                singleValue: (provided) => ({
-                  ...provided,
-                  color: isDarkTheme ? "#fff" : "black",
-                }),
-                menu: (provided) => ({
-                  ...provided,
-                  backgroundColor: isDarkTheme
-                    ? "rgb(51 65 85 / var(--tw-bg-opacity))"
-                    : "rgb(226 232 240 / var(--tw-bg-opacity))",
-                }),
-                // @ts-ignore
-                option: (provided, state) => ({
-                  ...provided,
-                  backgroundColor: state?.isFocused
-                    ? isDarkTheme
-                      ? "rgb(186 230 253 / 0.1)"
-                      : "lightblue"
-                    : null,
-                  color: isDarkTheme ? "white" : "black",
-                  "&:hover": {
-                    backgroundColor: isDarkTheme
-                      ? "rgb(186 230 253 / 0.1)"
-                      : "lightblue",
-                  },
-                }),
+              value={videoType?.value}
+              onValueChange={(value) => {
+                const selectedOption = options.find(opt => opt.value === value)
+                setVideoType(selectedOption)
+                if (selectedOption?.value !== "https://utfs.io/") {
+                  setVideoUrl("") // Clear videoUrl for non-upload options
+                }
               }}
-            />
-            <div className="my-1 flex items-center">
-              <input
-                className="flex w-full items-center rounded-md p-1"
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select video source" />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    <div className="flex items-center">
+                      <AppSVGIcon
+                        customclass="mr-2 w-[32px]"
+                        icon={option.icon}
+                      />
+                      <span>{option.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {videoType?.value === "https://utfs.io/" && (
+              <div className="flex justify-center">
+                <UploadButton
+                  endpoint="videoUploader"
+                  onClientUploadComplete={(res: any) => {
+                    setVideoUrl(res[0]?.url);
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast.error(`Upload error: ${error.message}`);
+                  }}
+                />
+              </div>
+            )}
+            {videoType?.value !== "https://utfs.io/" && (
+              <Input
                 type="text"
                 placeholder="Share Link"
                 value={videoUrl}
-                onChange={(e: any) => setVideoUrl(e?.target?.value)}
+                onChange={(e) => setVideoUrl(e.target.value)}
               />
-            </div>
-            <div className="m-[1%] flex items-center justify-end p-[1%]">
-              <Button
-                disabled={videoType === "" || videoUrl === ""}
-                onClick={() =>
-                  onSubmit({ videoUrl: videoType?.value + videoUrl })
-                }
-              >
-                Save
-              </Button>
-            </div>
-            {videoType && videoUrl && (
-              <VimeoPreview videoId={`${videoUrl}`} />
             )}
+            {videoType && videoUrl && <VimeoPreview videoId={videoUrl} />}
           </div>
-        </>
+        )}
+      </CardContent>
+      {isEditing && (
+        <CardFooter className="flex justify-end">
+          <Button
+            disabled={!isPreviewAvailable}
+            onClick={() => onSubmit({ videoUrl: videoType?.value + videoUrl })}
+          >
+            {currentLanguage.commonButton_save}
+          </Button>
+        </CardFooter>
       )}
-
       {initialData?.videoUrl && !isEditing && (
-        <div className="mt-2 text-xs text-muted-foreground">
-          Refresh the page if video does not appear.
-        </div>
+        <CardFooter>
+          <p className="text-sm text-muted-foreground">
+            {currentLanguage.chapter_VideoForm_urlWarning}
+          </p>
+        </CardFooter>
       )}
-    </div>
+    </Card>
   );
 };

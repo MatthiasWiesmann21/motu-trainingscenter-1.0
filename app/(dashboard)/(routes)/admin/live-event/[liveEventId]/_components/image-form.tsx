@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Pencil, PlusCircle, ImageIcon } from "lucide-react";
+import { Pencil, PlusCircle, ImageIcon, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ImageFormProps {
   initialData: LiveEvent;
@@ -43,56 +44,75 @@ export const ImageForm = ({ initialData, liveEventId }: ImageFormProps) => {
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        {currentLanguage.liveEvent_ImageForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>Cancel</>}
-          {!isEditing && !initialData.imageUrl && (
-            <>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.liveEvent_ImageForm_add}
-            </>
-          )}
-          {!isEditing && initialData.imageUrl && (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.liveEvent_ImageForm_edit}
-            </>
+    <Card className="w-full my-4">
+    <CardHeader>
+      <CardTitle className="flex items-center text-xl justify-between">
+        <span>{currentLanguage.liveEvent_ImageForm_title}</span>
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
+          {isEditing ? (
+            <X className="h-4 w-4" />
+          ) : !initialData.imageUrl ? (
+            <PlusCircle className="h-4 w-4" />
+          ) : (
+            <Pencil className="h-4 w-4" />
           )}
         </Button>
-      </div>
-      {!isEditing &&
-        (!initialData.imageUrl ? (
-          <div className="flex h-60 items-center justify-center rounded-md bg-slate-200 dark:bg-slate-700">
-            <ImageIcon className="h-10 w-10 text-slate-500" />
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      {!isEditing && (
+        !initialData.imageUrl ? (
+          <div className="flex h-60 items-center justify-center rounded-md bg-muted">
+            <ImageIcon className="h-10 w-10 text-muted-foreground" />
           </div>
         ) : (
-          <div className="relative mt-2 aspect-video">
+          <div className="relative aspect-video">
             <Image
-              priority
-              alt="Upload"
+              alt="Container Icon"
               fill
               className="rounded-md object-cover"
               src={initialData.imageUrl}
             />
           </div>
-        ))}
+        )
+      )}
       {isEditing && (
-        <div>
+        <div className="space-y-4">
           <FileUpload
             endpoint="eventImage"
             onChange={(url) => {
               if (url) {
-                onSubmit({ imageUrl: url });
+                onSubmit({ imageUrl: url })
               }
             }}
           />
-          <div className="mt-4 text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {currentLanguage.liveEvent_ImageForm_description}
-          </div>
+          </p>
         </div>
       )}
-    </div>
+    </CardContent>
+    {isEditing && (
+      <CardFooter className="flex justify-between">
+        <Button
+          variant="ghost"
+          onClick={toggleEdit}
+        >
+          {currentLanguage.commonButton_cancel}
+        </Button>
+        <Button
+          onClick={() => onSubmit({ imageUrl: initialData.imageUrl || "" })}
+          disabled={!initialData.imageUrl}
+        >
+          {currentLanguage.commonButton_save}
+        </Button>
+      </CardFooter>
+    )}
+  </Card>
   );
 };

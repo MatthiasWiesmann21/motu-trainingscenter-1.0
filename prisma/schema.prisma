@@ -83,6 +83,7 @@ model Server {
 enum SubscriptionType {
   MONTHLY
   ANNUAL
+  NONE
 }
 
 model Profile {
@@ -99,7 +100,7 @@ model Profile {
   role                  String           @default("USER")
   isBanned              String           @default("NOT BANNED")
   acceptedPrivacyPolicy Boolean          @default(false)
-  subscriptionType      SubscriptionType @default(MONTHLY)
+  subscriptionType      SubscriptionType @default(NONE)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
@@ -122,20 +123,20 @@ model Profile {
 }
 
 model Usergroup {
-  id                String  @id @default(uuid())
-  name              String  @unique
-  isPublished       Boolean @default(false)
+  id          String  @id @default(uuid())
+  name        String  @unique
+  isPublished Boolean @default(false)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
 
-  courses Course[]
-  posts   Post[]
+  courses   Course[]
+  posts     Post[]
   LiveEvent LiveEvent[]
-  profiles   Profile[]
+  profiles  Profile[]
 
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([name])
   @@index([containerId])
@@ -420,15 +421,15 @@ model Post {
 // TODO: Live Event Models
 
 model LiveEvent {
-  id          String   @id @default(uuid())
-  userId      String
-  title       String   @db.Text
-  description String?  @db.Text
-  imageUrl    String?  @db.Text
-  videoUrl    String?  @db.Text
-  isStreamChat Boolean @default(true)
-  isPublished Boolean  @default(false)
-  isEnded     Boolean? @default(false)
+  id           String   @id @default(uuid())
+  userId       String
+  title        String   @db.Text
+  description  String?  @db.Text
+  imageUrl     String?  @db.Text
+  videoUrl     String?  @db.Text
+  isStreamChat Boolean  @default(true)
+  isPublished  Boolean  @default(false)
+  isEnded      Boolean? @default(false)
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])

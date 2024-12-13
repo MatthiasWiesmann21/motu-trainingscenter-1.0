@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { FileText, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/lib/check-language";
 import { CoursePreview } from "@/components/course-preview";
 import { Editor } from "@/components/editor";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DescriptionFormProps {
   initialData: Course;
@@ -66,48 +67,49 @@ export const DescriptionForm = ({
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        <div>
+    <Card className="my-4 w-full">
+    <CardHeader>
+      <CardTitle className="flex items-center justify-between text-xl">
+      <div className="flex items-center">
+      <FileText className="mr-2 h-5 w-5" />
         {currentLanguage.courses_descriptionForm_title}
         <span className="pl-2 text-xs text-rose-600">
           {currentLanguage.requiredFields}
         </span>
         </div>
         <div>
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0"
+        >
           {isEditing ? (
-            <>{currentLanguage.courses_descriptionForm_cancel}</>
+            <X className="h-4 w-4" />
           ) : (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.courses_descriptionForm_edit}
-            </>
+            <Pencil className="h-4 w-4" />
           )}
         </Button>
         </div>
-      </div>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
       {!isEditing && (
-        <p
+        <div
           className={cn(
-            "mt-2 text-sm",
-            !initialData.description && "italic text-slate-500"
+            "text-sm",
+            !initialData.description && "italic text-muted-foreground"
           )}
         >
-          {!initialData.description &&
-            `${currentLanguage.courses_descriptionForm_empty}`}
+          {!initialData.description && "No description"}
           {initialData.description && (
             <CoursePreview value={initialData.description} />
           )}
-        </p>
+        </div>
       )}
       {isEditing && (
         <Form {...form}>
-          <form
-            name="descriptionForm"
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="description"
@@ -120,18 +122,23 @@ export const DescriptionForm = ({
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={() => onSubmit(form.getValues())}
-              >
-                {currentLanguage.courses_descriptionForm_save}
-              </Button>
-            </div>
           </form>
         </Form>
       )}
-    </div>
+    </CardContent>
+    {isEditing && (
+      <CardFooter className="flex justify-end space-x-2">
+        <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+          {currentLanguage.commonButton_cancel}
+        </Button>
+        <Button
+          disabled={!isValid || isSubmitting}
+          onClick={() => onSubmit(form.getValues())}
+        >
+          {currentLanguage.commonButton_save}
+        </Button>
+      </CardFooter>
+    )}
+  </Card>
   );
 };

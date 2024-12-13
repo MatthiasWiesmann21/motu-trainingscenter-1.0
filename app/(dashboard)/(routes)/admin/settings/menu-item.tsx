@@ -1,18 +1,24 @@
-"use client";
+"use client"
 
-import { AlertTriangle, LucideIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useTheme } from "next-themes"
+import { AlertTriangle, TypeIcon as type, LucideIcon } from 'lucide-react'
 
-interface SidebarItemProps {
-  icon: LucideIcon;
-  label: string;
-  href: string;
-  isNew?: boolean;
-  somethingImportant?: boolean;
-  ThemeColor: string;
-  DarkThemeColor: string;
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { useLanguage } from "@/lib/check-language"
+
+interface MenuItemProps {
+  icon: LucideIcon
+  label: string
+  href: string
+  isNew?: boolean
+  somethingImportant?: boolean
+  themeColor: string
+  darkThemeColor: string
 }
 
 export const MenuItem = ({
@@ -21,55 +27,61 @@ export const MenuItem = ({
   href,
   isNew,
   somethingImportant,
-  ThemeColor,
-  DarkThemeColor,
-}: SidebarItemProps) => {
-  const router = useRouter();
-  const { theme } = useTheme();
-  const [isHovered, setIsHovered] = useState(false);
-
-  const onClick = () => {
-    router.push(href);
-  };
+  themeColor,
+  darkThemeColor,
+}: MenuItemProps) => {
+  const router = useRouter()
+  const { theme } = useTheme()
+  const [isHovered, setIsHovered] = useState(false)
+  const currentLanguage = useLanguage();
 
   const getThemeColor = () => {
-    return theme === "dark" ? DarkThemeColor : ThemeColor;
-  };
+    return theme === "dark" ? darkThemeColor : themeColor
+  }
 
   return (
-    <button
-      className="rounded-xl border-4 transition duration-500 ease-in-out"
-      onClick={onClick}
+    <Card
+      className={cn(
+        "overflow-hidden border-2 transition-all duration-300 hover:shadow-lg",
+        isHovered && "ring-2 ring-offset-2",
+      )}
+      style={{
+        borderColor: isHovered ? getThemeColor() : undefined,
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{
-        borderColor: isHovered ? getThemeColor() : "transparent",
-      }}
     >
-      <div className="h-full overflow-hidden rounded-lg border-4 bg-transparent p-3 transition hover:shadow-sm dark:border-[#ffffff]">
-        <div className="relative w-full overflow-hidden rounded-md">
-          <div className="flex items-center justify-center py-6">
-            <Icon size={64} />
-          </div>
-          <div className="flex py-1">
-            <h2 className="text-lg font-medium">{label}</h2>
-          </div>
+      <CardHeader className="p-6">
+        <div className="flex items-center justify-center">
+          <Icon size={64} className="text-primary transition-transform duration-300 ease-in-out group-hover:scale-110" />
         </div>
-        <div className="flex justify-start">
+      </CardHeader>
+      <CardContent>
+        <h2 className="text-center text-xl font-semibold">{label}</h2>
+      </CardContent>
+      <CardFooter className="flex justify-between p-4">
+        <div className="flex space-x-2 mr-2">
           {isNew && (
-            <div className="mr-2 inline-flex items-center rounded-md border border-transparent bg-green-500/20 px-2 py-2 text-xs font-medium text-green-500 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+            <Badge variant="secondary" className="bg-green-500 text-white">
               New
-            </div>
+            </Badge>
           )}
           {somethingImportant && (
-            <div className="justify-start">
-              <div className="inline-flex items-center rounded-md border border-transparent bg-orange-400/10 px-2 py-2 text-yellow-500 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                <AlertTriangle size={16} />
-              </div>
-            </div>
+            <Badge variant="secondary" className="bg-yellow-500 text-white">
+              <AlertTriangle size={14} className="mr-1" />
+              Important
+            </Badge>
           )}
         </div>
-      </div>
-    </button>
-  );
-};
+        <Button
+          variant="outline"
+          className="ml-auto transition-colors duration-300 ease-in-out hover:bg-primary hover:text-primary-foreground"
+          onClick={() => router.push(href)}
+        >
+          {currentLanguage.settings_widgetButton_configure}
+        </Button>
+      </CardFooter>
+    </Card>
+  )
+}
+

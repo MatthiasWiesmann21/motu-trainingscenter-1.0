@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Palette, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
 import { useLanguage } from "@/lib/check-language";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DarkPrimaryNavColorFormProps {
   initialData: {
@@ -36,7 +37,10 @@ const formSchema = z.object({
   }),
 });
 
-export const DarkPrimaryNavColorForm = ({ initialData, containerId }: DarkPrimaryNavColorFormProps) => {
+export const DarkPrimaryNavColorForm = ({
+  initialData,
+  containerId,
+}: DarkPrimaryNavColorFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -67,67 +71,97 @@ export const DarkPrimaryNavColorForm = ({ initialData, containerId }: DarkPrimar
   };
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex items-center justify-between font-medium">
-        {currentLanguage.customize_navDarkPrimaryColorForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.customize_PrimaryColorForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.customize_PrimaryColorForm_edit}
-            </>
-          )}
-        </Button>
-      </div>
-      {!isEditing && (
-        <div
-          style={{ backgroundColor: initialData.navDarkPrimaryColor }}
-          className="mt-2 h-8 w-8 rounded-md"
-        >
-          <p className="mt-3 p-1 pl-10 text-sm">{initialData.navDarkPrimaryColor}</p>
-        </div>
-      )}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="mt-4 space-y-4"
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between space-x-2">
+          <div className="flex space-x-2 text-xl">
+            <Palette className="h-6 w-6" />
+            <span>
+              {currentLanguage.customize_navDarkPrimaryColorForm_title}
+            </span>
+          </div>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <FormField
-              control={form.control}
-              name="navDarkPrimaryColor"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <input
-                      type="color"
-                      disabled={isSubmitting}
-                      {...field}
-                      className="h-10 w-10 rounded-md border-none"
-                      style={{
-                        backgroundColor: field.value,
-                        border: "none",
-                        color: field.value,
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel className="p-1">
-                    {field.value || initialData.navDarkPrimaryColor}
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <div className="flex items-center space-x-4">
+            <div
+              className="h-10 w-10 rounded-md border border-gray-500"
+              style={{ backgroundColor: initialData.navDarkPrimaryColor }}
             />
-            <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit" onClick={()=>onSubmit(form.getValues())}>
-                {currentLanguage.customize_PrimaryColorForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      )}
-    </div>
+            <p className="text-md font-medium">
+              {initialData.navDarkPrimaryColor}
+            </p>
+          </div>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="navDarkPrimaryColor"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      {
+                        currentLanguage.customize_navDarkPrimaryColorForm_ColorLabel
+                      }
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex items-center space-x-4">
+                        <input
+                          type="color"
+                          disabled={isSubmitting}
+                          {...field}
+                          value={field.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          className="h-12 w-12 cursor-pointer rounded-md border-2"
+                        />
+                        <Input
+                          type="text"
+                          disabled={isSubmitting}
+                          {...field}
+                          value={field.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          className="flex-grow"
+                          placeholder="#000000"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      {
+                        currentLanguage.categories_ColorForm_ColorFormDescription
+                      }
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-end">
+                <Button
+                  disabled={!isValid || isSubmitting}
+                  type="submit"
+                  onClick={() => onSubmit(form.getValues())}
+                >
+                  {currentLanguage.commonButton_save}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </CardContent>
+    </Card>
   );
 };

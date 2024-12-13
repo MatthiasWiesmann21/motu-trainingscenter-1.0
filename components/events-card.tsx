@@ -189,10 +189,12 @@ export const EventCard = ({
           </Link>
           <div className="mt-3 flex items-center justify-between">
             <div className="mr-2">
-              <CategoryItemCard
-                label={category}
-                colorCode={categoryColorCode}
-              />
+              {category && (
+                <CategoryItemCard
+                  label={category}
+                  colorCode={categoryColorCode}
+                />
+              )}
             </div>
             <div className="flex items-center justify-between">
               <Star
@@ -220,7 +222,12 @@ export const EventCard = ({
               >
                 <Calendar width={16} height={16} />
               </Button>
-              <EventInfoModal description={description} title={title} startDateTime={startDateTime} endDateTime={endDateTime}>
+              <EventInfoModal
+                description={description}
+                title={title}
+                startDateTime={startDateTime}
+                endDateTime={endDateTime}
+              >
                 <Button
                   variant="ghost"
                   className="h-8 w-8 p-0"

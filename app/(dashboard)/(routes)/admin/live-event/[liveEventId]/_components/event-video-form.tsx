@@ -1,222 +1,197 @@
-"use client";
-import * as z from "zod";
-import axios from "axios";
-import { Pencil, PlusCircle, Upload, Video } from "lucide-react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { LiveEvent } from "@prisma/client";
-import Select from "react-select";
-import { Button } from "@/components/ui/button";
-import UniversalPlayer from "@/pages/components/universalPlayer";
-import { useTheme } from "next-themes";
-import { UploadButton } from "@/utils/uploadthing";
-import AppSVGIcon from "@/components/appsvgicon";
-import { useLanguage } from "@/lib/check-language";
+"use client"
+
+import * as z from "zod"
+import axios from "axios"
+import { Pencil, PlusCircle, Upload, Video, X } from 'lucide-react'
+import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import { LiveEvent } from "@prisma/client"
+import { useTheme } from "next-themes"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import UniversalPlayer from "@/pages/components/universalPlayer"
+import { UploadButton } from "@/utils/uploadthing"
+import AppSVGIcon from "@/components/appsvgicon"
+import { useLanguage } from "@/lib/check-language"
 
 interface VideoFormProps {
-  initialData: LiveEvent;
-  liveEventId: string;
+  initialData: LiveEvent
+  liveEventId: string
 }
 
 const formSchema = z.object({
   videoUrl: z.string().min(1),
-});
+})
 
 const options = [
   {
     value: "https://vimeo.com/",
-    label: (
-      <div className="flex items-center">
-        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"vimeo"} />
-        <p className="m-0">vimeo</p>
-      </div>
-    ),
+    label: "Vimeo",
+    icon: "vimeo",
   },
   {
     value: "https://www.youtube.com/",
-    label: (
-      <div className="flex items-center">
-        <AppSVGIcon customclass="mr-2 w-[32px]" icon={"youtube"} />
-        <p className="m-0">youtube</p>
-      </div>
-    ),
+    label: "YouTube",
+    icon: "youtube",
   },
   {
     value: "https://utfs.io/",
-    label: (
-      <div className="flex items-center">
-        <AppSVGIcon customclass="mr-2 w-[50px]" icon={"uploadthing-logo"} />
-        <p className="m-0">Uploadthing</p>
-      </div>
-    ),
+    label: "Upload",
+    icon: "uploadthing-logo",
   },
-];
+]
 
 export const VideoForm = ({ initialData, liveEventId }: VideoFormProps) => {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === "dark";
-  const router = useRouter();
-  const [isEditing, setIsEditing] = useState(false);
-  const [videoType, setVideoType] = useState<any>({});
-  const [videoUrl, setVideoUrl] = useState("");
-  const currentLanguage = useLanguage();
+  const { theme } = useTheme()
+  const isDarkTheme = theme === "dark"
+  const router = useRouter()
+  const [isEditing, setIsEditing] = useState(false)
+  const [videoType, setVideoType] = useState<any>({})
+  const [videoUrl, setVideoUrl] = useState("")
+  const currentLanguage = useLanguage()
 
   useEffect(() => {
     if (initialData?.videoUrl) {
       const video = initialData?.videoUrl
         ?.split("/")
         ?.filter((each, index) => index > 2)
-        ?.join("/");
+        ?.join("/")
       const videoProvider = `${initialData?.videoUrl
         ?.split("/")
         ?.filter((each, index) => index < 3)
-        ?.join("/")}/`;
-      const provider = options?.find((each) => each?.value === videoProvider);
-      setVideoUrl(video);
-      setVideoType(provider);
+        ?.join("/")}/`
+      const provider = options?.find((each) => each?.value === videoProvider)
+      setVideoUrl(video)
+      setVideoType(provider)
     }
-  }, []);
+  }, [initialData])
 
   const VimeoPreview = ({ videoId }: { videoId: string }) => (
     <div className="h-[300px]">
-      {/* <EventModal
-        liveEventId={liveEventId}
-        endDateTime={initialData?.endDateTime}
-      /> */}
       <UniversalPlayer url={videoId} />
     </div>
-  );
+  )
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = () => setIsEditing((current) => !current)
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/liveEvent/${liveEventId}`, values);
-      toast.success("Event updated");
-      toggleEdit();
-      router.refresh();
+      await axios.patch(`/api/liveEvent/${liveEventId}`, values)
+      toast.success("Event updated")
+      toggleEdit()
+      router.refresh()
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong")
     }
-  };
+  }
+
+  // Check if video preview is valid
+  const isPreviewAvailable = videoType && videoUrl && (videoType.value !== "https://utfs.io/" || videoUrl.trim() !== "")
 
   return (
-    <div className="mt-6 rounded-md border bg-slate-200 p-4 dark:bg-slate-700">
-      <div className="flex mb-2 items-center justify-between font-medium">
-        {currentLanguage.liveEvent_videoForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.liveEvent_videoForm_cancel}</>
-          ) : initialData.videoUrl ? (
-            <>
-              <Pencil className="mr-2 h-4 w-4" />
-              {currentLanguage.liveEvent_videoForm_edit}
-            </>
-          ) : (
-            <>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {currentLanguage.liveEvent_videoForm_add}
-            </>
-          )}
-        </Button>
-      </div>
-
-      {!isEditing &&
-        (videoType && videoUrl ? (
+    <Card className="w-full my-4">
+      <CardHeader>
+        <CardTitle className="flex items-center text-xl justify-between">
+          <span className="flex items-center">
+            <Video className="mr-2 h-5 w-5" />
+            {currentLanguage.liveEvent_videoForm_title}
+          </span>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
+          >
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (videoType && videoUrl ? (
           <VimeoPreview videoId={`${videoUrl}`} />
         ) : (
-          <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
-            <Video className="h-10 w-10 text-slate-500" />
+          <div className="flex h-60 items-center justify-center rounded-md bg-muted">
+            <Video className="h-10 w-10 text-muted-foreground" />
           </div>
         ))}
-      {isEditing && (
-        <>
-          <div className="flex items-center justify-around">
-            <UploadButton
-              endpoint="videoUploader"
-              onClientUploadComplete={(res: any) => {
-                setVideoType(options[3]);
-                setVideoUrl(
-                  res[0]?.url
-                );
-              }}
-              onUploadError={(error: Error) => {
-                alert(`ERROR! ${error.message}`);
-              }}
-            />
-          </div>
-          <div>
+        {isEditing && (
+          <div className="space-y-4">
             <Select
-              options={options}
-              onChange={(e: any) => setVideoType(e)}
-              value={videoType}
-              styles={{
-                control: (provided) => ({
-                  ...provided,
-                  backgroundColor: isDarkTheme
-                    ? "focusBackground"
-                    : "defaultBackground",
-                  color: "red",
-                }),
-                singleValue: (provided) => ({
-                  ...provided,
-                  color: isDarkTheme ? "#fff" : "black",
-                }),
-                menu: (provided) => ({
-                  ...provided,
-                  backgroundColor: isDarkTheme
-                    ? "rgb(51 65 85 / var(--tw-bg-opacity))"
-                    : "rgb(226 232 240 / var(--tw-bg-opacity))",
-                }),
-                // @ts-ignore
-                option: (provided, state) => ({
-                  ...provided,
-                  backgroundColor: state?.isFocused
-                    ? isDarkTheme
-                      ? "rgb(186 230 253 / 0.1)"
-                      : "lightblue"
-                    : null,
-                  color: isDarkTheme ? "white" : "black",
-                  "&:hover": {
-                    backgroundColor: isDarkTheme
-                      ? "rgb(186 230 253 / 0.1)"
-                      : "lightblue",
-                  },
-                }),
+              value={videoType?.value}
+              onValueChange={(value) => {
+                const selectedOption = options.find(opt => opt.value === value)
+                setVideoType(selectedOption)
+                if (selectedOption?.value !== "https://utfs.io/") {
+                  setVideoUrl("") // Clear videoUrl for non-upload options
+                }
               }}
-            />
-            <div className="my-1 flex items-center">
-              <input
-                className="flex w-full items-center rounded-md p-1"
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select video source" />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    <div className="flex items-center">
+                      <AppSVGIcon customclass="mr-2 w-[32px]" icon={option.icon} />
+                      <span>{option.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {videoType?.value === "https://utfs.io/" && (
+              <div className="flex justify-center">
+                <UploadButton
+                  endpoint="videoUploader"
+                  onClientUploadComplete={(res: any) => {
+                    setVideoUrl(res[0]?.url)
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast.error(`Upload error: ${error.message}`)
+                  }}
+                />
+              </div>
+            )}
+            {videoType?.value !== "https://utfs.io/" && (
+              <Input
                 type="text"
                 placeholder="Share Link"
                 value={videoUrl}
-                onChange={(e: any) => setVideoUrl(e?.target?.value)}
+                onChange={(e) => setVideoUrl(e.target.value)}
               />
-            </div>
-            <div className="m-[1%] flex items-center justify-end p-[1%]">
-              <Button
-                disabled={videoType === "" || videoUrl === ""}
-                onClick={() =>
-                  onSubmit({ videoUrl: videoType?.value + videoUrl })
-                }
-              >
-                {currentLanguage.liveEvent_videoForm_save}
-              </Button>
-            </div>
+            )}
             {videoType && videoUrl && (
               <VimeoPreview videoId={`${videoUrl}`} />
             )}
           </div>
-        </>
+        )}
+      </CardContent>
+      {isEditing && (
+        <CardFooter className="flex justify-end">
+          <Button
+            disabled={!isPreviewAvailable}
+            onClick={() => onSubmit({ videoUrl: videoType?.value + videoUrl })}
+          >
+            {currentLanguage.liveEvent_videoForm_save}
+          </Button>
+        </CardFooter>
       )}
-
       {initialData?.videoUrl && !isEditing && (
-        <div className="mt-2 text-xs text-muted-foreground">
-          {currentLanguage.liveEvent_videoForm_preview}
-        </div>
+        <CardFooter>
+          <p className="text-sm text-muted-foreground">
+            {currentLanguage.liveEvent_videoForm_preview}
+          </p>
+        </CardFooter>
       )}
-    </div>
-  );
-};
+    </Card>
+  )
+}

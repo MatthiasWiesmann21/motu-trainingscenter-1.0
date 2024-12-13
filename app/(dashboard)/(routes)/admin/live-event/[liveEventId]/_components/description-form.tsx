@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X, FileText } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -20,14 +20,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Editor } from "@/components/editor";
-import { Preview } from "@/components/preview";
 import { EventPreview } from "@/components/event-preview";
 import { useLanguage } from "@/lib/check-language";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface EventDescriptionFormProps {
   initialData: LiveEvent;
   liveEventId: string;
-};
+}
 
 const formSchema = z.object({
   description: z.string().min(1),
@@ -46,7 +52,7 @@ export const EventDescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || ""
+      description: initialData?.description || "",
     },
   });
 
@@ -61,69 +67,76 @@ export const EventDescriptionForm = ({
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
-    <div className="mt-6 border bg-slate-200 dark:bg-slate-700 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        {currentLanguage.liveEvent_DescriptionForm_title}
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>{currentLanguage.liveEvent_DescriptionForm_cancel}</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              {currentLanguage.liveEvent_DescriptionForm_edit}
-            </>
-          )}
-        </Button>
-      </div>
-      {!isEditing && (
-        <div className={cn(
-          "text-sm mt-2",
-          !initialData.description && "text-slate-500 italic"
-        )}>
-          {!initialData.description && "No description"}
-          {initialData.description && (
-            <EventPreview
-              value={initialData.description}
-              isAdmin={true}
-            />
-          )}
-        </div>
-      )}
-      {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <span className="flex items-center">
+            <FileText className="mr-2 h-5 w-5" />
+            {currentLanguage.liveEvent_DescriptionForm_title}
+          </span>
+          <Button
+            onClick={toggleEdit}
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0"
           >
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Editor
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                onClick={()=>onSubmit(form.getValues())}
-              >
-                {currentLanguage.liveEvent_DescriptionForm_save}
-              </Button>
-            </div>
-          </form>
-        </Form>
+            {isEditing ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Pencil className="h-4 w-4" />
+            )}
+          </Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!isEditing && (
+          <div
+            className={cn(
+              "text-sm",
+              !initialData.description && "italic text-muted-foreground"
+            )}
+          >
+            {!initialData.description && "No description"}
+            {initialData.description && (
+              <EventPreview value={initialData.description} isAdmin={true} />
+            )}
+          </div>
+        )}
+        {isEditing && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Editor {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        )}
+      </CardContent>
+      {isEditing && (
+        <CardFooter className="flex justify-end space-x-2">
+          <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+            {currentLanguage.liveEvent_DescriptionForm_cancel}
+          </Button>
+          <Button
+            disabled={!isValid || isSubmitting}
+            onClick={() => onSubmit(form.getValues())}
+          >
+            {currentLanguage.liveEvent_DescriptionForm_save}
+          </Button>
+        </CardFooter>
       )}
-    </div>
-  )
-}
+    </Card>
+  );
+};

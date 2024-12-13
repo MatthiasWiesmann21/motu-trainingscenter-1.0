@@ -85,7 +85,7 @@ const CategoryIdPage = async ({
             <TextColorForm initialData={category} categoryId={category.id} />
             <DarkTextColorForm initialData={category} categoryId={category.id} />
           </div>
-          <div className="lg:mt-12">
+          <div className="lg:mt-16">
             <CategoryTypeForm initialData={category} categoryId={category.id} />
           </div>
         </div>
