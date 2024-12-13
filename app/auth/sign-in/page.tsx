@@ -29,17 +29,17 @@ export default function SignIn() {
 
   const getButtonColor = () => {
     if (theme === "dark") {
-      return container?.DarkPrimaryButtonColor;
+      return container?.DarkPrimaryButtonColor!;
     } else {
-      return container?.PrimaryButtonColor;
+      return container?.PrimaryButtonColor!;
     }
   };
 
   const getSignInImage = () => {
     if (theme === "dark") {
-      return container?.darkSignInImageUrl;
+      return container?.darkSignInImageUrl!;
     } else {
-      return container?.signInImageUrl;
+      return container?.signInImageUrl!;
     }
   };
 
