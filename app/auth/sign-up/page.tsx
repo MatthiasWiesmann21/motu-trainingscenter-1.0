@@ -15,6 +15,7 @@ import { useTheme } from "next-themes";
 
 export default function SignUp() {
   const { container, loading } = useContainerData();
+  const containerId = container?.id!;
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
   const { theme } = useTheme();
@@ -29,17 +30,17 @@ export default function SignUp() {
 
   const getButtonColor = () => {
     if (theme === "dark") {
-      return container?.DarkPrimaryButtonColor;
+      return container?.DarkPrimaryButtonColor!;
     } else {
-      return container?.PrimaryButtonColor;
+      return container?.PrimaryButtonColor!;
     }
   };
 
   const getSignUpImage = () => {
     if (theme === "dark") {
-      return container?.darkSignUpImageUrl;
+      return container?.darkSignUpImageUrl!;
     } else {
-      return container?.signUpImageUrl;
+      return container?.signUpImageUrl!;
     }
   };
 
@@ -97,7 +98,7 @@ export default function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, containerId }),
       });
       const jsonObj = await response.json();
 

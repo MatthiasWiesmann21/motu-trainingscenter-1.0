@@ -1,8 +1,9 @@
 // hooks/useContainerData.ts
+import { Container } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 export const useContainerData = () => {
-  const [container, setContainer] = useState<any>(); // Replace `any` with the actual type if known
+  const [container, setContainer] = useState<Container>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
