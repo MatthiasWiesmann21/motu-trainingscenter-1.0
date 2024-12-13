@@ -90,7 +90,7 @@ export const PostFavoriteCard = ({
 
   return (
     <TooltipProvider>
-      <div className="group my-5 h-full overflow-hidden rounded-lg border-2 bg-[#f6f8fa] hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
+      <div className="group my-5 h-full overflow-hidden rounded-lg border-2 bg-white hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
         <div className="group h-full overflow-hidden hover:shadow-sm">
           <div className="flex flex-col">
             <div className="mx-4 mt-5 flex items-start justify-between">

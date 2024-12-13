@@ -172,7 +172,7 @@ export const EventCard = ({
               />
             </div>
             {/* Date and Time Section */}
-            <div className="flex hidden max-h-44 w-1/3 flex-col items-center justify-center bg-slate-300 p-2 py-6 text-center dark:bg-gray-800 md:block md:rounded-l-none md:rounded-r-md">
+            <div className="flex hidden max-h-44 w-1/3 flex-col items-center justify-center bg-slate-200 p-2 py-6 text-center dark:bg-gray-800 md:block md:rounded-l-none md:rounded-r-md">
               <p className="text-xl font-bold">
                 {moment(startDateTime).format("DD")}
               </p>

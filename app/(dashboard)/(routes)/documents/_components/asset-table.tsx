@@ -293,7 +293,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                               onClick={() =>
                                 (location.href = `${currentDocPath}${item.id}`)
                               }
-                              className="m-1 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
+                              className="m-1 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-200 p-3 dark:bg-slate-600"
                             >
                               <FolderOpen />
                             </div>
@@ -331,7 +331,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         <td className="relative px-3.5 sm:w-18 py-1">
                           <div
                             onClick={() => handleDownload(file.key, file.name)}
-                            className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
+                            className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-200 p-3 dark:bg-slate-600"
                           >
                             <File />
                           </div>

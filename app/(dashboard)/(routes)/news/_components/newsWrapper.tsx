@@ -173,7 +173,7 @@ const NewsWrapper = ({
         <div className="top-10 w-full">
           {profileRole === "ADMIN" || profileRole === "CLIENT ADMIN" ? (
             <Button
-              className="w-42 mb-5 inline-flex hidden items-center rounded-lg border-2 text-sm text-slate-400 hover:border-transparent lg:inline-flex"
+              className="w-42 mb-5 inline-flex hidden items-center rounded-lg border-2 text-sm text-slate-500 hover:border-transparent lg:inline-flex"
               variant="outline"
               onClick={() => onOpen("createPost")}
             >
