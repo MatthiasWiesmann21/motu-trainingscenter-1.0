@@ -92,7 +92,7 @@ export const PostCard = ({
 
   return (
     <TooltipProvider>
-      <div className="group my-4 h-full overflow-hidden rounded-lg border-2 bg-[#f6f8fa] py-1 hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
+      <div className="group my-4 h-full overflow-hidden rounded-lg border-2 bg-white py-1 hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
         <div className="group h-full overflow-hidden hover:shadow-sm">
           <div className="m-4 flex flex-col">
             <div className="flex items-start justify-between">

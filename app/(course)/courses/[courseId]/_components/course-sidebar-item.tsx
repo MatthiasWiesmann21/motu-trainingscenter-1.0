@@ -86,7 +86,7 @@ export const CourseSidebarItem = ({
               type="button"
               className={cn(
                 "flex w-full items-center gap-x-2 pl-2 text-sm font-[500] transition-all hover:bg-slate-300/20",
-                isActive && " bg-slate-200/20 hover:bg-slate-200/20 ",
+                isActive && "bg-slate-200/20 hover:bg-slate-200/20 ",
                 isCompleted && "text-emerald-700 hover:text-emerald-700",
                 isCompleted && isActive && "bg-emerald-200/20"
               )}

@@ -131,7 +131,7 @@ export const EventCard = ({
           borderColor: isHovered ? getBorderColor() : "",
         }}
       >
-        <div className="group h-full overflow-hidden rounded-lg bg-slate-100 p-2 transition hover:shadow-lg dark:border-[#1f182b] dark:bg-[#0c0319]">
+        <div className="group h-full overflow-hidden rounded-lg bg-white p-2 transition hover:shadow-lg dark:border-[#1f182b] dark:bg-[#0c0319]">
           {/* Image and Date/Time Section */}
           <Link href={`/live-event/${id}`} className="relateive flex">
             <div className="relative aspect-video w-full overflow-hidden rounded-md md:w-2/3 md:rounded-l-md md:rounded-r-none">

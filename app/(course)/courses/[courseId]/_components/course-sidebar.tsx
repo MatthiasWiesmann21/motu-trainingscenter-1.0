@@ -72,8 +72,8 @@ export const CourseSidebar = async ({
 
   return (
     <TooltipProvider>
-      <div className="m-2 mt-4 flex hidden h-full flex-col no-scrollbar overflow-y-auto rounded-xl border-2 bg-slate-100 shadow-sm dark:bg-[#0c0319] md:block">
-        <div className="flex flex-col border-b p-4">
+      <div className="m-2 mt-4 flex hidden h-full flex-col no-scrollbar overflow-y-auto rounded-xl border-2 bg-transparent shadow-sm dark:bg-[#0c0319] md:block">
+        <div className="flex flex-col border-b p-4 bg-slate-100 dark:bg-[#0c0319]">
           <div className="flex justify-between">
             <Tooltip>
               <TooltipTrigger>

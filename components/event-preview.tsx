@@ -29,7 +29,7 @@ export const EventPreview = ({
   const currentLanguage = useLanguage();
 
   return (
-    <div className="mt-2 rounded-lg border-2 bg-slate-100 px-2 py-2 dark:bg-[#0c0319]">
+    <div className="mt-2 rounded-lg border-2 bg-white px-2 py-2 dark:bg-[#0c0319]">
       <span className="text-md ml-1 font-bold">
         {currentLanguage.chapter_aboutevent_title}
       </span>

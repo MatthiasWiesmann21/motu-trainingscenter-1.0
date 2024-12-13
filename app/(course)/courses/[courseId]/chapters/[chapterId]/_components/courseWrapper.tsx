@@ -206,10 +206,11 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             <div className="p-4 pt-0">
               <Preview value={chapter?.description!} duration={chapter?.duration ?? ""} level={chapter?.level ?? ""} ThemeColor={ThemeColor} DarkThemeColor={DarkThemeColor}/>
             </div>
-            <div className="m-4 mt-0 rounded-lg border-2 bg-slate-100 pt-3 dark:bg-[#0c0319]">
+            <div className="m-4 mt-0 rounded-lg border-2 bg-white pt-3 dark:bg-[#0c0319]">
               <span className="ml-4 text-sm font-bold">
                 {currentLanguage.chapter_CourseDocuments_Title}
               </span>
+              <Separator />
               <div className="text-gray-500">
                 {!!attachments.length && (
                   <>

@@ -65,10 +65,6 @@ interface CourseCardProps {
   getAllCourses?: any;
 }
 
-export const FreeText = () => {
-  return <p className="text-md font-medium text-slate-700 md:text-sm">Free</p>;
-};
-
 export const CourseCard = ({
   id,
   title,
@@ -126,7 +122,7 @@ export const CourseCard = ({
           borderColor: isHovered ? getThemeColor() : "",
         }}
       >
-        <div className="group h-full w-full overflow-hidden rounded-lg bg-slate-100/80 p-2 transition hover:shadow-lg dark:bg-[#0c0319]">
+        <div className="group h-full w-full overflow-hidden rounded-lg bg-white p-2 transition hover:shadow-lg dark:bg-[#0c0319]">
           <Link href={`/courses/${id}`}>
             <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-slate-300/50 dark:border-slate-700/60">
               <div className="absolute left-2 top-2 z-10 flex space-x-2">

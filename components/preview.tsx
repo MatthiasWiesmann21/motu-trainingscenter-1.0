@@ -34,7 +34,7 @@ export const Preview = ({ value, duration, level, ThemeColor, DarkThemeColor }: 
   };
 
   return (
-    <div className="mt-4 rounded-lg border-2 bg-slate-100 pt-2 dark:bg-[#0c0319]">
+    <div className="mt-4 rounded-lg border-2 bg-white pt-2 dark:bg-[#0c0319]">
       <span className="ml-4 text-sm font-bold">
         {currentLanguage.chapter_aboutcourse_title}
       </span>
