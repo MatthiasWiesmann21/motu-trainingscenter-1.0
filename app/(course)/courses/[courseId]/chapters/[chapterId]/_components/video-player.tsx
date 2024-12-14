@@ -38,6 +38,11 @@ export const VideoPlayer = ({
     return null;
   }
 
+  const videoStyles = {
+    borderRadius: "12px", // Rounded corners
+    overflow: "hidden", // Ensures the content respects the rounded corners
+  };
+
   const [chapterProgress, setChapterProgress] = useState<Progress | null>(null);
 
   const getChapterProgress = async () => {
@@ -63,6 +68,7 @@ export const VideoPlayer = ({
       {!isLocked && (
         <UniversalPlayer
           url={videoUrl}
+          style={videoStyles}
           onProgress={async (state: any) => {
             const played = state.played;
             const playedPercent = played * 100;

@@ -74,7 +74,7 @@ export const VideoPlayer = ({
   }
 
   return (
-    <div className="relative aspect-video">
+    <div className="relative aspect-video text-white">
       {(!(
         timeRemaining?.days <= 0 &&
         timeRemaining?.hours <= 0 &&
