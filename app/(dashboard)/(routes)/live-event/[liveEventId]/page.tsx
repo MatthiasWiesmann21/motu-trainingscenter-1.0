@@ -72,8 +72,6 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
       <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
         <div className="p-4">
           <VideoPlayer
-            // @ts-ignore remove this
-            liveEventId={params?.liveEventId}
             videoUrl={liveEvent?.videoUrl} // Hier fügen wir die Vimeo-URL aus den chapter Daten hinzu.
             startDateTime={liveEvent?.startDateTime}
             endDateTime={liveEvent?.endDateTime}

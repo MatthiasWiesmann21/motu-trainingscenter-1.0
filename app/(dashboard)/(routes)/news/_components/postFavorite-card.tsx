@@ -176,7 +176,7 @@ export const PostFavoriteCard = ({
                     <ClubyteLoader
                       className="h-64 w-64"
                       theme="light"
-                      color="f6f8fa"
+                      color="ffffff"
                     />
                   )
                 ) : null}

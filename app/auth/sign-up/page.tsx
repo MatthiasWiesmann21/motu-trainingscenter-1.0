@@ -1,6 +1,6 @@
 "use client";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -8,14 +8,12 @@ import Image from "next/image";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import AppSVG from "@/components/appsvg";
 import { Input } from "@/components/ui/input";
 import { useContainerData } from "@/hooks/useContainerData";
 import { useTheme } from "next-themes";
 
 export default function SignUp() {
   const { container, loading } = useContainerData();
-  const containerId = container?.id!;
   const router = useRouter();
   const [beingSubmitted, setBeingSubmitted] = useState(false);
   const { theme } = useTheme();
@@ -29,24 +27,26 @@ export default function SignUp() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const getButtonColor = () => {
-    if (theme === "dark") {
-      return container?.DarkPrimaryButtonColor!;
-    } else {
-      return container?.PrimaryButtonColor!;
-    }
+    return theme === "dark"
+      ? container?.DarkPrimaryButtonColor!
+      : container?.PrimaryButtonColor!;
   };
 
   const getSignUpImage = () => {
-    if (theme === "dark") {
-      return container?.darkSignUpImageUrl!;
-    } else {
-      return container?.signUpImageUrl!;
-    }
+    return theme === "dark"
+      ? container?.darkSignUpImageUrl!
+      : container?.signUpImageUrl!;
   };
 
   const handleGoogleSignIn = (event: any) => {
-    event.preventDefault();
-    signIn("google", { callbackUrl: "/dashboard" });
+    if (!container?.active) {
+      toast.error(
+        "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+      );
+    } else {
+      event.preventDefault();
+      signIn("google", { callbackUrl: "/dashboard" });
+    }
   };
 
   const validatePasswordStrength = (password: string) => {
@@ -92,47 +92,67 @@ export default function SignUp() {
 
       setBeingSubmitted(true);
 
-      // Handle your registration logic here, e.g., sending data to your backend
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, containerId }),
+        body: JSON.stringify({ name, email, password, container }),
       });
       const jsonObj = await response.json();
 
       if (jsonObj.error) {
         toast.error(jsonObj.error);
+      } else if (!container?.active) {
+        toast.error(
+          "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+        );
       } else {
-        const response = await signIn("credentials", {
+        await signIn("credentials", {
           email,
           password,
           redirect: false,
         });
         router.replace("/dashboard");
       }
-    } catch (error) {}
-    setBeingSubmitted(false);
+    } catch (error) {
+      console.error("Error during submission:", error);
+    } finally {
+      setBeingSubmitted(false);
+    }
   };
 
-  const renderRight = () => {
-    return <Image alt="SignUp-Image" priority src={getSignUpImage() || ""} width={1280} height={720} className="w-full h-full" />; 
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      handleSubmit(event);
+    }
   };
 
-  const renderGoogleIcon = () => {
-    return (
-      <div className="flex items-center justify-center rounded-md border border-gray-300 px-12 py-3 transition duration-200 ease-in-out hover:bg-gray-100 dark:hover:text-black">
-        <Image src="/images/google.png" alt="Google" width={24} height={24} />
-        &nbsp; Sign in with Google
-      </div>
-    );
-  };
+  const renderRight = () => (
+    <Image
+      alt="SignUp-Image"
+      priority
+      src={getSignUpImage() || ""}
+      width={1280}
+      height={720}
+      className="h-full w-full"
+    />
+  );
+
+  const renderGoogleIcon = () => (
+    <div className="flex items-center justify-center rounded-md border border-gray-300 px-12 py-3 transition duration-200 ease-in-out hover:bg-gray-100 dark:hover:text-black">
+      <Image src="/images/google.png" alt="Google" width={24} height={24} />
+      &nbsp; Sign in with Google
+    </div>
+  );
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
       <div className="w-full px-4 md:w-2/3 lg:w-2/3 xl:w-2/3">
-        <form className="login-form mx-auto flex w-[80%] max-w-xl flex-col p-4 sm:w-[70%] md:w-[70%]">
+        <form
+          className="login-form mx-auto flex w-[80%] max-w-xl flex-col p-4 sm:w-[70%] md:w-[70%]"
+          onKeyDown={handleKeyDown}
+        >
           <div className="form-header mb-6">
             <h2 className="text-2xl font-semibold text-black dark:text-white md:text-3xl">
               Sign Up
@@ -150,10 +170,10 @@ export default function SignUp() {
               type="text"
               name="name"
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-lg text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
               placeholder="Enter your name"
               autoComplete="off"
               autoFocus
+              className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-md text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
             />
           </div>
           <div className="mb-2">
@@ -168,9 +188,9 @@ export default function SignUp() {
               type="email"
               name="email"
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-lg text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
               placeholder="Enter your email"
               autoComplete="off"
+              className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-md text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
             />
           </div>
           <div className="mb-2">
@@ -186,8 +206,8 @@ export default function SignUp() {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-lg text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
                 placeholder="Enter your password"
+                className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-md text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
               />
               <span
                 className="absolute right-3 top-3 cursor-pointer"
@@ -212,8 +232,8 @@ export default function SignUp() {
                 onChange={(e) =>
                   setForm({ ...form, confirmPassword: e.target.value })
                 }
-                className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-lg text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
                 placeholder="Confirm your password"
+                className="h-12 w-full rounded-lg border border-gray-300 px-2 py-2 text-md text-gray-700 focus:border-gray-300 focus:outline-none dark:text-gray-200"
               />
               <span
                 className="absolute right-3 top-3 cursor-pointer"

@@ -67,7 +67,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                 <div className="relative p-4 pb-6">
                   <Input
                     disabled={isLoading}
-                    className="border-0 border-none bg-[#ebedf0] py-6 pr-[90px] text-zinc-600 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-[#192130] dark:text-zinc-200"
+                    className="border-0 border-none bg-slate-100 py-6 pr-[90px] text-zinc-600 focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-[#192130] dark:text-zinc-200"
                     placeholder={`${
                       currentLanguage.chat_ChatInput_placeholder
                     } ${type === "conversation" ? name : "#" + name}`}

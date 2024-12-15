@@ -77,7 +77,7 @@ export const ChatMessages = ({
         {theme === "dark" ? (
           <ClubyteLoader className="h-64 w-64" theme="dark" color="101828" />
         ) : (
-          <ClubyteLoader className="h-64 w-64" theme="light" color="f6f8fa" />
+          <ClubyteLoader className="h-64 w-64" theme="light" color="ffffff" />
         )}
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
           {currentLanguage.chat_ChatMessages_loading}

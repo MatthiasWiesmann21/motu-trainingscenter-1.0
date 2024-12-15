@@ -49,6 +49,11 @@ export const VideoPlayer = ({
     seconds: 59,
   });
 
+  const videoStyles = {
+    borderRadius: "12px", // Rounded corners
+    overflow: "hidden", // Ensures the content respects the rounded corners
+  };
+
   useEffect(() => {
     if (!startDateTime) return;
     const timerInterval = setInterval(() => {
@@ -84,7 +89,7 @@ export const VideoPlayer = ({
         new Date(endDateTime) < new Date()) && (
         <Timer timeRemaining={timeRemaining} endDateTime={endDateTime} />
       )}
-      <UniversalPlayer url={videoUrl} />
+      <UniversalPlayer url={videoUrl} style={videoStyles} />
     </div>
   );
 };

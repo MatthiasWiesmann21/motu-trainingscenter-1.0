@@ -45,12 +45,18 @@ export default function SignIn() {
 
   const handleGoogleSignIn = async (event: any) => {
     try {
-      setBeingSubmittedGoogle(true);
-      event.preventDefault();
-      const googleSignInResp = await signIn("google", {
-        callbackUrl: "/dashboard",
-      });
-      console.log("Google sign in response", googleSignInResp);
+      if (!container?.active) {
+        toast.error(
+          "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+        );
+      } else {
+        setBeingSubmittedGoogle(true);
+        event.preventDefault();
+        const googleSignInResp = await signIn("google", {
+          callbackUrl: "/dashboard",
+        });
+        console.log("Google sign in response", googleSignInResp);
+      }
     } catch (error) {
       console.error("Google sign-in error:", error);
     } finally {
@@ -58,7 +64,7 @@ export default function SignIn() {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent default form submission behavior
     setBeingSubmitted(true);
     const email = form.email;
@@ -72,12 +78,22 @@ export default function SignIn() {
     console.log("The response from submission login", response);
     if (response?.error) {
       toast.error(response?.error || "Invalid Credentials");
+    } else if (!container?.active) {
+      toast.error(
+        "This Clubyte Container is deactivated, please ask the owner of this container for more information"
+      );
     } else {
       router.replace("/dashboard");
       toast.success("Login Successful");
     }
 
     setBeingSubmitted(false);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === "Enter") {
+      handleSubmit(event);
+    }
   };
 
   const renderRight = () => {
@@ -106,7 +122,10 @@ export default function SignIn() {
     <>
       <div className="flex h-screen w-full flex-col items-center justify-center md:flex-row">
         <div className="w-full md:w-2/3 lg:w-2/3 xl:w-2/3">
-          <form className="mx-auto flex w-[80%] flex-col gap-2 p-4 sm:w-[70%] md:w-[65%] md:p-0">
+          <form
+            className="mx-auto flex w-[80%] flex-col gap-2 p-4 sm:w-[70%] md:w-[65%] md:p-0"
+            onKeyDown={handleKeyDown}
+          >
             <div className="form-header">
               <h2 className="text-4xl font-semibold dark:text-white">Login</h2>
             </div>

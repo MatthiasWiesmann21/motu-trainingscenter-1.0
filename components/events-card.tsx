@@ -155,7 +155,7 @@ export const EventCard = ({
                       <ClubyteLoader
                         className="h-64 w-64"
                         theme="light"
-                        color="f7f9fb"
+                        color="ffffff"
                       />
                     )}
                   </span>
