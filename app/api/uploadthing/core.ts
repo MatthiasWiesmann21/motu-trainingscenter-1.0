@@ -16,7 +16,7 @@ const handleAuth = async () => {
 };
 
 export const ourFileRouter = {
-  imageUploader: f({ image: { maxFileSize: "4MB" } })
+  imageUploader: f({ image: { maxFileSize: "8MB" } })
     .middleware(() => handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Upload complete for userId:", metadata.userId);
@@ -33,23 +33,23 @@ export const ourFileRouter = {
       return { uploadedBy: metadata.userId };
     }),
 
-  courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  courseImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
   
-  PostImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  PostImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 
-  ProfileImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  ProfileImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
    .middleware(() => handleAuth())
    .onUploadComplete(() => {}),
 
-  ContainerImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  ContainerImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 
-  ContainerImageDark: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  ContainerImageDark: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 
@@ -57,7 +57,7 @@ export const ourFileRouter = {
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 
-  eventImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  eventImage: f({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
 
