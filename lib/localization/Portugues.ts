@@ -770,4 +770,10 @@ export const Portugues: Record<string, string> = {
   user_DeleteProfileForm_ConfirmModalDescription: "Esta ação não pode ser desfeita. Sua conta será permanentemente excluída e seus dados serão removidos dos nossos servidores.",
   user_DeleteProfileForm_ConfirmModalDeleteProfile: "Excluir perfil",
   chapters_levelForm_noAuthor: "Sem autor",
+  dashboard_notificationBanner_verifyEmail_1: "Por favor, verifique seu e-mail",
+  dashboard_notificationBanner_verifyEmail_2: "Um e-mail foi enviado para ",
+  dashboard_notificationBanner_verifyEmail_3: "Por favor, verifique sua caixa de entrada e pasta de spam.",
+  dashboard_notificationBanner_subscriptionInfo_1: "dias restantes no período de assinatura, por favor visite",
+  dashboard_notificationBanner_subscriptionInfo_2: "página de faturamento",
+  dashboard_notificationBanner_subscriptionInfo_3: "para renovar sua assinatura.",
 };

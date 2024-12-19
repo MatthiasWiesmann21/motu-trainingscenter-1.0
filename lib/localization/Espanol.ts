@@ -776,4 +776,10 @@ export const Espanol: Record<string, string> = {
   user_DeleteProfileForm_ConfirmModalDescription: "Esta acción no se puede deshacer. Se eliminará permanentemente tu cuenta y se borrarán tus datos de nuestros servidores.",
   user_DeleteProfileForm_ConfirmModalDeleteProfile: "Eliminar perfil",
   chapters_levelForm_noAuthor: "Sin autor",
+  dashboard_notificationBanner_verifyEmail_1: "Por favor, verifique su correo electrónico",
+  dashboard_notificationBanner_verifyEmail_2: "Se ha enviado un correo electrónico a ",
+  dashboard_notificationBanner_verifyEmail_3: "Por favor, revise su bandeja de entrada y carpeta de spam.",
+  dashboard_notificationBanner_subscriptionInfo_1: "días restantes en su periodo de suscripción, por favor visite",
+  dashboard_notificationBanner_subscriptionInfo_2: "página de facturación",
+  dashboard_notificationBanner_subscriptionInfo_3: "para renovar su suscripción.",
 };

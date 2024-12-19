@@ -768,4 +768,10 @@ export const Italiano: Record<string, string> = {
   user_DeleteProfileForm_ConfirmModalDescription: "Questa azione non può essere annullata. Il tuo account verrà eliminato permanentemente e i tuoi dati verranno rimossi dai nostri server.",
   user_DeleteProfileForm_ConfirmModalDeleteProfile: "Elimina profilo",
   chapters_levelForm_noAuthor: "Nessun autore",
+  dashboard_notificationBanner_verifyEmail_1: "Verifica il tuo E-mail",
+  dashboard_notificationBanner_verifyEmail_2: "Un e-mail è stato inviato a ",
+  dashboard_notificationBanner_verifyEmail_3: "Per favore controlla la tua casella di posta e la cartella spam.",
+  dashboard_notificationBanner_subscriptionInfo_1: "giorni rimanenti in periodo di sottoscrizione, per favore visita",
+  dashboard_notificationBanner_subscriptionInfo_2: "pagina di fatturazione",
+  dashboard_notificationBanner_subscriptionInfo_3: "per rinnovare la sottoscrizione.",
 };

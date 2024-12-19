@@ -743,4 +743,10 @@ export const Mandarin: Record<string, string> = {
   user_DeleteProfileForm_ConfirmModalDescription: "此操作无法撤销。此操作将永久删除您的帐户，并从我们的服务器中删除您的数据。",
   user_DeleteProfileForm_ConfirmModalDeleteProfile: "删除个人资料",
   chapters_levelForm_noAuthor: "没有作者",
+  dashboard_notificationBanner_verifyEmail_1: "请验证您的电子邮件",
+  dashboard_notificationBanner_verifyEmail_2: "一封电子邮件已发送到 ",
+  dashboard_notificationBanner_verifyEmail_3: "请检查您的收件箱和垃圾邮件文件夹。",
+  dashboard_notificationBanner_subscriptionInfo_1: "您的订阅期限剩余 ",
+  dashboard_notificationBanner_subscriptionInfo_2: "天，请访问 ",
+  dashboard_notificationBanner_subscriptionInfo_3: "账单页面以续订您的订阅。",
 };

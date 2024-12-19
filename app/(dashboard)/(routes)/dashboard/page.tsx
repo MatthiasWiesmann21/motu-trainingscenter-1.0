@@ -1,11 +1,9 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
-
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
 import { InfoCard } from "./_components/info-card";
 import { getSearchCourses } from "@/actions/get-searchcourses";
 import { db } from "@/lib/db";
-import { languageServer } from "@/lib/check-language-server";
 import PolygonChar from "./_components/polygonChar";
 import CourseTable from "./_components/courseTable";
 import { getCourses } from "@/actions/get-courses";
@@ -13,6 +11,7 @@ import authOptions from "@/lib/auth";
 import { OnlineCard } from "./_components/onlineCard";
 import { currentProfile } from "@/lib/current-profile";
 import { Metadata } from "next";
+import { languageServer } from "@/lib/check-language-server";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -55,11 +54,20 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
 
   const purchasedCourses = courses.filter((course) => course.isPurchased);
 
-  const container: any = await db.container.findUnique({
+  let container: any = await db.container.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
     },
   });
+
+  // console.log("container.....", container);
+
+  // if (!container?.id) {
+  //   const response = await fetch("/api/auth/container", {
+  //     method: "GET",
+  //   });
+  //   container = await response.json();
+  // }
 
   const UserProgressCompletedChapters = await db.userProgress.count({
     where: {
@@ -100,13 +108,14 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
           <span className="sr-only"></span>
           <div>
             <span className="font-bold font-medium">
-              Please verify Your Email
+              {currentLanguage.dashboard_notificationBanner_verifyEmail_1}
             </span>
             <div className="font-medium">
-              An email is sent to &nbsp;
+              {currentLanguage.dashboard_notificationBanner_verifyEmail_2} &nbsp;
               <span className="font-bold capitalize underline">
                 {userEmail}
               </span>
+              {currentLanguage.dashboard_notificationBanner_verifyEmail_3}
             </div>
           </div>
         </div>
@@ -129,7 +138,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
           numberOfItems={UserProgressCompletedChapters}
           variant="default"
         />
-        <OnlineCard profileId={profileId} />
+        <OnlineCard profileId={profileId} user={session?.user} />
       </div>
       <PolygonChar colors={container} courses={coursess} />
       <CourseTable courses={purchasedCourses} colors={container} />

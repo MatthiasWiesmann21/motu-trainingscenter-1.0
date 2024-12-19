@@ -765,4 +765,10 @@ export const Russian: Record<string, string> = {
   user_DeleteProfileForm_ConfirmModalDescription: "Это действие невозможно отменить. Ваш аккаунт будет удален навсегда, и ваши данные будут удалены с наших серверов.",
   user_DeleteProfileForm_ConfirmModalDeleteProfile: "Удалить профиль",
   chapters_levelForm_noAuthor: "Нет автора",
+  dashboard_notificationBanner_verifyEmail_1: "Пожалуйста, подтвердите свой электронный адрес",
+  dashboard_notificationBanner_verifyEmail_2: "Отправлено письмо на ",
+  dashboard_notificationBanner_verifyEmail_3: "Пожалуйста, проверьте свой почтовый ящик и папку спам.",
+  dashboard_notificationBanner_subscriptionInfo_1: "дней осталось в периоде подписки, пожалуйста, посетите",
+  dashboard_notificationBanner_subscriptionInfo_2: "страницу счетов",
+  dashboard_notificationBanner_subscriptionInfo_3: "чтобы продлить подписку.",
 };

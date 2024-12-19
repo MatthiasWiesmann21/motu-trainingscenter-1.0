@@ -778,4 +778,10 @@ export const Francaise: Record<string, string> = {
   user_DeleteProfileForm_ConfirmModalDescription: "Cette action est irréversible. Cela supprimera définitivement votre compte et supprimera vos données de nos serveurs.",
   user_DeleteProfileForm_ConfirmModalDeleteProfile: "Supprimer le profil",
   chapters_levelForm_noAuthor: "Pas d'auteur",
+  dashboard_notificationBanner_verifyEmail_1: "Vérifiez votre E-mail",
+  dashboard_notificationBanner_verifyEmail_2: "Un e-mail est envoyé à ",
+  dashboard_notificationBanner_verifyEmail_3: "Veuillez vérifier votre boîte de réception et dossier de spam.",
+  dashboard_notificationBanner_subscriptionInfo_1: "jours restants dans votre periode de souscription, veuillez visitez",
+  dashboard_notificationBanner_subscriptionInfo_2: "page de facturation",
+  dashboard_notificationBanner_subscriptionInfo_3: "pour renouveler votre souscription.",
 };

@@ -4,11 +4,26 @@ import { IconBadge } from "@/components/icon-badge";
 import { useLanguage } from "@/lib/check-language";
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { useContainerData } from "@/hooks/useContainerData";
+import { useRouter } from "next/navigation";
 
-export const OnlineCard = ({ profileId }: { profileId: string }) => {
+export const OnlineCard = ({
+  profileId,
+  user,
+}: {
+  profileId: string;
+  user: any;
+}) => {
+  // const { container, loading } = useContainerData();
   const currentLanguage = useLanguage();
   const [userCount, setUserCount] = useState(0);
   const socket = useRef<Socket | null>(null);
+  const { refresh } = useRouter();
+
+  useEffect(() => {
+    if (user?.profile?.containerId) return;
+    setContainer();
+  }, [user?.profile?.containerId, user?.profile?.id]);
 
   useEffect(() => {
     socketInitializer();
@@ -18,6 +33,22 @@ export const OnlineCard = ({ profileId }: { profileId: string }) => {
       socket.current?.disconnect(); // Clean up socket connection on component unmount
     };
   }, []);
+
+  const setContainer = async () => {
+    const response = await fetch("/api/auth/container", {
+      method: "GET",
+    });
+    const container = await response?.json();
+    if (!user?.profile?.containerId && !!user?.profile?.id) {
+      const profile: any = await fetch(`/api/profile/${user?.profile?.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ containerId: container?.id }),
+      });
+      const result = await profile.json();
+      if (result?.id) window?.location?.reload();
+    }
+  };
 
   const socketInitializer = async () => {
     await fetch("/api/socket"); // Initialize server-side socket
