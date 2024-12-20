@@ -45,7 +45,7 @@ export const EmailForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {email: initialData.name || ""}
+    defaultValues: {email: initialData.email || ""}
   });
 
   const { isSubmitting, isValid } = form.formState;

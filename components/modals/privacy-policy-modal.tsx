@@ -1,17 +1,17 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { useLanguage } from "@/lib/check-language"
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { ExternalLink } from 'lucide-react'
 import toast from "react-hot-toast"
 
@@ -22,8 +22,14 @@ interface PrivacyPolicyModalProps {
 export default function PrivacyPolicyModal({
   profile,
 }: PrivacyPolicyModalProps) {
-  const [isOpen, setIsOpen] = useState(profile?.acceptedPrivacyPolicy === false)
+  const [isOpen, setIsOpen] = useState(false)
   const currentLanguage = useLanguage()
+
+  useEffect(() => {
+    if (profile?.acceptedPrivacyPolicy === false) {
+      setIsOpen(true)
+    }
+  }, [profile])
 
   const acceptPrivacyPolicy = async () => {
     try {
@@ -37,19 +43,19 @@ export default function PrivacyPolicyModal({
       }
     } catch (error) {
       console.error("Error accepting privacy policy:", error)
-      toast.error("Failed to accept privacy policy. Please try again.")
+      toast.error("Something went wrong")
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-2xl md:max-w-3xl" onPointerDownOutside={(e) => e.preventDefault()}>
-      <DialogHeader>
-          <DialogTitle>{currentLanguage.privacy_policy_title}</DialogTitle>
-          <DialogDescription>
+    <AlertDialog open={isOpen}>
+      <AlertDialogContent className="sm:max-w-2xl md:max-w-3xl">
+        <AlertDialogHeader>
+          <AlertDialogTitle>{currentLanguage.privacy_policy_title}</AlertDialogTitle>
+          <AlertDialogDescription>
             {currentLanguage.privacy_policy_description}
-          </DialogDescription>
-        </DialogHeader>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-2 items-center gap-4">
             <Button variant="outline" className="w-full" asChild>
@@ -76,12 +82,12 @@ export default function PrivacyPolicyModal({
             </Button>
           </div>
         </div>
-        <DialogFooter>
-          <Button onClick={acceptPrivacyPolicy} className="w-full sm:w-auto">
+        <AlertDialogFooter>
+          <Button onClick={acceptPrivacyPolicy} className="w-full">
             {currentLanguage.privacy_policy_button}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
