@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { ExternalLink } from 'lucide-react'
+import toast from "react-hot-toast"
 
 interface PrivacyPolicyModalProps {
   profile: { id: string; acceptedPrivacyPolicy: boolean } | null
@@ -31,17 +32,19 @@ export default function PrivacyPolicyModal({
       })
 
       if (response.status === 200) {
+        toast.success("Privacy policy accepted")
         setIsOpen(false)
       }
     } catch (error) {
       console.error("Error accepting privacy policy:", error)
+      toast.error("Failed to accept privacy policy. Please try again.")
     }
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-2xl md:max-w-3xl">
-        <DialogHeader>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
+      <DialogContent className="sm:max-w-2xl md:max-w-3xl" onPointerDownOutside={(e) => e.preventDefault()}>
+      <DialogHeader>
           <DialogTitle>{currentLanguage.privacy_policy_title}</DialogTitle>
           <DialogDescription>
             {currentLanguage.privacy_policy_description}

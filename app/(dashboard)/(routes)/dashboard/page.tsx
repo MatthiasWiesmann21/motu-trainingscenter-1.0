@@ -12,6 +12,7 @@ import { OnlineCard } from "./_components/onlineCard";
 import { currentProfile } from "@/lib/current-profile";
 import { Metadata } from "next";
 import { languageServer } from "@/lib/check-language-server";
+import PrivacyPolicyModal from "@/components/modals/privacy-policy-modal";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -91,6 +92,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
 
   return (
     <div className="space-y-4 p-4 dark:bg-[#110524]">
+      <PrivacyPolicyModal profile={profile} />
       {!isEmailVerified && (
         <div
           className="mb-4 flex items-center rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-gray-800 dark:text-red-400"
