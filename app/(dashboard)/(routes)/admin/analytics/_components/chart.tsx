@@ -85,7 +85,7 @@ export const Chart = ({ data }: ChartProps) => {
               <ChartTooltip
                 content={
                   <ChartTooltipContent
-                    labelFormatter={(label) => `Date: ${label}`}
+                    labelFormatter={(label) => `${label}`}
                   />
                 }
               />
