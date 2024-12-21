@@ -108,7 +108,7 @@
     "react-select": "^5.8.0",
     "react-textarea-autosize": "^8.5.3",
     "react-usestateref": "^1.0.8",
-    "recharts": "^2.8.0",
+    "recharts": "^2.15.0",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",

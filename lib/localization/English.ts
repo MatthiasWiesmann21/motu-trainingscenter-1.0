@@ -740,4 +740,5 @@ dashboard_notificationBanner_verifyEmail_3: "Please check your inbox and spam fo
 dashboard_notificationBanner_subscriptionInfo_1: "days left in your subscription period, please visit",
 dashboard_notificationBanner_subscriptionInfo_2: "billings page",
 dashboard_notificationBanner_subscriptionInfo_3: "to renew your subscription.",
+analytics_chart_title: "Detailed Cours Revenue",
 };

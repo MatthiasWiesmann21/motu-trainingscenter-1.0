@@ -782,4 +782,5 @@ export const Espanol: Record<string, string> = {
   dashboard_notificationBanner_subscriptionInfo_1: "días restantes en su periodo de suscripción, por favor visite",
   dashboard_notificationBanner_subscriptionInfo_2: "página de facturación",
   dashboard_notificationBanner_subscriptionInfo_3: "para renovar su suscripción.",
+  analytics_chart_title: "Detalle de los ingresos de los cursos",
 };

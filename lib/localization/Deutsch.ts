@@ -741,4 +741,5 @@ dashboard_notificationBanner_verifyEmail_3: "gesendet. Bitte prüfen Sie Ihre E-
 dashboard_notificationBanner_subscriptionInfo_1: "Tage in Ihrer Abonnementperiode, bitte besuchen Sie",
 dashboard_notificationBanner_subscriptionInfo_2: "DieAbrechnungsseite",
 dashboard_notificationBanner_subscriptionInfo_3: ", um Ihr Abonnement anzupassen.",
+analytics_chart_title: "Detaillierte Kurs-Einnahmen",
 };

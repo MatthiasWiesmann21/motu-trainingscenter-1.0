@@ -771,4 +771,5 @@ export const Russian: Record<string, string> = {
   dashboard_notificationBanner_subscriptionInfo_1: "дней осталось в периоде подписки, пожалуйста, посетите",
   dashboard_notificationBanner_subscriptionInfo_2: "страницу счетов",
   dashboard_notificationBanner_subscriptionInfo_3: "чтобы продлить подписку.",
+  analytics_chart_title: "Детали доходов курсов",
 };

@@ -44,7 +44,7 @@ const AnalyticsPage = async () => {
           value={totalSales}
         />
       </div>
-      <Chart data={data} />
+      <Chart data={data}/>
     </div>
   );
 };
