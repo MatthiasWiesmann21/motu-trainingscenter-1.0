@@ -170,7 +170,7 @@ export const PostCard = ({
                 )}
               </div>
             </div>
-            <div className="font-400 text-sm text-black dark:text-white">
+            <div className="font-400 mt-6 text-sm text-black dark:text-white">
               <PostPreview value={description} />
             </div>
           </div>

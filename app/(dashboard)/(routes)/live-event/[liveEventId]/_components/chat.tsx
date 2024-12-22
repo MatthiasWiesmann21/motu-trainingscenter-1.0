@@ -36,21 +36,21 @@ const Chat = () => {
   }, [chat]);
 
   return (
-    <div className="border-2 mx-auto mt-4 flex h-[614px] w-[95%] flex-col justify-between rounded-xl bg-white dark:bg-[#131313] p-3 pt-0 lg:w-[29%]">
+    <div className="border-2 pr-4 mx-auto mt-4 flex h-[614px] w-[95%] flex-col justify-between rounded-xl bg-white dark:bg-[#131313] p-3 pt-0 lg:w-[29%]">
       <p className="my-4 text-md font-bold">{currentLanguage.liveEvent_chat_title}</p>
-      <Separator className="mb-2 bg-slate-50 dark:bg-slate-700" />
+      <Separator className="mb-2 bg-slate-200 dark:bg-slate-700" />
       <div className="h-[80%] w-full">
         <div ref={scrollRef} className="no-scrollbar h-full overflow-y-scroll">
           {chat?.map((val: any) => (
             <div key={val?.id}>
-              <div className="my-2 flex justify-between rounded-lg border-2 p-3 bg-slate-200 dark:bg-[#131618]">
+              <div className="my-2 flex justify-between rounded-lg border-2 p-2 bg-slate-50 dark:bg-[#131618]">
                 <UserAvatar
-                  className="mr-3 h-[40px] max-h-[40px] min-h-[40px] w-[40px] min-w-[40px] max-w-[40px]"
+                  className="mr-3 h-[32px] max-h-[32px] min-h-[32px] w-[32px] min-w-[32px] max-w-[32px]"
                   src={val?.profile?.imageUrl}
                 />
                 <div className="w-full">
                   <div className="">
-                    <div className="font-500 line-clamp-1 text-base font-bold">
+                    <div className="line-clamp-1 font-bold">
                       {val?.profile?.name}
                     </div>
                     <div className="text-xs">

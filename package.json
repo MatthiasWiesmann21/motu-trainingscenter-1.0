@@ -122,7 +122,7 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
-    "uploadthing": "^7.0.2",
+    "uploadthing": "^7.4.1",
     "uuid": "^9.0.1",
     "websocket": "^1.0.34",
     "zod": "^3.22.4",

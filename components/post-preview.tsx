@@ -16,7 +16,7 @@ export const PostPreview = ({ value }: PreviewProps) => {
   );
 
   return (
-    <div className="mt-6 rounded-lg bg-slate-100 dark:bg-[#131618]">
+    <div className="rounded-lg bg-slate-100 dark:bg-[#131618]">
       <span className="text-black dark:text-gray-300">
         <ReactQuill theme="bubble" value={value} readOnly />
       </span>

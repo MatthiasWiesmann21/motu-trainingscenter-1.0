@@ -1,8 +1,9 @@
 export const formatDuration = (duration: string | null | undefined): string => {
   if (!duration) return "Not set";
 
-  const hours = Math.floor(Number(duration));
-  const minutes = Math.round((Number(duration) - hours) * 60);
+  const totalMinutes = Number(duration);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
 
   if (hours === 0) {
     return `${minutes} ${minutes === 1 ? "minute" : "minutes"}`;

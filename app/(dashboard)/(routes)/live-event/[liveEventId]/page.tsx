@@ -28,6 +28,7 @@ import toast from "react-hot-toast";
 import { useLanguage } from "@/lib/check-language";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { getContainer } from "@/actions/get-container";
+import { cn } from "@/lib/utils";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { theme } = useTheme();
@@ -68,8 +69,8 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   };
 
   return liveEvent ? (
-    <div className="flex flex-wrap">
-      <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
+    <div className={cn("flex", liveEvent?.isStreamChat && "w-full")}>
+      <div className="flex w-full flex-col">
         <div className="p-4">
           <VideoPlayer
             videoUrl={liveEvent?.videoUrl} // Hier fügen wir die Vimeo-URL aus den chapter Daten hinzu.

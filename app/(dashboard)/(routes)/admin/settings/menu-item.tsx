@@ -41,10 +41,7 @@ export const MenuItem = ({
 
   return (
     <Card
-      className={cn(
-        "overflow-hidden border-2 transition-all duration-300 hover:shadow-lg",
-        isHovered && "ring-2 ring-offset-2",
-      )}
+      className="overflow-hidden border-2 transition-all duration-300 hover:shadow-lg"
       style={{
         borderColor: isHovered ? getThemeColor() : undefined,
       }}

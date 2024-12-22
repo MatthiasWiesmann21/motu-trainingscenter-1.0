@@ -172,7 +172,7 @@ export const EventCard = ({
               />
             </div>
             {/* Date and Time Section */}
-            <div className="flex hidden max-h-44 w-1/3 flex-col items-center justify-center bg-slate-200 p-2 py-6 text-center dark:bg-gray-800 md:block md:rounded-l-none md:rounded-r-md">
+            <div className="flex hidden max-h-44 w-1/3 flex-col items-center justify-center bg-slate-100 p-2 py-6 text-center dark:bg-gray-800 md:block md:rounded-l-none md:rounded-r-md">
               <p className="text-xl font-bold">
                 {moment(startDateTime).format("DD")}
               </p>
@@ -285,7 +285,7 @@ export const EventCard = ({
                 </div>
               </TooltipContent>
             </Tooltip>
-            <div className="mt-2 block flex items-center justify-center gap-2 rounded-md bg-slate-300 py-2 text-center dark:bg-gray-800 md:hidden">
+            <div className="mt-2 block flex items-center justify-center gap-2 rounded-md bg-slate-100 py-2 text-center dark:bg-gray-800 md:hidden">
               <p className="text-md font-bold">
                 {moment(startDateTime).format("DD")}
               </p>

@@ -9,14 +9,14 @@ interface PreviewProps {
   value: string;
 }
 
-export const ChapterPreviewAdmin = ({ value }: PreviewProps) => {
+export const EventDescriptionAdminPreview = ({ value }: PreviewProps) => {
   const ReactQuill = useMemo(
     () => dynamic(() => import("react-quill"), { ssr: false }),
     []
   );
 
   return (
-    <div className="rounded-lg bg-slate-100 dark:bg-[#0c0319]">
+    <div className="rounded-lg bg-slate-100 dark:bg-[#131618]">
       <span className="text-black dark:text-gray-300">
         <ReactQuill theme="bubble" value={value} readOnly />
       </span>

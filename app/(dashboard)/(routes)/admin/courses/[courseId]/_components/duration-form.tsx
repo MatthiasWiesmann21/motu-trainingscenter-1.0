@@ -1,72 +1,80 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Pencil, X } from "lucide-react";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
+import * as z from "zod"
+import axios from "axios"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { Pencil, X, Clock } from 'lucide-react'
+import { useState } from "react"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import { Course } from "@prisma/client"
 
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useLanguage } from "@/lib/check-language";
-import { formatDuration } from "@/lib/formatDuration";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useLanguage } from "@/lib/check-language"
+import { formatDuration } from "@/lib/formatDuration"
+import { cn } from "@/lib/utils"
 
 interface DurationFormProps {
-  initialData: Course;
-  courseId: string;
+  initialData: Course
+  courseId: string
 }
 
 const formSchema = z.object({
-  duration: z.string().min(0),
-});
+  hours: z.number().min(0).max(999),
+  minutes: z.number().min(0).max(59),
+})
 
 export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const currentLanguage = useLanguage();
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const [isEditing, setIsEditing] = useState(false)
+  const currentLanguage = useLanguage()
+  const toggleEdit = () => setIsEditing((current) => !current)
 
-  const router = useRouter();
+  const router = useRouter()
+
+  const initialHours = Math.floor(Number(initialData?.duration || 0) / 60)
+  const initialMinutes = Number(initialData?.duration || 0) % 60
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      duration: initialData?.duration || undefined,
+      hours: initialHours,
+      minutes: initialMinutes,
     },
-  });
+  })
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success("Course updated");
-      toggleEdit();
-      router.refresh();
+      const duration = (values.hours * 60) + values.minutes
+      await axios.patch(`/api/courses/${courseId}`, { duration: duration.toString() })
+      toast.success("Course updated")
+      toggleEdit()
+      router.refresh()
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong")
     }
-  };
+  }
 
   return (
     <Card className="my-4 w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-xl">
-          <div>
+          <div className="flex items-center">
+            <Clock className="mr-2 h-5 w-5" />
             {currentLanguage.course_durationForm_title}
-            <span className="pl-2 text-xs text-rose-600">
+            <span className="ml-2 text-xs text-rose-600">
               {currentLanguage.requiredFields}
             </span>
           </div>
@@ -99,29 +107,52 @@ export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-2"
+              className="space-y-4"
             >
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        disabled={isSubmitting}
-                        placeholder={
-                          currentLanguage.courses_durationForm_placeholder
-                        }
-                        {...field}
-                        className="text-md"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex space-x-4">
+                <FormField
+                  control={form.control}
+                  name="hours"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>{currentLanguage.course_durationForm_hours}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          min={0}
+                          max={999}
+                          placeholder="Hours"
+                          className="text-md"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="minutes"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>{currentLanguage.course_durationForm_minutes}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          min={0}
+                          max={59}
+                          placeholder="Minutes"
+                          className="text-md"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className="flex items-center justify-end space-x-2">
                 <Button
                   type="button"
@@ -136,7 +167,7 @@ export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
                   type="submit"
                   size="sm"
                   disabled={!isValid || isSubmitting}
-                  onClick={() => onSubmit(form.getValues())}
+                  onClick={() => form.handleSubmit(onSubmit)()}
                 >
                   {currentLanguage.commonButton_save}
                 </Button>
@@ -146,5 +177,5 @@ export const DurationForm = ({ initialData, courseId }: DurationFormProps) => {
         )}
       </CardContent>
     </Card>
-  );
-};
+  )
+}
