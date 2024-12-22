@@ -775,4 +775,7 @@ export const Italiano: Record<string, string> = {
   dashboard_notificationBanner_subscriptionInfo_2: "pagina di fatturazione",
   dashboard_notificationBanner_subscriptionInfo_3: "per rinnovare la sottoscrizione.",
   analytics_chart_title: "Dettagli dei redditi dei corsi",
+  course_durationForm_minutes: "Minuti",
+  chapters_durationForm_hoursLabel: "Ore",
+  chapters_durationForm_minutesLabel: "Minuti",
 };

@@ -742,4 +742,7 @@ dashboard_notificationBanner_subscriptionInfo_1: "Tage in Ihrer Abonnementperiod
 dashboard_notificationBanner_subscriptionInfo_2: "DieAbrechnungsseite",
 dashboard_notificationBanner_subscriptionInfo_3: ", um Ihr Abonnement anzupassen.",
 analytics_chart_title: "Detaillierte Kurs-Einnahmen",
+course_durationForm_minutes: "Minuten",
+chapters_durationForm_hoursLabel: "Stunden",
+chapters_durationForm_minutesLabel: "Minuten",
 };

@@ -741,4 +741,7 @@ dashboard_notificationBanner_subscriptionInfo_1: "days left in your subscription
 dashboard_notificationBanner_subscriptionInfo_2: "billings page",
 dashboard_notificationBanner_subscriptionInfo_3: "to renew your subscription.",
 analytics_chart_title: "Detailed Cours Revenue",
+course_durationForm_minutes: "Minutes",
+chapters_durationForm_hoursLabel: "Hours",
+chapters_durationForm_minutesLabel: "Minutes",
 };

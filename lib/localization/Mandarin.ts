@@ -750,4 +750,7 @@ export const Mandarin: Record<string, string> = {
   dashboard_notificationBanner_subscriptionInfo_2: "天，请访问 ",
   dashboard_notificationBanner_subscriptionInfo_3: "账单页面以续订您的订阅。",
   analytics_chart_title: "详细课程收入",
+  course_durationForm_minutes: "分钟",
+  chapters_durationForm_hoursLabel: "小时",
+  chapters_durationForm_minutesLabel: "分钟",
 };
