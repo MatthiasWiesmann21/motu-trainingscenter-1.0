@@ -17,11 +17,10 @@ import { useLanguage } from "@/lib/check-language"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
+import { LiveEvent } from "@prisma/client"
 
 interface DateFormProps {
-  initialData: {
-    endDateTime: Date | string
-  }
+  initialData: LiveEvent;
   liveEventId: string
 }
 
