@@ -140,7 +140,7 @@ const PolygonChart = ({
               }
             </Link>
           </div>
-          <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
+          <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
             <p className="w-[40%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>

@@ -39,7 +39,7 @@ const FavoriteChaptersList = ({
     <TooltipProvider>
       <div className="graphParent flex justify-between">
         <div className="min-w-xs mr-2 w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
-          <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
+          <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
             <p className="w-[90%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>

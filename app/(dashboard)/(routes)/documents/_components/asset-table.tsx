@@ -345,7 +345,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         <td className="relative flex items-center justify-between py-3 text-sm font-medium">
                           <Download
                             onClick={() => handleDownload(file.key, file.name)}
-                            className="h-10 w-10 cursor-pointer rounded-md p-2 text-slate-900 hover:bg-[#cbd5e1] dark:text-slate-100 dark:hover:bg-[#1e293b]"
+                            className="h-10 w-10 cursor-pointer rounded-md p-2 text-slate-900 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-[#1e293b]"
                           />
                           <FlyoutMenuSetting
                             type="file"
