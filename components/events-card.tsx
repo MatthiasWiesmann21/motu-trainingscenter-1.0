@@ -218,7 +218,6 @@ export const EventCard = ({
                 onClick={handleCalendarClick}
                 variant="ghost"
                 className="h-8 w-8 p-0"
-                // TODO: add new "add to calendar" component here
               >
                 <Calendar width={16} height={16} />
               </Button>

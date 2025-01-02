@@ -10,7 +10,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { DateandTime } from "./date&time";
 import { useSession } from "next-auth/react"; // Use NextAuth's useSession hook
 import { Button } from "@/components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
@@ -18,6 +17,7 @@ import { useLanguage } from "@/lib/check-language";
 import { Container } from "@prisma/client";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { DateandTime } from "./date&time";
 
 interface EventFilterSidebarProps {
   liveEvents: any;
@@ -77,12 +77,6 @@ const EventFilterSidebar = ({
         </Button>
       </SheetTrigger>
       <SheetContent className="p-5 pt-12 flex flex-col items-center">
-        <SheetHeader>
-          <SheetTitle>{currentLanguage.live_event_filter_title}</SheetTitle>
-          <SheetDescription>
-            {currentLanguage.live_event_filter_description}
-          </SheetDescription>
-        </SheetHeader>
         <DateandTime
           setLiveEvent={setLiveEvent}
           getEvent={{
