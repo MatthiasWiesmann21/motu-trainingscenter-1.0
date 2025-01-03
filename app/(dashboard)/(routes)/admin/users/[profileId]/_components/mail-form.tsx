@@ -61,7 +61,7 @@ export const MailForm = ({ initialData, profileId }: MailFormProps) => {
   return (
     <Card className="my-4 w-full">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between text-xl">
+        <CardTitle className="text-xl flex items-center justify-between">
           <span>{currentLanguage.user_MailForm_title}</span>
           <Button
             onClick={toggleEdit}

@@ -67,7 +67,7 @@ export const DarkTextColorForm = ({
   return (
     <Card className="my-4 w-full">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between space-x-2">
+        <CardTitle className="text-xl flex items-center justify-between">
           <div className="flex space-x-2">
             <Palette className="h-6 w-6" />
             <span>{currentLanguage.categories_DarkTextColorForm_title}</span>

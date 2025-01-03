@@ -61,7 +61,7 @@ export const TitleForm = ({ initialData, profileId }: TitleFormProps) => {
   return (
     <Card className="my-4 w-full">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between text-xl">
+        <CardTitle className="text-xl flex items-center justify-between">
           <span>{currentLanguage.profile_TitleForm_title}</span>
           <Button
             onClick={toggleEdit}
