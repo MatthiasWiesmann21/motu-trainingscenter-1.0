@@ -11,6 +11,7 @@ import { useLanguage } from "@/lib/check-language";
 import { Button } from "@/components/ui/button";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Courses",
@@ -71,11 +72,17 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
     include: {
       _count: {
-        select: { courses: true }, // Ensure 'courses' matches your schema relation name
+        select: {
+          courses: {
+            where: {
+              isPublished: true
+            }
+          }
+        }
       },
     },
   });
-
+  
   return (
     <>
       <div className="space-y-4 p-4">
@@ -89,7 +96,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           <Categories
             items={categoriesWithCourseCounts}
             ThemeColor={container?.ThemeColor!}
-            DarkThemeColor={container?.DarkThemeColor!}
+            DarkThemeColor={container.DarkThemeColor!}
           />
           </div>
           <div className="hidden lg:block w-[15%] items-center justify-center">

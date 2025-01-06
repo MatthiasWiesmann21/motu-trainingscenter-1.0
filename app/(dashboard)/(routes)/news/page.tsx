@@ -46,7 +46,13 @@ const NewsPage = async ({ searchParams }: SearchPageProps) => {
     },
     include: {
       _count: {
-        select: { posts: true },
+        select: {
+          posts: {
+            where: {
+              isPublished: true
+            }
+          }
+        },
       },
     },
   });

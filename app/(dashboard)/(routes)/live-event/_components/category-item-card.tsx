@@ -55,7 +55,7 @@ export const CategoryItemCard = ({
       >
         <Tooltip>
           <TooltipTrigger>
-            <div className="line-clamp-1 text-start text-xs max-w-[150px]">{label}</div>
+            <div className="line-clamp-1 text-start text-xs">{label}</div>
           </TooltipTrigger>
           <TooltipContent side="top">
             <div className="text-start text-xs whitespace-normal">{label}</div>

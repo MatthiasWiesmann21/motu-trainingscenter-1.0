@@ -15,7 +15,7 @@ const Favorite = ({ chapter, getData }: any) => (
       <Star
         size={26}
         fill={!!chapter?.currentFavorite ? "#FFD700" : "#ffffff00"}
-        className="transition duration-200 ease-in-out hover:scale-110"
+        className="transition duration-200 ease-in-out hover:scale-105"
         style={!!chapter?.currentFavorite ? { color: "#FFD700" } : {}}
       />
     </div>

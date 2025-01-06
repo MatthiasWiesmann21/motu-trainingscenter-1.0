@@ -200,7 +200,7 @@ export const EventCard = ({
               <Star
                 size={16}
                 fill={!!currentFavorite ? "#FFD700" : "#ffffff00"}
-                className="mx-1 h-7 w-7 cursor-pointer rounded-md p-1 transition duration-200 ease-in-out hover:scale-110 hover:bg-slate-200 dark:hover:bg-slate-700"
+                className="mx-1 h-7 w-7 cursor-pointer rounded-md p-1 transition duration-200 ease-in-out hover:scale-105 hover:bg-slate-100 dark:hover:bg-slate-700"
                 style={!!currentFavorite ? { color: "#FFD700" } : {}}
                 onClick={async () => {
                   const response = await axios?.post(`/api/favorite/create`, {

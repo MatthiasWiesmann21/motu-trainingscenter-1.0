@@ -210,7 +210,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
               <span className="ml-4 text-sm font-bold">
                 {currentLanguage.chapter_CourseDocuments_Title}
               </span>
-              <Separator />
+              <Separator className="mt-2" />
               <div className="text-gray-500">
                 {!!attachments.length && (
                   <>
@@ -231,7 +231,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
                   </>
                 )}
                 {!attachments.length && (
-                  <div className="flex items-center justify-center gap-2 px-4 py-6">
+                  <div className="flex items-center justify-center gap-2 px-4 py-4">
                     <FileX className="text-slate-400 dark:text-slate-600" />
                     <p>{currentLanguage.chapter_attachments_NoDocuments}</p>
                   </div>

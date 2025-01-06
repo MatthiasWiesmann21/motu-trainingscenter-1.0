@@ -4,7 +4,15 @@ import { useSelector } from "react-redux";
 import { UserAvatar } from "@/components/user-avatar";
 import axios from "axios";
 import moment from "moment";
-import { Check, Edit, Heart, MessageSquare, ReplyAll, Star, X } from "lucide-react";
+import {
+  Check,
+  Edit,
+  Heart,
+  MessageSquare,
+  ReplyAll,
+  Star,
+  X,
+} from "lucide-react";
 import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
@@ -111,7 +119,7 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
                   : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
               }`}
             />
-             <span
+            <span
               className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
             >
               {val?.likes?.length}
@@ -245,7 +253,7 @@ const Reply = ({
             </span>
           </button>
           <button
-             className={`
+            className={`
               mx-1 inline-flex items-center gap-2 rounded-full px-2
               py-1.5 text-xs font-medium transition-colors duration-200 ease-in-out
             ${isHovered ? "bg-[#e2e8f0] dark:bg-[#334155]" : ""}
@@ -318,7 +326,7 @@ const LikeComment = ({
     <div className="mx-4">
       <div className="flex items-center justify-between py-3">
         <div
-          className="flex cursor-pointer items-center rounded-lg bg-slate-100 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"
+          className="flex cursor-pointer items-center rounded-lg bg-slate-100 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80"
           onClick={() => setShowComments(!isShowComments)}
         >
           <MessageSquare className="mr-1 h-5 w-6" />

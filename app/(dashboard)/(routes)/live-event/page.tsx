@@ -43,7 +43,13 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
     include: {
       _count: {
-        select: { LiveEvent: true },
+        select: {
+          LiveEvent: {
+            where: {
+              isPublished: true
+            }
+          }
+        },
       },
     },
   });
