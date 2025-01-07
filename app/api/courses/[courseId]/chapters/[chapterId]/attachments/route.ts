@@ -28,6 +28,7 @@ export async function POST(
     }
 
     const attachment = await db.attachment.create({
+      // @ts-ignore
       data: {
         url,
         name: name,
