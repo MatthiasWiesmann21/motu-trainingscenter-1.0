@@ -69,11 +69,11 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   };
 
   return liveEvent ? (
-    <div className={cn("flex", liveEvent?.isStreamChat && "w-full")}>
-      <div className="flex w-full flex-col">
+    <div className={cn("flex flex-col md:flex-row", liveEvent?.isStreamChat && "w-full")}>
+      <div className="flex w-full flex-col md:w-2/3">
         <div className="p-4">
           <VideoPlayer
-            videoUrl={liveEvent?.videoUrl} // Hier fügen wir die Vimeo-URL aus den chapter Daten hinzu.
+            videoUrl={liveEvent?.videoUrl}
             startDateTime={liveEvent?.startDateTime}
             endDateTime={liveEvent?.endDateTime}
           />
@@ -97,7 +97,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="ml-auto h-11 w-10 p-0 border-[#fff] bg-slate-100 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]" // Add ml-auto to push it to the right
+                      className="ml-auto h-11 w-10 border-[#fff] bg-slate-100 p-0 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <span className="sr-only">Open menu</span>
@@ -137,7 +137,11 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
           </div>
         </div>
       </div>
-      {liveEvent?.isStreamChat && <Chat />}
+      {liveEvent?.isStreamChat && (
+        <div className="w-full md:w-1/2 lg:w-1/3">
+          <Chat />
+        </div>
+      )}
     </div>
   ) : (
     <div className="flex h-full w-full items-center justify-center">

@@ -78,6 +78,12 @@ export default function ForgotPassword() {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === "Enter") {
+      handleForgotPassword();
+    }
+  };
+
   const renderRight = () => (
     <Image
       alt="ForgotPassword-Image"
@@ -102,6 +108,7 @@ export default function ForgotPassword() {
         <form
           className="login-form mx-auto flex w-[80%] flex-col gap-4 p-4 sm:w-[70%] md:w-[65%]"
           onSubmit={(e) => e.preventDefault()}
+          onKeyDown={handleKeyDown}
         >
           <div className="form-header">
             <Link
