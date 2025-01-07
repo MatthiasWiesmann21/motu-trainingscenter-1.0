@@ -45,7 +45,7 @@ export const FavouriteEventsList = ({
       {/* My Favorites Section (hidden on mobile) */}
       <div>
         {Favorites?.length > 0 && (
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             {Favorites?.map((item) => (
               <EventCard
                 key={item.id}
