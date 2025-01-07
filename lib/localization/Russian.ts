@@ -443,7 +443,7 @@ export const Russian: Record<string, string> = {
   dashboard_courseTable_viewAllCourses_button_text: "Посмотреть все",
   dashboard_courseTable_viewCourse_button_text: "Посмотри",
   chapter_aboutcourse_title: "О главе",
-  chapter_CourseDocuments_Title: "Документы курса",
+  chapter_ChapterDocuments_Title: "Документы",
   courses_setup_backToCourseAdminList_button_text: "Вернуться к Обзору Курсов",
   post_setup_backToPostAdminList_button_text: "Вернуться к Обзору Сообщений",
   liveEvent_setup_backToEventAdminList_button_text:

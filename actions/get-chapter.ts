@@ -49,7 +49,7 @@ export const getChapter = async ({
     if (purchase) {
       attachments = await db.attachment.findMany({
         where: {
-          courseId: courseId,
+          chapterId: chapterId,
         },
       });
     }

@@ -42,6 +42,7 @@ export async function GET(
       include: {
         likes: true,
         favorites: true,
+        userProgress: true,
         comments: {
           include: {
             likes: true,
@@ -71,7 +72,7 @@ export async function GET(
     if (purchase)
       attachments = await db.attachment.findMany({
         where: {
-          courseId: courseId,
+          chapterId: chapterId,
         },
       });
 
@@ -250,4 +251,4 @@ export async function PATCH(
     console.log("[COURSES_CHAPTER_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
-}
+};

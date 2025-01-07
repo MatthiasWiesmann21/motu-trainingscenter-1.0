@@ -427,7 +427,7 @@ export const Mandarin: Record<string, string> = {
   dashboard_courseTable_viewAllCourses_button_text: "查看全部",
   dashboard_courseTable_viewCourse_button_text: "寻找",
   chapter_aboutcourse_title: "关于章节",
-  chapter_CourseDocuments_Title: "课程文件",
+  chapter_ChapterDocuments_Title: "文档",
   courses_setup_backToCourseAdminList_button_text: "返回课程概览",
   post_setup_backToPostAdminList_button_text: "返回帖子概览",
   liveEvent_setup_backToEventAdminList_button_text: "返回直播事件概览",

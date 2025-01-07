@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, File, LayoutDashboard, Video } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -18,6 +18,7 @@ import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 import { DurationForm } from "./_components/duration-form";
 import { LevelForm } from "./_components/level-form";
 import GoBackButton from "@/components/goBackButton";
+import { AttachmentForm } from "./_components/attachment-form";
 
 const ChapterIdPage = async ({
   params,
@@ -36,6 +37,13 @@ const ChapterIdPage = async ({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
+    },
+    include: {
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -149,6 +157,19 @@ const ChapterIdPage = async ({
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={File} />
+              <h2 className="text-xl">
+                {currentLanguage.course_setup_attachments_title}
+              </h2>
+            </div>
+            <AttachmentForm
+              initialData={chapter}
+              courseId={params.courseId!}
+              chapterId={params.chapterId!}
             />
           </div>
         </div>

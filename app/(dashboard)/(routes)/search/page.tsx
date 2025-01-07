@@ -96,7 +96,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           <Categories
             items={categoriesWithCourseCounts}
             ThemeColor={container?.ThemeColor!}
-            DarkThemeColor={container.DarkThemeColor!}
+            DarkThemeColor={container?.DarkThemeColor!}
           />
           </div>
           <div className="hidden lg:block w-[15%] items-center justify-center">

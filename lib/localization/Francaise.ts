@@ -99,7 +99,7 @@ export const Francaise: Record<string, string> = {
   courses_priceForm_noPrice: "Aucun Prix",
   courses_priceForm_placeholder: "Définir un prix pour votre cours",
   courses_priceForm_save: "Sauvegarder",
-  course_attachmentForm_title: "Pièces jointes du Cours",
+  course_attachmentForm_title: "Pièces jointes du Capitre",
   course_attachmentForm_cancel: "Annuler",
   course_attachmentForm_add: "Ajouter un Fichier",
   course_attachmentForm_noAttachments: "Aucune Pièce jointe pour le moment",
@@ -451,7 +451,7 @@ export const Francaise: Record<string, string> = {
   dashboard_courseTable_viewAllCourses_button_text: "Voir tout",
   dashboard_courseTable_viewCourse_button_text: "CHERCHER",
   chapter_aboutcourse_title: "À propos du chapitre",
-  chapter_CourseDocuments_Title: "Documents du cours",
+  chapter_ChapterDocuments_Title: "Documents",
   courses_setup_backToCourseAdminList_button_text:
     "Retour à la Vue d'ensemble des Cours",
   post_setup_backToPostAdminList_button_text:

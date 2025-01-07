@@ -210,7 +210,6 @@ model Course {
   usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
 
   chapters    Chapter[]
-  attachments Attachment[]
   purchases   Purchase[]
   favorites   Favorite[]
 
@@ -251,17 +250,18 @@ model Category {
 }
 
 model Attachment {
-  id   String @id @default(uuid())
-  name String @db.Text
-  url  String @db.Text
+  id          String @id @default(uuid())
+  name        String @db.Text
+  url         String @db.Text
+  contentType String
 
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([courseId])
+  @@index([chapterId])
 }
 
 model Chapter {
@@ -284,9 +284,10 @@ model Chapter {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  comments  Comment[]
-  likes     Like[]
-  favorites Favorite[]
+  attachments  Attachment[]
+  comments     Comment[]
+  likes        Like[]
+  favorites    Favorite[]
 
   @@index([courseId])
 }

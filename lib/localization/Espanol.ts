@@ -99,7 +99,7 @@ export const Espanol: Record<string, string> = {
   courses_priceForm_noPrice: "Sin Precio",
   courses_priceForm_placeholder: "Establecer un precio para tu curso",
   courses_priceForm_save: "Guardar",
-  course_attachmentForm_title: "Adjuntos del Curso",
+  course_attachmentForm_title: "Adjuntos del Capítulo",
   course_attachmentForm_cancel: "Cancelar",
   course_attachmentForm_add: "Agregar un Archivo",
   course_attachmentForm_noAttachments: "Sin Adjuntos aún",
@@ -447,7 +447,7 @@ export const Espanol: Record<string, string> = {
   dashboard_courseTable_viewAllCourses_button_text: "Ver todo",
   dashboard_courseTable_viewCourse_button_text: "MIRA",
   chapter_aboutcourse_title: "Sobre el Capítulo",
-  chapter_CourseDocuments_Title: "Documentos del Curso",
+  chapter_ChapterDocuments_Title: "Documentos",
   courses_setup_backToCourseAdminList_button_text:
     "Volver a la Vista de Cursos",
   post_setup_backToPostAdminList_button_text:

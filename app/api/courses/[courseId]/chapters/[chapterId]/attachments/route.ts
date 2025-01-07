@@ -4,12 +4,12 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 export async function POST(
   req: Request,
-  { params }: { params: { courseId: string } }
+  { params }: { params: { chapterId: string; courseId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
-    const { url, postId } = await req.json();
+    const { url, name } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -30,8 +30,8 @@ export async function POST(
     const attachment = await db.attachment.create({
       data: {
         url,
-        name: url.split("/").pop() || "attachment",
-        courseId: params.courseId,
+        name: name,
+        chapterId: params.chapterId,
       }
     });
 
@@ -40,4 +40,4 @@ export async function POST(
     console.log("[COURSE_ID_ATTACHMENTS]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
-}
+};

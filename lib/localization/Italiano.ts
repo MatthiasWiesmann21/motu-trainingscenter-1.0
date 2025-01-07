@@ -99,7 +99,7 @@ export const Italiano: Record<string, string> = {
   courses_priceForm_noPrice: "Nessun Prezzo",
   courses_priceForm_placeholder: "Imposta un prezzo per il tuo corso",
   courses_priceForm_save: "Salva",
-  course_attachmentForm_title: "Allegati del Corso",
+  course_attachmentForm_title: "Allegati del Capitolo",
   course_attachmentForm_cancel: "Annulla",
   course_attachmentForm_add: "Aggiungi un File",
   course_attachmentForm_noAttachments: "Nessun Allegato ancora",
@@ -444,7 +444,7 @@ export const Italiano: Record<string, string> = {
   dashboard_courseTable_viewAllCourses_button_text: "Visualizza tutto",
   dashboard_courseTable_viewCourse_button_text: "CERCARE",
   chapter_aboutcourse_title: "Informazioni sul Capitolo",
-  chapter_CourseDocuments_Title: "Documenti del Corso",
+  chapter_ChapterDocuments_Title: "Documenti",
   courses_setup_backToCourseAdminList_button_text: "Torna alla Vista dei Corsi",
   post_setup_backToPostAdminList_button_text: "Torna alla Vista dei Post",
   liveEvent_setup_backToEventAdminList_button_text:

@@ -4,7 +4,7 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
 export async function DELETE(
   req: Request,
-  { params }: { params: { courseId: string; attachmentId: string } }
+  { params }: { params: { chapterId: string; courseId: string; attachmentId: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -36,4 +36,4 @@ export async function DELETE(
     console.log("[ATTACHMENT_ID_DELETE]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
-}
+};

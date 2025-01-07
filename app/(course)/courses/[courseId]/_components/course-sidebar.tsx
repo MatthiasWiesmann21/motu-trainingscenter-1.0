@@ -99,7 +99,7 @@ export const CourseSidebar = async ({
                     ThemeColor={ThemeColor}
                     DarkThemeColor={DarkThemeColor}
                   >
-                    <Button variant="ghost" className="h-8 w-8 p-0">
+                    <Button variant="ghost" className="hover:bg-slate-200 h-8 w-8 p-0">
                       <Info width={16} height={16} />
                     </Button>
                   </CourseInfoModal>
@@ -112,7 +112,7 @@ export const CourseSidebar = async ({
               </Tooltip>
               {canAccess && (
                 <Link href={`/admin/courses/${course.id}`}>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
+                  <Button variant="ghost" className="hover:bg-slate-200 h-8 w-8 p-0">
                     <Edit width={16} height={16} />
                   </Button>
                 </Link>

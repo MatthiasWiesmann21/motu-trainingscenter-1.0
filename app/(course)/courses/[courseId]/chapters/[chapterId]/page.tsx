@@ -73,7 +73,7 @@ const ChapterIdPage = async ({
   return (
     <div className="flex justify-between">
       <CourseWrapper params={params} currentLanguage={currentLanguage} currentProfileId={profile?.id!} profileImage={profile?.imageUrl!} purchaseLabel={currentLanguage.chapter_purchaseBanner_text} ThemeColor={container?.ThemeColor ?? ""} DarkThemeColor={container?.DarkThemeColor ?? ""}/>
-      <div className="min-h-[400px] max-h-[500px] md:min-h-[450px] md:max-h-[505px] lg:min-h-[500px] lg:max-h-[520px] lg:min-w-[350px] lg:max-w-[400px] xl:min-h-[500px] xl:max-h-[600px] 2xl:min-[550px] 2xl:max-[650px]">
+      <div className="sm:min-h-[400px] sm:max-h-[500px] sm:min-w-[200px] sm:max-w-[300px] md:min-h-[450px] md:max-h-[505px] lg:min-h-[500px] lg:max-h-[520px] lg:min-w-[350px] lg:max-w-[400px] xl:min-h-[500px] xl:max-h-[600px] 2xl:min-[550px] 2xl:max-[650px]">
         <CourseSidebar course={_course} progressCount={progressCount} ThemeColor={container?.ThemeColor ?? ""} DarkThemeColor={container?.DarkThemeColor ?? ""}/>
       </div>
     </div>

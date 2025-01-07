@@ -208,7 +208,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             </div>
             <div className="m-4 mt-0 rounded-lg border-2 bg-white pt-3 dark:bg-[#0c0319]">
               <span className="ml-4 text-sm font-bold">
-                {currentLanguage.chapter_CourseDocuments_Title}
+                {currentLanguage.chapter_ChapterDocuments_Title}
               </span>
               <Separator className="mt-2" />
               <div className="text-gray-500">
@@ -221,10 +221,10 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
                           href={attachment.url}
                           target="_blank"
                           key={attachment.id}
-                          className="flex w-full items-center rounded-md border bg-sky-200 p-3 text-sky-700 hover:underline"
+                          className="flex w-full items-center rounded-md border bg-sky-200 p-3 my-3 text-sky-700 hover:underline"
                         >
                           <File />
-                          <p className="line-clamp-1">{attachment.name}</p>
+                          <p className="line-clamp-1 pl-2">{attachment.name}</p>
                         </a>
                       ))}
                     </div>
