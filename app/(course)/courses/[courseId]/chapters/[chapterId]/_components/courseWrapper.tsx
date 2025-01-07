@@ -208,6 +208,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
             </div>
             <div className="m-4 mt-0 rounded-lg border-2 bg-white pt-3 dark:bg-[#0c0319]">
               <span className="ml-4 text-sm font-bold">
+                {/* @ts-ignore */}
                 {currentLanguage.chapter_ChapterDocuments_Title}
               </span>
               <Separator className="mt-2" />
