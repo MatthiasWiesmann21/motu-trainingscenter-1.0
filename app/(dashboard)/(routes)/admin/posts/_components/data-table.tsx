@@ -73,10 +73,12 @@ export function DataTable<TData, TValue>({
           }
           className="max-w mr-3 border-[#000000] dark:border-[#ffffff]"
         />
+        {(isAdmin || isClientAdmin) && (
           <Button className="w-64"  onClick={() => onOpen("createPost")}>
             <PlusCircle className="h-4 w-4 mr-2" />
             {currentLanguage.post_createPost_button_text}
           </Button>
+        )}
       </div>
       <div className="rounded-md border border-[#000000] dark:border-[#ffffff]">
         <Table>

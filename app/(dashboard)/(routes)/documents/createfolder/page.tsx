@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import PathMaker from "../_components/path-maker";
 import { useLanguage } from "@/lib/check-language";
 import { Switch } from "@/components/ui/switch";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useIsAdmin, useIsClientAdmin, useIsOperator } from "@/lib/roleCheck";
 
 type Params = {
   id: string;
@@ -22,6 +23,14 @@ const DocumentCreatePage = () => {
   const [isPublic, setPublic] = useState(true);
   const [loading, setLoading] = useState(false);
   const [parentId, setParentId] = useState("");
+  const isAdmin = useIsAdmin();
+  const isOperator = useIsOperator();
+  const isClientAdmin = useIsClientAdmin();
+  const router = useRouter();
+
+  if (!isAdmin && !isOperator && !isClientAdmin) {
+    return router.push("/documents");
+  }
 
   const uuidPattern =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

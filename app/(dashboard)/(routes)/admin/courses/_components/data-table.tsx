@@ -74,12 +74,14 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="max-w mr-3 border-[#000000] dark:border-[#ffffff]"
+          className="mr-3 max-w border-[#000000] dark:border-[#ffffff]"
         />
-        <Button className="w-64" onClick={() => onOpen("createCourse")}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          {currentLanguage.courses_createCourse_button_text}
-        </Button>
+        {(isAdmin || isClientAdmin) && (
+          <Button className="w-64" onClick={() => onOpen("createCourse")}>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            {currentLanguage.courses_createCourse_button_text}
+          </Button>
+        )}
       </div>
       <div className="rounded-md border border-[#000000] dark:border-[#ffffff]">
         <Table>

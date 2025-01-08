@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input"; // Import Input component for bet
 import { Button } from "@/components/ui/button"; // Import Button for consistency
 import Link from "next/link"; // For cancel button
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { useIsAdmin, useIsClientAdmin, useIsOperator } from "@/lib/roleCheck";
 
 type Params = {
   id: string;
@@ -22,6 +24,15 @@ const DocumentCreatePage = () => {
   const [loading, setLoading] = useState(false);
   const [parentId, setParentId] = useState("");
   const currentLanguage = useLanguage();
+  const router = useRouter();
+
+  const isAdmin = useIsAdmin();
+  const isOperator = useIsOperator();
+  const isClientAdmin = useIsClientAdmin();
+
+  if (!isAdmin && !isOperator && !isClientAdmin) {
+    return router.push("/documents");
+  }
 
   const uuidPattern =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

@@ -40,7 +40,7 @@ export const FavouriteEventsList = ({
   }, [categoryId, title]);
 
   return (
-    <div className="flex w-full flex-col items-start justify-center gap-4">
+    <div>
       <GoBackButton buttonText={currentLanguage.goBack_button_text} />
       {/* My Favorites Section (hidden on mobile) */}
       <div>

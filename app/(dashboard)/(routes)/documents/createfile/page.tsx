@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PathMaker from "../_components/path-maker";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/check-language";
 import { Switch } from "@/components/ui/switch"; // Import Switch from UI components
 import { Input } from "@/components/ui/input"; // Import Input from UI components
 import { Button } from "@/components/ui/button"; // Import Button for consistency
 import Link from "next/link"; // For cancel button
 import toast from "react-hot-toast";
+import { useIsAdmin, useIsClientAdmin, useIsOperator } from "@/lib/roleCheck";
 
 type Params = {
   id: string;
@@ -26,6 +27,15 @@ const DocumentCreatePage = () => {
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const encodedObj = useParams()?.id as string;
   const currentLanguage = useLanguage();
+  const router = useRouter();
+
+  const isAdmin = useIsAdmin();
+  const isOperator = useIsOperator();
+  const isClientAdmin = useIsClientAdmin();
+
+  if (!isAdmin && !isOperator && !isClientAdmin) {
+    return router.push("/documents");
+  }
 
   // Initialize id and action with default values
   let id: string | string[];
