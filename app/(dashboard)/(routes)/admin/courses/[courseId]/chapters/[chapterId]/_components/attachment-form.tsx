@@ -132,16 +132,16 @@ export const AttachmentForm = ({
         {isEditing && (
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Attachment Name</Label>
+              <Label htmlFor="name">{currentLanguage.course_attachmentForm_name}</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter attachment name"
+                placeholder={currentLanguage.course_attachmentForm_namePlaceholder}
               />
             </div>
             <div>
-              <Label htmlFor="file">Attachment File</Label>
+              <Label htmlFor="file">{currentLanguage.course_attachmentForm_file}</Label>
               <FileUpload
                 endpoint="chapterAttachment"
                 onChange={(uploadedUrl) => {
@@ -152,7 +152,7 @@ export const AttachmentForm = ({
               />
             </div>
             <Button onClick={onSubmit} disabled={!name || !url}>
-              Create Attachment
+              {currentLanguage.course_attachmentForm_submit}
             </Button>
             <div className="text-xs text-muted-foreground">
               {currentLanguage.course_attachmentForm_recommendation}
