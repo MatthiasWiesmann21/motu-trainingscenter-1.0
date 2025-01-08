@@ -829,4 +829,8 @@ export const Italiano: Record<string, string> = {
   course_durationForm_minutes: "Minuti",
   chapters_durationForm_hoursLabel: "Ore",
   chapters_durationForm_minutesLabel: "Minuti",
+  course_attachmentForm_name: "Nome dell'attachment",
+  course_attachmentForm_file: "File",
+  course_attachmentForm_submit: "Crea attachment",
+  course_attachmentForm_namePlaceholder: "Inserisci il nome dell'attachment",
 };

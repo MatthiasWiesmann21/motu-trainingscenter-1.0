@@ -797,4 +797,8 @@ export const Deutch: Record<string, string> = {
     course_durationForm_minutes: "Minuten",
     chapters_durationForm_hoursLabel: "Stunden",
     chapters_durationForm_minutesLabel: "Minuten",
+    course_attachmentForm_name: "Anhang Name",
+    course_attachmentForm_file: "Anhang",
+    course_attachmentForm_submit: "Anhang erstellen",
+    course_attachmentForm_namePlaceholder: "Anhang Name eingeben",
     };    

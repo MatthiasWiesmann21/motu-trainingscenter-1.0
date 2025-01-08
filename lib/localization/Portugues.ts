@@ -831,4 +831,8 @@ export const Portugues: Record<string, string> = {
   course_durationForm_minutes: "Minutos",
   chapters_durationForm_hoursLabel: "Horas",
   chapters_durationForm_minutesLabel: "Minutos",
+  course_attachmentForm_name: "Nome do Anexo",
+  course_attachmentForm_file: "Arquivo do Anexo",
+  course_attachmentForm_submit: "Criar Anexo",
+  course_attachmentForm_namePlaceholder: "Digite o nome do anexo",
 };

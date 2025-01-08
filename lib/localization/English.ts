@@ -795,4 +795,8 @@ export const English: Record<string, string> = {
     course_durationForm_minutes: "Minutes",
     chapters_durationForm_hoursLabel: "Hours",
     chapters_durationForm_minutesLabel: "Minutes",
+    course_attachmentForm_name: "Attachment Name",
+    course_attachmentForm_file: "Attachment File",
+    course_attachmentForm_submit: "Create Attachment",
+    course_attachmentForm_namePlaceholder: "Enter attachment name",
     };    

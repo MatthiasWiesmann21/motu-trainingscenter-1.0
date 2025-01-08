@@ -804,4 +804,8 @@ export const Mandarin: Record<string, string> = {
   course_durationForm_minutes: "分钟",
   chapters_durationForm_hoursLabel: "小时",
   chapters_durationForm_minutesLabel: "分钟",
+  course_attachmentForm_name: "附件名称",
+  course_attachmentForm_file: "附件文件",
+  course_attachmentForm_submit: "创建附件",
+  course_attachmentForm_namePlaceholder: "输入附件名称",
 };
