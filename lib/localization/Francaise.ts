@@ -313,7 +313,7 @@ export const Francaise: Record<string, string> = {
     "Que catégoriserez-vous sur votre plateforme ?",
   createCategory_cancel: "Annuler",
   createCategory_submit: "Sauvegarder",
-  liveEvent_createEvent_button_text: "Nouvel Événement",
+  liveEvent_createEvent_button_text: "Créer un Événement",
   liveEvent_noEvent_text: "Aucun événement trouvé.",
   liveEvent_filterEvents_placeholder: "Filtrer les événements...",
   infocard_courses: "Cours",

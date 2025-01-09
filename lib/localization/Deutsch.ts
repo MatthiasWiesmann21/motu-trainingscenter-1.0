@@ -296,7 +296,7 @@ export const Deutch: Record<string, string> = {
     createCategory_form_description: "Was werden Sie auf Ihrer Plattform kategorisieren?",
     createCategory_cancel: "Abbrechen",
     createCategory_submit: "Speichern",
-    liveEvent_createEvent_button_text: "Event Erstellen",
+    liveEvent_createEvent_button_text: "Event erstellen",
     liveEvent_noEvent_text: "Keine Events gefunden.",
     liveEvent_filterEvents_placeholder: "Events filtern...",
     infocard_courses: "Kurse",
