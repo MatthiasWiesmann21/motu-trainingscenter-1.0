@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { PlusCircle, File, Loader2, X } from 'lucide-react';
+import { PlusCircle, File, Loader2, X, Pencil } from 'lucide-react';
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -33,10 +33,16 @@ export const AttachmentForm = ({
 }: AttachmentFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const currentLanguage = useLanguage();
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = () => {
+    setIsEditing((current) => !current);
+    setEditingId(null);
+    setName("");
+    setUrl("");
+  };
 
   const router = useRouter();
 
@@ -49,15 +55,21 @@ export const AttachmentForm = ({
         throw new Error(result.error.message);
       }
       
-      await axios.post(
-        `/api/courses/${courseId}/chapters/${chapterId}/attachments`,
-        values
-      );
-      toast.success("Attachment created");
+      if (editingId) {
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/attachments/${editingId}`,
+          values
+        );
+        toast.success("Attachment updated");
+      } else {
+        await axios.post(
+          `/api/courses/${courseId}/chapters/${chapterId}/attachments`,
+          values
+        );
+        toast.success("Attachment created");
+      }
       toggleEdit();
       router.refresh();
-      setName("");
-      setUrl("");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong");
     }
@@ -78,23 +90,38 @@ export const AttachmentForm = ({
     }
   };
 
+  const onEdit = (attachment: Attachment) => {
+    setEditingId(attachment.id);
+    setName(attachment.name);
+    setUrl(attachment.url);
+    setIsEditing(true);
+  };
+
   return (
     <Card className="my-4 w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between text-xl">
           <div>{currentLanguage.course_attachmentForm_title}</div>
-          <Button
-            onClick={toggleEdit}
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0"
-          >
-            {isEditing ? (
-              <X className="h-4 w-4" />
-            ) : (
+          {!isEditing && (
+            <Button
+              onClick={toggleEdit}
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+            >
               <PlusCircle className="h-4 w-4" />
-            )}
-          </Button>
+            </Button>
+          )}
+          {isEditing && (
+            <Button
+              onClick={toggleEdit}
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -113,16 +140,24 @@ export const AttachmentForm = ({
                   >
                     <File className="mr-2 h-4 w-4 flex-shrink-0" />
                     <p className="line-clamp-1 text-xs">{attachment.name}</p>
-                    {deletingId === attachment.id ? (
-                      <Loader2 className="ml-auto h-4 w-4 animate-spin" />
-                    ) : (
+                    <div className="ml-auto flex items-center gap-2">
                       <button
-                        onClick={() => onDelete(attachment.id)}
-                        className="ml-auto transition hover:opacity-75"
+                        onClick={() => onEdit(attachment)}
+                        className="transition hover:opacity-75"
                       >
-                        <X className="h-4 w-4" />
+                        <Pencil className="h-4 w-4" />
                       </button>
-                    )}
+                      {deletingId === attachment.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <button
+                          onClick={() => onDelete(attachment.id)}
+                          className="transition hover:opacity-75"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -142,16 +177,33 @@ export const AttachmentForm = ({
             </div>
             <div>
               <Label htmlFor="file">{currentLanguage.course_attachmentForm_file}</Label>
-              <FileUpload
-                endpoint="chapterAttachment"
-                onChange={(uploadedUrl) => {
-                  if (uploadedUrl) {
-                    setUrl(uploadedUrl);
-                  }
-                }}
-              />
+              {!editingId && (
+                <FileUpload
+                  endpoint="chapterAttachment"
+                  onChange={(uploadedUrl) => {
+                    if (uploadedUrl) {
+                      setUrl(uploadedUrl);
+                    }
+                  }}
+                />
+              )}
+              {editingId && (
+                <div className="flex items-center gap-2">
+                  <Input value={url} disabled />
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setUrl("");
+                      setEditingId(null);
+                    }}
+                    size="sm"
+                  >
+                    {currentLanguage.course_attachmentForm_changeFile}
+                  </Button>
+                </div>
+              )}
             </div>
-            <Button onClick={onSubmit} disabled={!name || !url}>
+            <Button onClick={onSubmit} disabled={!name || (!url && !editingId)}>
               {currentLanguage.course_attachmentForm_submit}
             </Button>
             <div className="text-xs text-muted-foreground">

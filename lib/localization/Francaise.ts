@@ -841,6 +841,6 @@ export const Francaise: Record<string, string> = {
   chapters_durationForm_minutesLabel: "Minutes",
   course_attachmentForm_name: "Nom de l'attachment",
   course_attachmentForm_file: "Fichier d'attachment",
-  course_attachmentForm_submit: "Créer l'attachment",
+  course_attachmentForm_submit: "Sauvegarder",
   course_attachmentForm_namePlaceholder: "Entrez le nom de l'attachment",
 };

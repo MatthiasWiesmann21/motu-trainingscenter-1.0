@@ -801,4 +801,6 @@ export const Deutch: Record<string, string> = {
     course_attachmentForm_file: "Anhang Datei",
     course_attachmentForm_submit: "Erstellen",
     course_attachmentForm_namePlaceholder: "Anhang Name eingeben",
-    };    
+    course_attachmentForm_update: "Aktualisieren",
+    };
+    

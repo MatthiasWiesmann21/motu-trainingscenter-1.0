@@ -831,6 +831,6 @@ export const Italiano: Record<string, string> = {
   chapters_durationForm_minutesLabel: "Minuti",
   course_attachmentForm_name: "Nome dell'Allegato",
   course_attachmentForm_file: "File Allegato",
-  course_attachmentForm_submit: "Crea Allegato",
+  course_attachmentForm_submit: "Salva",
   course_attachmentForm_namePlaceholder: "Inserisci il nome dell'allegato",
 };

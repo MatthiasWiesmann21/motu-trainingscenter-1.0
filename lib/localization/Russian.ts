@@ -826,8 +826,8 @@ export const Russian: Record<string, string> = {
   course_durationForm_minutes: "Минут",
   chapters_durationForm_hoursLabel: "Часов",
   chapters_durationForm_minutesLabel: "Минут",
-  course_attachmentForm_name: "Название вложения",
+  course_attachmentForm_name: "Имя вложения",
   course_attachmentForm_file: "Файл вложения",
-  course_attachmentForm_submit: "Создать вложение",
-  course_attachmentForm_namePlaceholder: "Введите название вложения",
+  course_attachmentForm_submit: "Сохранить",
+  course_attachmentForm_namePlaceholder: "Введите имя вложения",
 };
