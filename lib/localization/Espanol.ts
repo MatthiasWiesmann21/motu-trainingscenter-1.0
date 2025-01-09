@@ -841,4 +841,5 @@ export const Espanol: Record<string, string> = {
   course_attachmentForm_file: "Archivo del Anexo",
   course_attachmentForm_submit: "Guardar",
   course_attachmentForm_namePlaceholder: "Ingrese el nombre del anexo",
+  course_attachmentForm_changeFile: "Cambiar Archivo",
 };

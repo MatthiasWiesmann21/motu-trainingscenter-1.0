@@ -830,4 +830,5 @@ export const Russian: Record<string, string> = {
   course_attachmentForm_file: "Файл вложения",
   course_attachmentForm_submit: "Сохранить",
   course_attachmentForm_namePlaceholder: "Введите имя вложения",
+  course_attachmentForm_changeFile: "Изменить вложение",
 };

@@ -833,4 +833,5 @@ export const Italiano: Record<string, string> = {
   course_attachmentForm_file: "File Allegato",
   course_attachmentForm_submit: "Salva",
   course_attachmentForm_namePlaceholder: "Inserisci il nome dell'allegato",
+  course_attachmentForm_changeFile: "Cambia File",
 };

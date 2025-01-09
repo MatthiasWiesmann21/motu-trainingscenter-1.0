@@ -843,4 +843,5 @@ export const Francaise: Record<string, string> = {
   course_attachmentForm_file: "Fichier d'attachment",
   course_attachmentForm_submit: "Sauvegarder",
   course_attachmentForm_namePlaceholder: "Entrez le nom de l'attachment",
+  course_attachmentForm_changeFile: "Changer de fichier",
 };
