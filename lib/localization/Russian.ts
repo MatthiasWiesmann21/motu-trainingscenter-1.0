@@ -831,4 +831,12 @@ export const Russian: Record<string, string> = {
   course_attachmentForm_submit: "Сохранить",
   course_attachmentForm_namePlaceholder: "Введите имя вложения",
   course_attachmentForm_changeFile: "Изменить вложение",
+  level_beginner: "Новичок",
+  level_intermediate: "Средний",
+  level_advanced: "Продвинутый",
+  level_expert: "Эксперт",
+  level_master: "Мастер",
+  banned: "Забанен",
+  not_banned: "Не забанен",
+  courses_setup_edit_chapter: "Редактировать раздел",
 };

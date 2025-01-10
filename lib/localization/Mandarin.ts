@@ -809,4 +809,12 @@ export const Mandarin: Record<string, string> = {
   course_attachmentForm_submit: "保存",
   course_attachmentForm_namePlaceholder: "输入附件名称",
   course_attachmentForm_changeFile: "更改附件",
+  level_beginner: "初级",
+  level_intermediate: "中级",
+  level_advanced: "高级",
+  level_expert: "专家",
+  level_master: "大师",
+  banned: "禁止",
+  not_banned: "未禁止",
+  courses_setup_edit_chapter: "编辑章节",
 };

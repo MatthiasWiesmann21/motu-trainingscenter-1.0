@@ -800,4 +800,12 @@ export const English: Record<string, string> = {
     course_attachmentForm_submit: "Save",
     course_attachmentForm_namePlaceholder: "Enter attachment name",
     course_attachmentForm_changeFile: "Change Attachment",
+    level_beginner: "Beginner",
+    level_intermediate: "Intermediate",
+    level_advanced: "Advanced",
+    level_expert: "Expert",
+    level_master: "Master",
+    banned: "Banned",
+    not_banned: "not Banned",
+    courses_setup_edit_chapter: "Edit Chapter",
     };    

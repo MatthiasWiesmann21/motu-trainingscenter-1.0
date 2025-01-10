@@ -801,6 +801,14 @@ export const Deutch: Record<string, string> = {
     course_attachmentForm_file: "Anhang Datei",
     course_attachmentForm_submit: "Erstellen",
     course_attachmentForm_namePlaceholder: "Anhang Name eingeben",
-    course_attachmentForm_changeFile: "Anhang Datei ändern",
-    };
-    
+    course_attachmentForm_update: "Aktualisieren",
+    course_attachmentForm_changeFile: "Anhang ändern",
+    level_beginner: "Beginner",
+    level_intermediate: "Mittel",
+    level_advanced: "Fortgeschritten",
+    level_expert: "Experte",
+    level_master: "Meister",
+    banned: "Gesperrt",
+    not_banned: "nicht gesperrt",
+    courses_setup_edit_chapter: "Kapitel bearbeiten",
+    };    

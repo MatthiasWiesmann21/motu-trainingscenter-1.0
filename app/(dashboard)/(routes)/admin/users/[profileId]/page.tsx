@@ -102,8 +102,8 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
               initialData={profile}
               profileId={profile.id}
               options={[
-                { label: "BANNED", value: "BANNED" },
-                { label: "NOT BANNED", value: "NOT BANNED" },
+                { label: `${currentLanguage.banned}`, value: "BANNED" },
+                { label: `${currentLanguage.not_banned}`, value: "NOT BANNED" },
               ]}
             />
           </div>

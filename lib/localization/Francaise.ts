@@ -844,4 +844,12 @@ export const Francaise: Record<string, string> = {
   course_attachmentForm_submit: "Sauvegarder",
   course_attachmentForm_namePlaceholder: "Entrez le nom de l'attachment",
   course_attachmentForm_changeFile: "Changer de fichier",
+  level_beginner: "Débutant",
+  level_intermediate: "Intermédiaire",
+  level_advanced: "Avancé",
+  level_expert: "Expert",
+  level_master: "Maître",
+  banned: "Banni",
+  not_banned: "pas banni",
+  courses_setup_edit_chapter: "Éditer le Chapitre",
 };

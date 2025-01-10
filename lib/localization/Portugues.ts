@@ -836,4 +836,12 @@ export const Portugues: Record<string, string> = {
   course_attachmentForm_submit: "Salvar",
   course_attachmentForm_namePlaceholder: "Digite o nome do anexo",
   course_attachmentForm_changeFile: "Alterar Arquivo",
+  level_beginner: "Iniciante",
+  level_intermediate: "Intermediário",
+  level_advanced: "Avançado",
+  level_expert: "Experto",
+  level_master: "Mestre",
+  banned: "Cancelado",
+  not_banned: "Não Cancelado",
+  courses_setup_edit_chapter: "Editar Capítulo",
 };

@@ -164,11 +164,11 @@ const CourseIdPage = async ({
               initialData={course}
               courseId={course.id}
               options={[
-                { label: "Beginner", value: "Beginner" },
-                { label: "Intermediate", value: "Intermediate" },
-                { label: "Advanced", value: "Advanced" },
-                { label: "Expert", value: "Expert" },
-                { label: "Master", value: "Master" },
+                { label: `${currentLanguage.level_beginner}`, value: "Beginner" },
+                { label: `${currentLanguage.level_intermediate}`, value: "Intermediate" },
+                { label: `${currentLanguage.level_advanced}`, value: "Advanced" },
+                { label: `${currentLanguage.level_expert}`, value: "Expert" },
+                { label: `${currentLanguage.level_master}`, value: "Master" },
               ]}
             />
             <SpecialTypeForm
