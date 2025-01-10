@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, containerId } = await request.json();
+    const { name, email, password, container } = await request.json();
     if (!name || !email || !password) {
       throw "Please provide all fields";
     }
@@ -26,8 +26,12 @@ export async function POST(request: Request) {
       expiresIn: "24h",
     });
 
-    if (!containerId) {
+    if (!container?.id) {
       throw Error ("Container not found for this domain");
+    }
+
+    if (!container?.active) {
+      
     }
 
     console.log("Token created for registration", token);
@@ -38,7 +42,7 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
         token,
-        containerId: containerId!,
+        containerId: container?.id,
         imageUrl: "",
         isOnline: "Online",
         isBanned: "NOT BANNED",
