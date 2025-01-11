@@ -20,12 +20,13 @@ export const columns: ColumnDef<Course>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          {currentLanguage.data_table_title}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -34,12 +35,13 @@ export const columns: ColumnDef<Course>[] = [
   {
     accessorKey: "price",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price
+          {currentLanguage.data_table_price}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -57,25 +59,27 @@ export const columns: ColumnDef<Course>[] = [
   {
     accessorKey: "isPublished",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Published
+          {currentLanguage.data_table_published}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
       const isPublished = row.getValue("isPublished") || false;
+      const currentLanguage = useLanguage();
 
       return (
         <Badge className={cn(
           "bg-slate-500",
           isPublished && "bg-sky-700"
         )}>
-          {isPublished ? "Published" : "Draft"}
+          {isPublished ? `${currentLanguage.data_table_published}` : `${currentLanguage.data_table_draft}`}
         </Badge>
       )
     }
@@ -84,6 +88,7 @@ export const columns: ColumnDef<Course>[] = [
     id: "actions",
     cell: ({ row }) => {
       const { id } = row.original;
+      const currentLanguage = useLanguage();
 
       return (
         <DropdownMenu>
@@ -97,7 +102,7 @@ export const columns: ColumnDef<Course>[] = [
             <Link href={`/admin/courses/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="h-4 w-4 mr-2" />
-                Edit
+                {currentLanguage.data_table_edit}
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
