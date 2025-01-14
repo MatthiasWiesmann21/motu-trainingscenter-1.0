@@ -49,29 +49,43 @@ const PolygonChart = ({
     fetchCoursesProgress();
   }, []);
 
-  const progressArray = courses?.map(
-    (each: any) =>
-      each?.chapters?.reduce(
-        (acc: any, val: any) => acc + (val?.userProgress[0]?.progress || 0),
-        0
-      ) / each?.chapters?.length
-  );
+  const progressArray = courses?.map((course: any) => {
+    // Only consider courses that have been purchased
+    if (!course.purchases?.length) return null;
+    
+    // Calculate progress for each chapter
+    const chapterProgresses = course.chapters.map((chapter: any) => {
+      const progress = chapter.userProgress?.[0]?.isCompleted ? 100 : (chapter.userProgress?.[0]?.progress || 0);
+      return progress;
+    });
+    
+    // Course is completed if all chapters are completed
+    const isAllCompleted = chapterProgresses.every((progress: number) => progress === 100);
+    if (isAllCompleted) return 100;
+    
+    // Calculate average progress if not completed
+    const totalProgress = chapterProgresses.reduce((acc: number, val: number) => acc + val, 0);
+    return Math.round(totalProgress / course.chapters.length);
+    // @ts-ignore
+  }).filter(progress => progress !== null);
 
   const inProgress = Math.round(
     (progressArray.filter((val: number) => val > 0 && val < 100)?.length /
       progressArray?.length) *
       100
-  );
+  ) || 0;
+
   const notStarted = Math.round(
     (progressArray.filter((val: number) => val === 0)?.length /
       progressArray?.length) *
       100
-  );
+  ) || 0;
+
   const completed = Math.round(
     (progressArray.filter((val: number) => val === 100)?.length /
       progressArray?.length) *
       100
-  );
+  ) || 0;
 
   const chartData = [
     {
