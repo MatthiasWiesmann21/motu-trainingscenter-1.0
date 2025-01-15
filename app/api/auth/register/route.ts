@@ -30,8 +30,15 @@ export async function POST(request: Request) {
       throw Error ("Container not found for this domain");
     }
 
-    if (!container?.active) {
-      
+    // Get container details including default language
+    const containerDetails = await db.container.findUnique({
+      where: {
+        id: container.id
+      }
+    });
+
+    if (!containerDetails?.active) {
+      throw Error ("Container is not active");
     }
 
     console.log("Token created for registration", token);
@@ -42,10 +49,11 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
         token,
-        containerId: container?.id,
+        containerId: container.id,
         imageUrl: "",
         isOnline: "Online",
         isBanned: "NOT BANNED",
+        language: containerDetails.defaultLanguage || "en", // Use container's default language or fallback to "en"
       },
     });
 

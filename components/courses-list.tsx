@@ -5,7 +5,7 @@ import { useLanguage } from "@/lib/check-language";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { NewspaperIcon, PlusCircle } from "lucide-react";
+import { EyeOff, NewspaperIcon, PlusCircle } from "lucide-react";
 import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_components/courseFavorite-card";
 import { Separator } from "./ui/separator";
 import axios from "axios";
@@ -63,8 +63,11 @@ export const CoursesList = ({
         />
       ))}
       {items.length === 0 && (
-        <div className="mt-10 text-center text-sm text-muted-foreground">
-          {currentLanguage?.no_courses}
+        <div className="mt-10 flex flex-col items-center justify-center text-sm text-muted-foreground">
+          <EyeOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+          <p className="text-md mt-2 font-medium">
+            {currentLanguage.no_courses}
+          </p>
         </div>
       )}
     </div>

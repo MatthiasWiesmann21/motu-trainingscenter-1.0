@@ -865,4 +865,5 @@ export const Francaise: Record<string, string> = {
   data_table_edit: "Éditer",
   data_table_draft: "Brouillon",
   data_table_locale: "fr-FR",
+  dashboard_popularCHapter_noFavorites: "Aucun chapitre favori pour le moment",
 };

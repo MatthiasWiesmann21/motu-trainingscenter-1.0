@@ -78,7 +78,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
               isPublished: true
             }
           }
-        }
+        },
       },
     },
   });
@@ -91,23 +91,27 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           courses={existingCourses}
           isFrontend
         />
+        <div className="flex gap-2 mb-2 max-w-3xl mx-auto lg:ml-auto lg:mr-0">
+          <Link
+            className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            href={"/search/favourite-courses"}
+            >
+            {currentLanguage.dashboard_courseTable_viewMyFavourties_button_text}
+          </Link>
+          <Link
+            className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            href={"/dashboard/favourite-chapters"}
+            >
+            {currentLanguage.dashboard_courseTable_viewMyFavouriteChapters_button_text || "Favorite Chapters"}
+          </Link>
+        </div>
         <div className="flex w-full">
-          <div className="w-full lg:w-[85%]">
+          <div className="w-full">
           <Categories
             items={categoriesWithCourseCounts}
             ThemeColor={container?.ThemeColor!}
             DarkThemeColor={container?.DarkThemeColor!}
           />
-          </div>
-          <div className="hidden lg:block w-[15%] items-center justify-center">
-          <Link
-            className="w-full h-8 mt-1 flex items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
-            href={"/search/favourite-courses"}
-            >
-            {
-              currentLanguage.dashboard_courseTable_viewMyFavourties_button_text
-            }
-          </Link>
           </div>
         </div>
         <CoursesList

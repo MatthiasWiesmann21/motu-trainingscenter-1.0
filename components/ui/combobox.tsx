@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/popover"
 
 interface ComboboxProps {
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; color?: string }[];
   value?: string;
   onChange: (value: string) => void;
 };
@@ -27,7 +27,7 @@ interface ComboboxProps {
 export const Combobox = ({
   options,
   value,
-  onChange
+  onChange,
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false)
 
@@ -65,6 +65,12 @@ export const Combobox = ({
                     value === option.value ? "opacity-100" : "opacity-0"
                   )}
                 />
+                {option.color && (
+                  <div
+                    className="h-3 w-3 mr-2 rounded-full"
+                    style={{ backgroundColor: option.color }}
+                  ></div>
+                )}
                 {option.label}
               </CommandItem>
             ))}

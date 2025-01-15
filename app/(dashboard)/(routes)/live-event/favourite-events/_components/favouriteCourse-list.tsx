@@ -6,7 +6,7 @@ import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_compon
 import { Separator } from "@/components/ui/separator";
 import { CourseCard } from "@/components/course-card";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, VideoOff } from "lucide-react";
 import { EventCard } from "@/components/events-card";
 import GoBackButton from "@/components/goBackButton";
 
@@ -45,7 +45,7 @@ export const FavouriteEventsList = ({
       {/* My Favorites Section (hidden on mobile) */}
       <div>
         {Favorites?.length > 0 && (
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {Favorites?.map((item) => (
               <EventCard
                 key={item.id}
@@ -66,9 +66,12 @@ export const FavouriteEventsList = ({
           </div>
         )}
         {items.length === 0 && (
-          <div className="mt-10 text-center text-sm text-muted-foreground">
+          <div className="mt-10 flex flex-col items-center justify-center text-sm text-muted-foreground">
+          <VideoOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+          <p className="mt-2 text-md font-medium">
             {currentLanguage.no_events_found}
-          </div>
+          </p>
+        </div>
         )}
       </div>
     </div>

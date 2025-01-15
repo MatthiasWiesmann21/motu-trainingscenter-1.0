@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input";
 
 interface DarkTextColorFormProps {
   initialData: {
+    colorCode: string;
+    textColorCode: string;
     darkTextColorCode: string;
   };
   categoryId: string;
@@ -55,7 +57,13 @@ export const DarkTextColorForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/category/${categoryId}`, values);
+      // Preserve existing colors when updating the dark text color
+      const updateData = {
+        colorCode: initialData.colorCode,
+        textColorCode: initialData.textColorCode,
+        darkTextColorCode: values.darkTextColorCode,
+      };
+      await axios.patch(`/api/category/${categoryId}`, updateData);
       toast.success("Category updated");
       toggleEdit();
       router.refresh();

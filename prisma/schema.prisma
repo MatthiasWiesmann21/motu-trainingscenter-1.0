@@ -16,9 +16,10 @@ model Container {
   domain        String? @unique
   clientMail    String? @db.Text
   link          String? @db.Text
-  icon          String? @db.Text
-  imageUrl      String? @db.Text
-  imageUrlDark  String? @db.Text
+  defaultLanguage String? @default("en")
+  icon          String? @default("https://utfs.io/f/ba857523-9c9e-4f38-8069-5cfdccbe03c3-m8j6ml.png")
+  imageUrl      String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  imageUrlDark  String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
   clientPackage String? @db.Text
   maxCourses    Int?    @default(0)
 
@@ -33,14 +34,14 @@ model Container {
   ThemeColor     String? @default("#e72192")
   DarkThemeColor String? @default("#e72192")
 
-  signUpImageUrl     String? @db.Text
-  darkSignUpImageUrl String? @db.Text
+  signUpImageUrl     String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkSignUpImageUrl String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
-  signInImageUrl     String? @db.Text
-  darkSignInImageUrl String? @db.Text
+  signInImageUrl     String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkSignInImageUrl String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
-  forgetPasswordImageUrl     String? @db.Text
-  darkForgetPasswordImageUrl String? @db.Text
+  forgetPasswordImageUrl     String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkForgetPasswordImageUrl String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
   courses    Course[]
   categories Category[]
@@ -89,6 +90,7 @@ enum SubscriptionType {
 model Profile {
   id                    String           @id @default(cuid())
   userId                String           @db.Text
+  stripeCustomerId      String?          @default("")
   name                  String?          @db.Text
   imageUrl              String           @db.Text
   email                 String           @db.Text
@@ -101,6 +103,11 @@ model Profile {
   isBanned              String           @default("NOT BANNED")
   acceptedPrivacyPolicy Boolean          @default(false)
   subscriptionType      SubscriptionType @default(NONE)
+  stripeSubscriptionId  String?          @db.Text // Add this field
+  stripePriceId         String?          @db.Text // Add this field
+  paymentIntentId       String?          @db.Text // Add this field
+  productId             String?          @db.Text // Add this field
+  subscriptionEndDate   String?          @db.Text // Add this field
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
@@ -250,10 +257,9 @@ model Category {
 }
 
 model Attachment {
-  id          String @id @default(uuid())
-  name        String @db.Text
-  url         String @db.Text
-  contentType String
+  id   String @id @default(uuid())
+  name String @db.Text
+  url  String @db.Text
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
@@ -284,10 +290,10 @@ model Chapter {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  attachments  Attachment[]
-  comments     Comment[]
-  likes        Like[]
-  favorites    Favorite[]
+  attachments Attachment[]
+  comments  Comment[]
+  likes     Like[]
+  favorites Favorite[]
 
   @@index([courseId])
 }

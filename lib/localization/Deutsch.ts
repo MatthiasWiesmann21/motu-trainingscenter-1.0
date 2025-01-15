@@ -824,4 +824,5 @@ export const Deutch: Record<string, string> = {
     data_table_edit: "Bearbeiten",
     data_table_draft: "Entwurf",
     data_table_locale: "de-DE",
+    dashboard_popularCHapter_noFavorites: "Noch keine Favoriten",
     };    

@@ -821,4 +821,5 @@ export const English: Record<string, string> = {
     data_table_edit: "Edit",
     data_table_draft: "Draft",
     data_table_locale: "en-US",
+    dashboard_popularCHapter_noFavorites: "No favorite chapters yet",
     };    

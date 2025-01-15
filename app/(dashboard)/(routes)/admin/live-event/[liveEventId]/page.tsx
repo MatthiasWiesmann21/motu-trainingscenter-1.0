@@ -129,6 +129,7 @@ const LiveEventIdPage = async ({
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
+                color: category.colorCode,
               }))}
             />
             <UsergroupForm

@@ -857,4 +857,5 @@ export const Portugues: Record<string, string> = {
   data_table_edit: "Editar",
   data_table_draft: "Rascunho",
   data_table_locale: "pt-BR",
+  dashboard_popularCHapter_noFavorites: "Nenhum capítulo favorito ainda",
 };

@@ -830,4 +830,5 @@ export const Mandarin: Record<string, string> = {
   data_table_edit: "编辑",
   data_table_draft: "草稿",
   data_table_locale: "zh-CN",
+  dashboard_popularCHapter_noFavorites: "还没有喜欢的章节",
 };

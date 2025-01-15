@@ -852,4 +852,5 @@ export const Russian: Record<string, string> = {
   data_table_edit: "Редактировать",
   data_table_draft: "Черновик",
   data_table_locale: "ru-RU",
+  dashboard_popularCHapter_noFavorites: "Пока нет любимых разделов",
 };

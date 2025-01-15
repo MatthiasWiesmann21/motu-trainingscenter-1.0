@@ -39,9 +39,9 @@ export const ServerSection = ({
         >
           <button
             onClick={() => onOpen("createChannel", { channelType })}
-            className="items-center justify-center rounded-full bg-[#e7e7e9] p-1 transition-all duration-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-500"
+            className="items-center justify-center rounded-md bg-slate-200 p-1 transition-all duration-300 hover:bg-slate-300 dark:bg-zinc-700/75 dark:hover:bg-zinc-700"
           >
-            <Plus className="h-3 w-3 text-zinc-400 hover:text-white dark:text-zinc-300 dark:hover:text-zinc-300" />
+            <Plus className="h-3 w-3 text-slate-600 hover:text-slate-700 dark:text-slate-300 dark:hover:text-white" />
           </button>
         </ActionTooltip>
       )}
@@ -52,9 +52,9 @@ export const ServerSection = ({
         >
           <button
             onClick={() => onOpen("members", { server })}
-            className="items-center justify-center rounded-full bg-[#e7e7e9] p-1 transition-all duration-300 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-500"
+            className="items-center justify-center rounded-md bg-slate-200 p-1 transition-all duration-300 hover:bg-slate-300 dark:bg-zinc-700/75 dark:hover:bg-zinc-700"
           >
-            <Settings className="h-4 w-4 text-zinc-400 hover:text-white dark:text-zinc-300 dark:hover:text-zinc-300" />
+            <Settings className="h-4 w-4 text-slate-600 hover:text-slate-700 dark:text-slate-300 dark:hover:text-white" />
           </button>
         </ActionTooltip>
       )}

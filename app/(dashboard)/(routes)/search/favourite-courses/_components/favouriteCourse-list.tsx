@@ -6,7 +6,7 @@ import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_compon
 import { Separator } from "@/components/ui/separator";
 import { CourseCard } from "@/components/course-card";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, EyeOff } from "lucide-react";
 import GoBackButton from "@/components/goBackButton";
 
 interface CoursesListProps {
@@ -71,8 +71,11 @@ export const FavouriteCoursesList = ({
           </div>
         )}
         {items.length === 0 && (
-          <div className="mt-10 text-center text-sm text-muted-foreground">
-            {currentLanguage?.no_courses}
+          <div className="mt-10 flex flex-col items-center justify-center text-sm text-muted-foreground">
+            <EyeOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+            <p className="text-md mt-2 font-medium">
+              {currentLanguage.no_courses}
+            </p>
           </div>
         )}
       </div>
