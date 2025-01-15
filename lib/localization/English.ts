@@ -822,4 +822,5 @@ export const English: Record<string, string> = {
     data_table_draft: "Draft",
     data_table_locale: "en-US",
     dashboard_popularCHapter_noFavorites: "No favorite chapters yet",
+    settings_defaultLanguage_title: "Default Language",
     };    

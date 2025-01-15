@@ -13,6 +13,7 @@ import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { isOwner } from "@/lib/owner";
 import Link from "next/link";
 import authOptions from "@/lib/auth"; // Make sure this is configured correctly
+import { DefaultLanguageForm } from "./_components/defaultLanguage-form";
 
 const ContainerSettingsPage = async () => {
     const session = await getServerSession(authOptions);
@@ -85,6 +86,10 @@ const ContainerSettingsPage = async () => {
                     </div>
                     <LinkForm
                         initialData={{ link: container.link || "" }}
+                        containerId={container.id}
+                    />
+                    <DefaultLanguageForm
+                        initialData={{ defaultLanguage: container.defaultLanguage || "" }}
                         containerId={container.id}
                     />
                     <ImageFormIcon

@@ -856,4 +856,5 @@ export const Italiano: Record<string, string> = {
   data_table_draft: "Bozza",
   data_table_locale: "it-IT",
   dashboard_popularCHapter_noFavorites: "Nessun capitolo preferito",
+  settings_defaultLanguage_title: "Idioma por Defecto",
 };
