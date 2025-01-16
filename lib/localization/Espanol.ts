@@ -863,6 +863,11 @@ export const Espanol: Record<string, string> = {
   data_table_edit: "Editar",
   data_table_draft: "Borrador",
   data_table_locale: "es-ES",
-  dashboard_popularCHapter_noFavorites: "No hay capitulos favoritos",
+  dashboard_popularCHapter_noFavorites: "No hay capítulos favoritos todavía",
   settings_defaultLanguage_title: "Idioma por Defecto",
+  post_setup_advertise_title: "Anunciar tu Publicación",
+  post_LiveEventForm_noLiveEvent: "No hay evento en vivo seleccionado",
+  post_LiveEventForm_title: "Evento en Vivo",
+  post_CourseForm_noCourse: "No hay curso seleccionado",
+  post_CourseForm_title: "Curso",
 };

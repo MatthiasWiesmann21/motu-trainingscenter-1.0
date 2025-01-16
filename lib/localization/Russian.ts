@@ -854,4 +854,9 @@ export const Russian: Record<string, string> = {
   data_table_locale: "ru-RU",
   dashboard_popularCHapter_noFavorites: "Пока нет любимых разделов",
   settings_defaultLanguage_title: "Язык по умолчанию",
+  post_setup_advertise_title: "Рекламируйте свою запись",
+  post_LiveEventForm_noLiveEvent: "Не выбрано ни одного прямого эфира",
+  post_LiveEventForm_title: "Прямой эфир",
+  post_CourseForm_noCourse: "Курс не выбран",
+  post_CourseForm_title: "Курс",
 };

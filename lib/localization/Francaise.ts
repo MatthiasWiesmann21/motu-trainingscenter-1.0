@@ -867,4 +867,9 @@ export const Francaise: Record<string, string> = {
   data_table_locale: "fr-FR",
   dashboard_popularCHapter_noFavorites: "Aucun chapitre favori pour le moment",
   settings_defaultLanguage_title: "Langue par défaut",
+  post_setup_advertise_title: "Annoncez votre Publication", 
+  post_LiveEventForm_noLiveEvent: "Aucun événement en direct sélectionné",
+  post_LiveEventForm_title: "Événement en Direct",
+  post_CourseForm_noCourse: "Aucun cours sélectionné",
+  post_CourseForm_title: "Cours",
 };

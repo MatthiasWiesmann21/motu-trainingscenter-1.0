@@ -826,4 +826,9 @@ export const Deutch: Record<string, string> = {
     data_table_locale: "de-DE",
     dashboard_popularCHapter_noFavorites: "Noch keine Favoriten",
     settings_defaultLanguage_title: "Standard Sprache",
+    post_setup_advertise_title: "Ihre Anzeige verwerfen",
+    post_LiveEventForm_noLiveEvent: "Kein Live-Event ausgewählt",
+    post_LiveEventForm_title: "Live-Event",
+    post_CourseForm_noCourse: "Kein Kurs ausgewählt",
+    post_CourseForm_title: "Kurs",
     };    

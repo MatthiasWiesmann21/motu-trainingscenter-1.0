@@ -216,6 +216,7 @@ model Course {
   usergroupId String?
   usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
 
+  posts       Post[]
   chapters    Chapter[]
   purchases   Purchase[]
   favorites   Favorite[]
@@ -409,6 +410,12 @@ model Post {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id])
+
+  liveEventId String?
+  liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+
   usergroupId String?
   usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
 
@@ -422,10 +429,10 @@ model Post {
   @@index([categoryId])
   @@index([usergroupId])
   @@index([containerId])
+  @@index([courseId])
+  @@index([liveEventId])
   @@fulltext([title])
 }
-
-// TODO: Live Event Models
 
 model LiveEvent {
   id           String   @id @default(uuid())
@@ -449,6 +456,8 @@ model LiveEvent {
 
   comments  Comment[]
   favorites Favorite[]
+  posts     Post[]
+  likes     Like[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -456,7 +465,6 @@ model LiveEvent {
   startDateTime DateTime?
   endDateTime   DateTime?
 
-  likes Like[]
 
   @@index([categoryId])
   @@index([usergroupId])

@@ -832,4 +832,9 @@ export const Mandarin: Record<string, string> = {
   data_table_locale: "zh-CN",
   dashboard_popularCHapter_noFavorites: "还没有喜欢的章节",
   settings_defaultLanguage_title: "默认语言",
+  post_setup_advertise_title: "宣传您的帖子",
+  post_LiveEventForm_noLiveEvent: "未选择直播活动",
+  post_LiveEventForm_title: "直播活动",
+  post_CourseForm_noCourse: "未选择课程",
+  post_CourseForm_title: "课程",
 };

@@ -823,4 +823,9 @@ export const English: Record<string, string> = {
     data_table_locale: "en-US",
     dashboard_popularCHapter_noFavorites: "No favorite chapters yet",
     settings_defaultLanguage_title: "Default Language",
-    };    
+    post_setup_advertise_title: "Advertise your Post",
+    post_LiveEventForm_noLiveEvent: "No live event selected",
+    post_LiveEventForm_title: "Live Event",
+    post_CourseForm_noCourse: "No course selected",
+    post_CourseForm_title: "Course",
+    };

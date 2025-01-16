@@ -56,16 +56,19 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
                 }}
                 className="flex items-center"
               >
-                {value === option.value ? (
-                  <Check className="mr-2 h-4 w-4" />
-                ) : null}
+                <Check
+                  className={cn(
+                    "mr-2",
+                    value === option.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {option.label}
                 {option.color && (
                   <div
-                    className="mr-2 h-3 w-3 rounded-full"
+                    className="ml-auto h-3 w-3 rounded-full"
                     style={{ backgroundColor: option.color }}
                   ></div>
                 )}
-                {option.label}
               </CommandItem>
             ))}
           </CommandGroup>
