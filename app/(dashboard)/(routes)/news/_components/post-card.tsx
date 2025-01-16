@@ -27,6 +27,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
+import { LinkedCourse } from "./linked-course";
+import { LinkedLiveEvent } from "./linked-live-event";
 
 interface PostCardProps {
   id: string;
@@ -47,6 +49,8 @@ interface PostCardProps {
   updateLikeComment: any;
   profileImage: string;
   currentProfileId: string;
+  courseId?: string;
+  liveEventId?: string;
 }
 
 export const PostCard = ({
@@ -67,6 +71,8 @@ export const PostCard = ({
   updateLikeComment,
   profileImage,
   currentProfileId,
+  courseId,
+  liveEventId,
 }: PostCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -203,6 +209,8 @@ export const PostCard = ({
               />
             </div>
           )}
+          {courseId && <LinkedCourse courseId={courseId} />}
+          {liveEventId && <LinkedLiveEvent eventId={liveEventId} />}
         </div>
         <LikeComment
           id={id}

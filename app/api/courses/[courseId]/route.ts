@@ -2,6 +2,59 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth";
+
+export async function GET(
+  req: Request,
+  { params }: { params: { courseId: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const course = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        containerId: session?.user?.profile?.containerId,
+      },
+      select: {
+        id: true,
+        title: true,
+        imageUrl: true,
+        duration: true,
+        level: true,
+        category: {
+          select: {
+            name: true,
+            colorCode: true,
+            textColorCode: true,
+          }
+        },
+        chapters: {
+          select: {
+            id: true,
+          }
+        }
+      },
+    });
+
+    if (!course) {
+      return new NextResponse("Not found", { status: 404 });
+    }
+
+    return NextResponse.json({
+      ...course,
+      chaptersCount: course.chapters.length,
+    });
+  } catch (error) {
+    console.log("[COURSE_ID_GET]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
 export async function DELETE(
   req: Request,
   { params }: { params: { courseId: string } }
