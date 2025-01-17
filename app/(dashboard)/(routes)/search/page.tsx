@@ -91,7 +91,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           courses={existingCourses}
           isFrontend
         />
-        <div className="flex gap-2 mb-2 max-w-3xl mx-auto lg:ml-auto lg:mr-0">
+        <div className="flex gap-2 mb-2 max-w-3xl mx-auto lg:mr-auto lg:ml-0">
           <Link
             className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
             href={"/search/favourite-courses"}

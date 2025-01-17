@@ -55,7 +55,7 @@ const EventFilterSidebar = ({
             borderColor: getPrimaryButtonColor(),
             backgroundColor: isViewAllHovered ? getPrimaryButtonColor() : "",
           }}
-          className="h-10 w-24 mt-1 ml-2 items-center justify-center rounded-full border-2 bg-transparent text-gray-700 transition duration-300 ease-in-out"
+          className="flex mt-1 ml-2 items-center justify-center rounded-full border-2 bg-transparent text-gray-700 transition duration-300 ease-in-out"
           variant="default"
           size="sm"
         >
@@ -70,7 +70,7 @@ const EventFilterSidebar = ({
             style={{
               color: isViewAllHovered ? "#ffffff" : "",
             }}
-            className="text-gray-800 dark:text-white duration-300 ease-in-out"
+            className="text-gray-800 dark:text-white duration-300 ease-in-out hidden sm:block"
           >
             {currentLanguage.live_event_filter_button_text}
           </p>

@@ -29,6 +29,7 @@ import toast from "react-hot-toast";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { LinkedCourse } from "./linked-course";
 import { LinkedLiveEvent } from "./linked-live-event";
+import { SeparatorHeading } from "./separator-heading";
 
 interface PostCardProps {
   id: string;
@@ -51,6 +52,8 @@ interface PostCardProps {
   currentProfileId: string;
   courseId?: string;
   liveEventId?: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const PostCard = ({
@@ -73,6 +76,8 @@ export const PostCard = ({
   currentProfileId,
   courseId,
   liveEventId,
+  ThemeColor,
+  DarkThemeColor,
 }: PostCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -209,8 +214,25 @@ export const PostCard = ({
               />
             </div>
           )}
-          {courseId && <LinkedCourse courseId={courseId} />}
-          {liveEventId && <LinkedLiveEvent eventId={liveEventId} />}
+          {(courseId || liveEventId) && (
+            <div className="mt-4">
+              <SeparatorHeading title="Linked Items" />
+            </div>
+          )}
+          {courseId && (
+            <LinkedCourse
+              courseId={courseId}
+              ThemeColor={ThemeColor}
+              DarkThemeColor={DarkThemeColor}
+            />
+          )}
+          {liveEventId && (
+            <LinkedLiveEvent
+              eventId={liveEventId}
+              ThemeColor={ThemeColor}
+              DarkThemeColor={DarkThemeColor}
+            />
+          )}
         </div>
         <LikeComment
           id={id}

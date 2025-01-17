@@ -226,6 +226,8 @@ export const EventCard = ({
                 title={title}
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
+                themeColor={ThemeColor}
+                darkThemeColor={DarkThemeColor}
               >
                 <Button
                   variant="ghost"

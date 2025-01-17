@@ -8,12 +8,15 @@ import "react-quill/dist/quill.bubble.css";
 import { Separator } from "./ui/separator";
 import moment from "moment";
 import { Clock, Clock8 } from "lucide-react";
+import { useTheme } from "next-themes";
 
 interface PreviewProps {
   value: string;
   startDateTime?: string;
   endDateTime?: string;
   isAdmin: boolean;
+  themeColor: string;
+  darkThemeColor: string;
 }
 
 export const EventPreview = ({
@@ -21,12 +24,19 @@ export const EventPreview = ({
   isAdmin,
   startDateTime,
   endDateTime,
+  themeColor,
+  darkThemeColor,
 }: PreviewProps) => {
   const ReactQuill = useMemo(
     () => dynamic(() => import("react-quill"), { ssr: false }),
     []
   );
   const currentLanguage = useLanguage();
+  const { theme } = useTheme();
+
+  const getThemeColor = () => {
+    return theme === "dark" ? darkThemeColor : themeColor;
+  };
 
   return (
     <div className="mt-2 rounded-lg border-2 bg-white px-2 py-2 dark:bg-[#0c0319]">
@@ -38,13 +48,13 @@ export const EventPreview = ({
           <Separator className="my-2" />
           <div className="my-2 grid grid-cols-2 items-start px-1">
             <div className="flex flex-row items-center gap-x-1">
-              <Clock className="h-6 w-6 text-slate-500 dark:text-slate-600" />
+              <Clock style={{ color: getThemeColor() }} className="h-6 w-6" />
               <p className="text-sm font-medium">{`Starts: ${moment(
                 startDateTime
               )?.format("DD-MM-YY HH:mm")}`}</p>
             </div>
             <div className="flex flex-row items-center gap-x-1">
-              <Clock8 className="h-6 w-6 text-slate-500 dark:text-slate-600" />
+              <Clock8 style={{ color: getThemeColor() }} className="h-6 w-6" />
               <p className="text-sm font-medium">{`Ends: ${moment(
                 endDateTime
               )?.format("DD-MM-YY HH:mm")}`}</p>

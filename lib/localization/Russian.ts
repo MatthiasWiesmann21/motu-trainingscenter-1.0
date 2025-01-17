@@ -859,4 +859,6 @@ export const Russian: Record<string, string> = {
   post_LiveEventForm_title: "Прямой эфир",
   post_CourseForm_noCourse: "Курс не выбран",
   post_CourseForm_title: "Курс",
+  linkedCourse_button_viewCourse: "Посмотреть курс",
+  linkedEvent_button_viewEvent: "Присоединиться к мероприятию",
 };

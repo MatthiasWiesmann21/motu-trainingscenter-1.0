@@ -837,4 +837,6 @@ export const Mandarin: Record<string, string> = {
   post_LiveEventForm_title: "直播活动",
   post_CourseForm_noCourse: "未选择课程",
   post_CourseForm_title: "课程",
+  linkedCourse_button_viewCourse: "查看课程",
+  linkedEvent_button_viewEvent: "参加活动",
 };

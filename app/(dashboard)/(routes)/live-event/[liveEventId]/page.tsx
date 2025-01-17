@@ -29,12 +29,14 @@ import { useLanguage } from "@/lib/check-language";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { getContainer } from "@/actions/get-container";
 import { cn } from "@/lib/utils";
+import { useContainerData } from "@/hooks/useContainerData";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { theme } = useTheme();
   const { data: session } = useSession(); // Get session data from NextAuth
   const [liveEvent, setLiveEvent] = useState<any>();
   const [category, setCategory] = useState<any>();
+  const container = useContainerData();
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
   const isClientAdmin = useIsClientAdmin();
@@ -133,6 +135,8 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
               startDateTime={liveEvent?.startDateTime!}
               endDateTime={liveEvent?.endDateTime!}
               isAdmin={false}
+              themeColor={container.container?.ThemeColor!}
+              darkThemeColor={container.container?.DarkThemeColor!}
             />
           </div>
         </div>

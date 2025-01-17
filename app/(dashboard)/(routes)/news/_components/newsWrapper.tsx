@@ -142,6 +142,8 @@ const NewsWrapper = ({
               updateLikeComment={getPosts}
               profileImage={profileImage}
               currentProfileId={currentProfileId}
+              ThemeColor={ThemeColor}
+              DarkThemeColor={DarkThemeColor}
             />
           ))}
           <div className="loading-indicator" />

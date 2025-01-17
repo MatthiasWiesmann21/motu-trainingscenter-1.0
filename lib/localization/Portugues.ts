@@ -864,4 +864,6 @@ export const Portugues: Record<string, string> = {
   post_LiveEventForm_title: "Evento ao Vivo",
   post_CourseForm_noCourse: "Nenhum curso selecionado",
   post_CourseForm_title: "Curso",
+  linkedCourse_button_viewCourse: "Ver Curso",
+  linkedEvent_button_viewEvent: "Participar do Evento",
 };

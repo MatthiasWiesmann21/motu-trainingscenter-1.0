@@ -48,8 +48,8 @@ export const English: Record<string, string> = {
     news_comments_input_placeholder: "Type your comment...",
     news_comments_showmore_label: "Show More +",
     news_comments_reply_button_label: "Reply",
-    live_event_futureAndPast_button_text_future: "Future Events",
-    live_event_futureAndPast_button_text_past: "Past Events",
+    live_event_futureAndPast_button_text_future: "Upcoming",
+    live_event_futureAndPast_button_text_past: "Past",
     live_event_filter_button_text: "Filter",
     live_event_filter_title: "Live Event Filter",
     live_event_filter_description: "You can Filter Events by giving  the Start and/or the Enddate of an Event.",
@@ -828,4 +828,6 @@ export const English: Record<string, string> = {
     post_LiveEventForm_title: "Live Event",
     post_CourseForm_noCourse: "No course selected",
     post_CourseForm_title: "Course",
+    linkedCourse_button_viewCourse: "View Course",
+    linkedEvent_button_viewEvent: "Join Event",
     };

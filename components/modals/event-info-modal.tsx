@@ -20,6 +20,7 @@ import { Separator } from "../ui/separator";
 import moment from "moment";
 import { Button } from "../ui/button";
 import { atcb_action } from "add-to-calendar-button-react";
+import { useTheme } from "next-themes";
 
 interface EventInfoModalProps {
   children: React.ReactNode;
@@ -27,6 +28,8 @@ interface EventInfoModalProps {
   title?: string;
   startDateTime: string;
   endDateTime: string;
+  themeColor: string;
+  darkThemeColor: string;
 }
 
 export const EventInfoModal = ({
@@ -35,8 +38,15 @@ export const EventInfoModal = ({
   title,
   startDateTime,
   endDateTime,
+  themeColor,
+  darkThemeColor,
 }: EventInfoModalProps) => {
   const currentLanguage = useLanguage();
+  const { theme } = useTheme();
+
+  const getThemeColor = () => {
+    return theme === "dark" ? darkThemeColor : themeColor;
+  };
 
   return (
     <AlertDialog>
@@ -50,13 +60,13 @@ export const EventInfoModal = ({
             <Separator className="my-2" />
             <div className="my-2 grid grid-cols-2 items-start px-1">
               <div className="flex flex-row items-center gap-x-1">
-                <Clock className="h-6 w-6 text-slate-500 dark:text-slate-600" />
+                <Clock style={{ color: getThemeColor() }} className="h-6 w-6" />
                 <p className="text-sm font-medium">{`Starts: ${moment(
                   startDateTime
                 )?.format("DD-MM-YY HH:mm")}`}</p>
               </div>
               <div className="flex flex-row items-center gap-x-1">
-                <Clock8 className="h-6 w-6 text-slate-500 dark:text-slate-600" />
+                <Clock8 style={{ color: getThemeColor() }} className="h-6 w-6" />
                 <p className="text-sm font-medium">{`Ends: ${moment(
                   endDateTime
                 )?.format("DD-MM-YY HH:mm")}`}</p>

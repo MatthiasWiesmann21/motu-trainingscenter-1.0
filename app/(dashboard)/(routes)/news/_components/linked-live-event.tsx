@@ -10,9 +10,13 @@ import Image from "next/image";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import moment from "moment";
 import { atcb_action } from "add-to-calendar-button-react";
+import { useTheme } from "next-themes";
+import { useLanguage } from "@/lib/check-language";
 
 interface LinkedLiveEventProps {
   eventId: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 interface LiveEventData {
@@ -30,9 +34,19 @@ interface LiveEventData {
   } | null;
 }
 
-export const LinkedLiveEvent = ({ eventId }: LinkedLiveEventProps) => {
+export const LinkedLiveEvent = ({
+  eventId,
+  ThemeColor,
+  DarkThemeColor,
+}: LinkedLiveEventProps) => {
   const [event, setEvent] = useState<LiveEventData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { theme } = useTheme();
+  const currentLanguage = useLanguage();
+
+  const getThemeColor = () => {
+    return theme === "dark" ? DarkThemeColor : ThemeColor;
+  };
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -69,7 +83,9 @@ export const LinkedLiveEvent = ({ eventId }: LinkedLiveEventProps) => {
   };
 
   if (isLoading) {
-    return <div className="h-24 animate-pulse rounded-lg bg-gray-200" />;
+    return (
+      <div className="m-4 p-4 h-24 animate-pulse rounded-lg bg-gray-200" />
+    );
   }
 
   if (!event) {
@@ -82,9 +98,9 @@ export const LinkedLiveEvent = ({ eventId }: LinkedLiveEventProps) => {
 
   return (
     <Card className="m-4 p-4">
-      <div className="flex gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {event.imageUrl && (
-          <div className="relative h-[150px] w-[200px] flex-shrink-0 overflow-hidden rounded-md">
+          <div className="relative w-full aspect-[16/9] lg:col-span-1 overflow-hidden rounded-md">
             <Image
               src={event.imageUrl}
               alt={event.title}
@@ -98,7 +114,7 @@ export const LinkedLiveEvent = ({ eventId }: LinkedLiveEventProps) => {
             )}
           </div>
         )}
-        <div className="flex flex-1 flex-col justify-between">
+        <div className="flex flex-col justify-between lg:col-span-3">
           <div className="space-y-2">
             {event.category && (
               <Tooltip>
@@ -108,7 +124,7 @@ export const LinkedLiveEvent = ({ eventId }: LinkedLiveEventProps) => {
                       borderColor: event.category.colorCode,
                       color: event.category.textColorCode,
                     }}
-                    className="mr-1 line-clamp-1 rounded-lg border-2 px-2 py-1 text-start text-xs"
+                    className="line-clamp-1 inline-block rounded-lg border-2 px-2 py-1 mr-1 text-start text-xs"
                   >
                     {event.category.name}
                   </span>
@@ -120,40 +136,40 @@ export const LinkedLiveEvent = ({ eventId }: LinkedLiveEventProps) => {
                 </TooltipContent>
               </Tooltip>
             )}
-            <h3 className="line-clamp-2 text-start text-lg font-semibold">
+            <h3 className="text-lg line-clamp-2 text-start font-semibold">
               {event.title}
             </h3>
-            <div className="flex flex-col gap-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <div className="flex flex-col gap-y-2 px-1">
-                <div className="flex flex-row items-center gap-x-2">
-                  <Clock className="h-5 w-5 text-slate-500 dark:text-slate-400" />
-                  <p className="text-sm font-medium">
+            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-y-4 xl:gap-y-0">
+              <div className="flex flex-col xl:flex-row xl:items-center gap-y-2 xl:gap-x-6 text-sm text-slate-600 dark:text-slate-300">
+                <div className="flex items-center gap-x-2">
+                  <Clock className="h-4 w-4" style={{ color: getThemeColor() }}/>
+                  <span>
                     {`Starts: ${moment(event.startDateTime).format("DD-MM-YY HH:mm")}`}
-                  </p>
+                  </span>
                 </div>
-                <div className="flex flex-row items-center gap-x-2">
-                  <Clock8 className="h-5 w-5 text-slate-500 dark:text-slate-400" />
-                  <p className="text-sm font-medium">
+                <div className="flex items-center gap-x-2">
+                  <Clock8 className="h-4 w-4" style={{ color: getThemeColor() }}/>
+                  <span>
                     {`Ends: ${moment(event.endDateTime).format("DD-MM-YY HH:mm")}`}
-                  </p>
+                  </span>
                 </div>
               </div>
+              <div className="flex items-center gap-1">
+                <Button
+                  onClick={handleCalendarClick}
+                  variant="outline"
+                  className="h-10 w-10 p-0 transition-all hover:bg-slate-200/20"
+                >
+                  <Calendar className="h-4 w-4" />
+                </Button>
+                <Link href={`/live-event/${event.id}`}>
+                  <Button variant="outline" className="h-10 transition-all hover:bg-slate-200/20">
+                    {currentLanguage.linkedEvent_button_viewEvent}
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="mt-4 flex gap-2">
-            <Button
-              onClick={handleCalendarClick}
-              variant="outline"
-              className="h-10 w-10 p-0"
-            >
-              <Calendar width={16} height={16} />
-            </Button>
-            <Link href={`/live-event/${event.id}`}>
-              <Button variant="outline" className="gap-2">
-                View Event
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
