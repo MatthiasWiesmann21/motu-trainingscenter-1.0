@@ -102,7 +102,7 @@ export const DescriptionForm = ({
           >
             {!initialData.description && "No description"}
             {initialData.description && (
-              <EventPreview value={initialData.description} isAdmin={true} />
+              <PostPreview value={initialData.description} />
             )}
           </div>
         )}
