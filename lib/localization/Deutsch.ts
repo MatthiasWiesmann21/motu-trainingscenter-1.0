@@ -834,9 +834,9 @@ export const Deutch: Record<string, string> = {
     linkedCourse_button_viewCourse: "Kurs ansehen",
     linkedEvent_button_viewEvent: "Beitreten",
     analytics_overviewContainer_title: "Analytiken und Statistiken",
-    analytics_overviewFinance_title: "Finanz-Uebersicht",
-    analytics_overviewCourse_title: "Kurs-Statistiken",
-    analytics_overviewLiveEventAnalytics_title: "Live-Event-Statistiken",
-    analytics_overviewPostAnalytics_title: "Beitrags-Statistiken",
+    analytics_overviewFinance_title: "Finanz Statistiken",
+    analytics_overviewCourse_title: "Kurs Statistiken",
+    analytics_overviewLiveEventAnalytics_title: "Live-Event Statistiken",
+    analytics_overviewPostAnalytics_title: "Beitrags Statistiken",
     analytics_widgetButton_view: "Ansehen",
 };
