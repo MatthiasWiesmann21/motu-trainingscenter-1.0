@@ -861,4 +861,10 @@ export const Russian: Record<string, string> = {
   post_CourseForm_title: "Курс",
   linkedCourse_button_viewCourse: "Посмотреть курс",
   linkedEvent_button_viewEvent: "Присоединиться к мероприятию",
+  analytics_overviewContainer_title: "Аналитика и статистика",
+  analytics_overviewFinance_title: "Финансовый обзор",
+  analytics_overviewCourse_title: "Аналитика курсов",
+  analytics_overviewLiveEventAnalytics_title: "Аналитика мероприятий",
+  analytics_overviewPostAnalytics_title: "Аналитика публикаций",
+  analytics_widgetButton_view: "Просмотр",
 };

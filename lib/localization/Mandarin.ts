@@ -839,4 +839,10 @@ export const Mandarin: Record<string, string> = {
   post_CourseForm_title: "课程",
   linkedCourse_button_viewCourse: "查看课程",
   linkedEvent_button_viewEvent: "参加活动",
+  analytics_overviewContainer_title: "分析和统计",
+  analytics_overviewFinance_title: "财务概览",
+  analytics_overviewCourse_title: "课程分析",
+  analytics_overviewLiveEventAnalytics_title: "直播活动分析",
+  analytics_overviewPostAnalytics_title: "帖子分析",
+  analytics_widgetButton_view: "查看",
 };

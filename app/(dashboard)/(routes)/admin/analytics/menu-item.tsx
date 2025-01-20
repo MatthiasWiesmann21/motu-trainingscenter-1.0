@@ -75,7 +75,7 @@ export const MenuItem = ({
           className="ml-auto transition-colors duration-300 ease-in-out hover:bg-primary hover:text-primary-foreground"
           onClick={() => router.push(href)}
         >
-          {currentLanguage.settings_widgetButton_configure}
+          {currentLanguage.analytics_widgetButton_view}
         </Button>
       </CardFooter>
     </Card>

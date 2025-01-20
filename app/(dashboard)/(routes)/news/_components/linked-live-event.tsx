@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar, Clock, Clock8 } from "lucide-react";
+import { ArrowRight, Calendar, CalendarPlus, Clock, Clock8 } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
@@ -160,7 +160,7 @@ export const LinkedLiveEvent = ({
                   variant="outline"
                   className="h-10 w-10 p-0 transition-all hover:bg-slate-200/20"
                 >
-                  <Calendar className="h-4 w-4" />
+                  <CalendarPlus className="h-4 w-4" />
                 </Button>
                 <Link href={`/live-event/${event.id}`}>
                   <Button variant="outline" className="h-10 transition-all hover:bg-slate-200/20">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Calendar,
+  CalendarPlus,
   Info,
   MoreVertical,
   Pencil,
@@ -219,7 +220,7 @@ export const EventCard = ({
                 variant="ghost"
                 className="h-8 w-8 p-0"
               >
-                <Calendar width={16} height={16} />
+                <CalendarPlus width={16} height={16} />
               </Button>
               <EventInfoModal
                 description={description}

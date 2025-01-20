@@ -872,4 +872,10 @@ export const Espanol: Record<string, string> = {
   post_CourseForm_title: "Curso",
   linkedCourse_button_viewCourse: "Ver Curso",
   linkedEvent_button_viewEvent: "Unirse al Evento",
+  analytics_overviewContainer_title: "Análisis y Estadísticas",
+  analytics_overviewFinance_title: "Vista Financiera",
+  analytics_overviewCourse_title: "Análisis de Cursos",
+  analytics_overviewLiveEventAnalytics_title: "Análisis de Eventos en Vivo",
+  analytics_overviewPostAnalytics_title: "Análisis de Publicaciones",
+  analytics_widgetButton_view: "Ver",
 };

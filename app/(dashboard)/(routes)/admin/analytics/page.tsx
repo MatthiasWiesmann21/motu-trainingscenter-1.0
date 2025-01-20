@@ -8,64 +8,45 @@ import { isOwner } from "@/lib/owner";
 import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth";
+import { db } from "@/lib/db";
+import { MenuRoutes } from "./menu-routes";
 
 const AnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-  
   const currentLanguage = await languageServer();
-
-  if (!userId) {
-    return redirect("/search");
-  }
-
+  const userId = session?.user.id || ''; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const isRoleClientAdmin = await isClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {
     return redirect("/search");
   }
 
-  const { data, totalRevenue, totalSales } = await getAnalytics(userId);
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId,
+    },
+  });
 
-  const analyticsCards = [
-    {
-      title: "Finance Analytics",
-      description: "View financial metrics, revenue, and sales data",
-      href: "/admin/analytics/finance",
-    },
-    {
-      title: "Course Analytics",
-      description: "Track course engagement, completion rates, and popularity",
-      href: "/admin/analytics/courses",
-    },
-    {
-      title: "Live Event Analytics",
-      description: "Monitor event attendance, engagement, and performance",
-      href: "/admin/analytics/events",
-    },
-    {
-      title: "Post Analytics",
-      description: "Analyze post engagement, comments, and user interaction",
-      href: "/admin/analytics/posts",
-    },
-  ];
+  if (!container) {
+    return redirect("/");
+  }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {analyticsCards.map((card) => (
-          <Link href={card.href} key={card.title}>
-            <Card className="p-4 hover:shadow-md transition-all cursor-pointer h-full">
-              <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
-              <p className="text-sm text-muted-foreground">{card.description}</p>
-            </Card>
-          </Link>
-        ))}
+    <>
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">
+              {currentLanguage?.analytics_overviewContainer_title}
+            </h1>
+          </div>
+        </div>
+        <MenuRoutes container={container}/>
       </div>
-    </div>
+    </>
   );
 };
 

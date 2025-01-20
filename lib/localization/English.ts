@@ -830,4 +830,10 @@ export const English: Record<string, string> = {
     post_CourseForm_title: "Course",
     linkedCourse_button_viewCourse: "View Course",
     linkedEvent_button_viewEvent: "Join Event",
-    };
+    analytics_overviewContainer_title: "Analytics and Statistics",
+    analytics_overviewFinance_title: "Finance Analytics",
+    analytics_overviewCourse_title: "Course Analytics",
+    analytics_overviewLiveEventAnalytics_title: "Event Analytics",
+    analytics_overviewPostAnalytics_title: "Posts Analytics",
+    analytics_widgetButton_view: "View",
+};
