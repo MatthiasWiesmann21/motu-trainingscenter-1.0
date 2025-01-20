@@ -17,9 +17,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Image from "next/image";
+import profileNot from "@/assets/icons/profileNot.png";
 
 interface ComboboxProps {
-  options: { label: string; value: string; color?: string }[];
+  options: { label: string; value: string; color?: string; imageUrl?: string }[];
   value?: string;
   onChange: (value: string) => void;
 }
@@ -54,8 +56,9 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
                   onChange(option.value === value ? "" : option.value);
                   setOpen(false);
                 }}
-                className="flex items-center"
+                className="flex flex-row items-center justify-between"
               >
+                <>
                 <Check
                   className={cn(
                     "mr-2",
@@ -63,12 +66,32 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
                   )}
                 />
                 {option.label}
+                </>
+                <div>
                 {option.color && (
                   <div
                     className="ml-auto h-3 w-3 rounded-full"
                     style={{ backgroundColor: option.color }}
                   ></div>
                 )}
+                {option.imageUrl ? (
+                  <Image
+                    src={option.imageUrl}
+                    alt={option.label}
+                    width={64}
+                    height={64}
+                    className="ml-2 h-10 w-10 rounded-full"
+                  />
+                ) : (
+                  <Image
+                    src={profileNot}
+                    alt={option.label}
+                    width={64}
+                    height={64}
+                    className="ml-2 h-10 w-10 rounded-full"
+                  />
+                )}
+                </div>
               </CommandItem>
             ))}
           </CommandGroup>

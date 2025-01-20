@@ -51,6 +51,16 @@ const ChapterIdPage = async ({
     return redirect("/");
   }
 
+  const authorProfile = await db.profile.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
+      role: { in: ["CLIENT ADMIN", "ADMIN", "OPERATOR", "MODERATOR"] },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
 
   const totalFields = requiredFields.length;
@@ -157,6 +167,11 @@ const ChapterIdPage = async ({
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
+              options={authorProfile.map((profile) => ({
+                label: profile.name!,
+                value: profile.id,
+                imageUrl: profile.imageUrl,
+              }))}
             />
           </div>
           <div>

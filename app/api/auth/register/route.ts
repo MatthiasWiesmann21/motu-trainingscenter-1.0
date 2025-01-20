@@ -53,7 +53,7 @@ export async function POST(request: Request) {
         imageUrl: "",
         isOnline: "Online",
         isBanned: "NOT BANNED",
-        language: containerDetails.defaultLanguage || "en", // Use container's default language or fallback to "en"
+        language: containerDetails.defaultLanguage!
       },
     });
 

@@ -16,6 +16,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Favorite from "./favorite";
+import Image from "next/image";
+import profileNot from "@/assets/icons/profileNot.png";
 
 interface Params {
   courseId: string;
@@ -61,6 +63,7 @@ interface CourseWrapperProps {
   params: Params;
   currentLanguage: CurrentLanguage;
   profileImage: string;
+  authorImage?: string;
   purchaseLabel: string;
   ThemeColor: string;
   DarkThemeColor: string;
@@ -77,7 +80,7 @@ interface Chapter {
   duration: string;
   level: string;
   isFree: boolean;
-  author: string;
+  authorName: string;
   courseId: string;
   createdAt: string;
   updatedAt: string;
@@ -106,6 +109,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
   params,
   currentLanguage,
   profileImage,
+  authorImage,
   purchaseLabel,
   ThemeColor,
   DarkThemeColor,
@@ -193,12 +197,21 @@ const CourseWrapper: React.FC<CourseWrapperProps> = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between px-4 pb-2 md:flex-row">
-              {chapter?.author && (
+            <div className="flex flex-col items-center justify-between px-4 py-2 md:flex-row">
+              {chapter?.authorName && (
                 <div>
                   <span className="flex items-center text-sm text-gray-500">
                     {currentLanguage.course_chapter_author_text}{" "}
-                    {chapter?.author}
+                    <div>
+                      <Image
+                        src={authorImage || profileNot}
+                        alt="authorImage"
+                        width={64}
+                        height={64}
+                        className="rounded-full mx-2 h-10 w-10"
+                      />
+                    </div>
+                    {chapter?.authorName}
                   </span>
                 </div>
               )}
