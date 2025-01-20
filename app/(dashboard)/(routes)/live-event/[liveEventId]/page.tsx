@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, Pencil, Trash } from "lucide-react";
+import { CalendarPlus, MoreVertical, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import toast from "react-hot-toast";
@@ -30,6 +30,7 @@ import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { getContainer } from "@/actions/get-container";
 import { cn } from "@/lib/utils";
 import { useContainerData } from "@/hooks/useContainerData";
+import { atcb_action } from "add-to-calendar-button-react";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { theme } = useTheme();
@@ -59,6 +60,21 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   if (!session?.user?.id) {
     return redirect("/");
   }
+
+  const handleCalendarClick = () => {
+    const config: any = {
+      name: liveEvent?.title,
+      description: liveEvent?.description,
+      startDate: moment(liveEvent?.startDateTime).format("YYYY-MM-DD"),
+      endDate: moment(liveEvent?.endDateTime).format("YYYY-MM-DD"),
+      startTime: moment(liveEvent?.startDateTime).format("HH:mm"),
+      endTime: moment(liveEvent?.endDateTime).format("HH:mm"),
+      options: ["Apple", "Google", "iCal", "Outlook.com"],
+      // timeZone: "America/Los_Angeles",
+    };
+
+    atcb_action(config);
+  };
 
   const onDelete = async () => {
     try {
@@ -92,6 +108,13 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
               {liveEvent?.title}
             </h2>
             <div className="flex items-center space-x-2">
+              <Button
+                onClick={handleCalendarClick}
+                variant="outline"
+                className="ml-auto h-11 w-10 border-[#fff] bg-slate-100 p-0 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
+              >
+                <CalendarPlus size={24} />
+              </Button>
               <Favorite liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               {canAccess && (
