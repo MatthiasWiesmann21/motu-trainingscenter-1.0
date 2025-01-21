@@ -6,10 +6,10 @@ import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth";
 
-import { DataCard } from "./_components/data-card";
 import { Chart } from "./_components/chart";
 import GoBackButton from "@/components/goBackButton";
 import { db } from "@/lib/db";
+import { DataCard } from "./_components/data-chart";
 
 const PostAnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
