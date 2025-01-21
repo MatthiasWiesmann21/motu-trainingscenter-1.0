@@ -1,15 +1,15 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
-import { getPosts } from "@/actions/get-posts";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth";
 
+import { DataCard } from "./_components/data-card";
 import { Chart } from "./_components/chart";
 import GoBackButton from "@/components/goBackButton";
-import { DataCard } from "./_components/data-chart";
+import { db } from "@/lib/db";
 
 const PostAnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -30,7 +30,16 @@ const PostAnalyticsPage = async () => {
     return redirect("/search");
   }
 
-  const posts = await getPosts({});
+  const posts = await db.post.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
+    },
+    include: {
+      comments: true,
+      likes: true,
+      category: true,
+    }
+  });
 
   const totalPosts = posts.length;
   const postsWithComments = posts.filter(post => post.comments.length > 0).length;
@@ -43,24 +52,30 @@ const PostAnalyticsPage = async () => {
     total: post.comments.length,
   }));
 
+  const postLikesData = posts.map(post => ({
+    name: post.title || "Untitled",
+    total: post.likes.length,
+  }));
+
   return (
     <div className="p-6">
       <GoBackButton buttonText={currentLanguage.goBack_button_text} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <DataCard
-          label="Total Posts"
+          label={currentLanguage.analytic_posts_totalPosts_label}
           value={totalPosts}
         />
         <DataCard
-          label="Posts with Comments"
+          label={currentLanguage.analytic_posts_totalPostsLikes_label}
           value={postsWithComments}
         />
         <DataCard
-          label="Avg. Comments per Post"
+          label={currentLanguage.analytic_posts_avgCommentsPosts_label}
           value={avgCommentsPerPost}
         />
       </div>
-      <Chart data={postEngagementData} />
+      <Chart data={postEngagementData} label={currentLanguage.analytic_posts_postEngagement_label} />
+      <Chart data={postLikesData} label={currentLanguage.analytic_posts_postLikeEngagement_label} />
     </div>
   );
 };

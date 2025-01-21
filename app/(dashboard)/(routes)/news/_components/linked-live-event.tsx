@@ -144,13 +144,13 @@ export const LinkedLiveEvent = ({
                 <div className="flex items-center gap-x-2">
                   <Clock className="h-4 w-4" style={{ color: getThemeColor() }}/>
                   <span>
-                    {`Starts: ${moment(event.startDateTime).format("DD-MM-YY HH:mm")}`}
+                    {`${currentLanguage.linkedEvent_button_starts}: ${moment(event.startDateTime).format("DD-MM-YY HH:mm")}`}
                   </span>
                 </div>
                 <div className="flex items-center gap-x-2">
                   <Clock8 className="h-4 w-4" style={{ color: getThemeColor() }}/>
                   <span>
-                    {`Ends: ${moment(event.endDateTime).format("DD-MM-YY HH:mm")}`}
+                    {`${currentLanguage.linkedEvent_button_ends}: ${moment(event.endDateTime).format("DD-MM-YY HH:mm")}`}
                   </span>
                 </div>
               </div>

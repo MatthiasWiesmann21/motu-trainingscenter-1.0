@@ -33,8 +33,8 @@ interface AuthorFormProps {
 }
 
 const formSchema = z.object({
-  authorId: z.string().min(1),
-  authorName: z.string().min(1),
+  authorId: z.string().nullable(),
+  authorName: z.string().nullable(),
 });
 
 export const AuthorForm = ({
@@ -122,12 +122,17 @@ export const AuthorForm = ({
                   <FormControl>
                     <Combobox 
                       options={options} 
-                      {...field} 
+                      value={field.value || undefined}
+                      showImages
                       onChange={(value) => {
                         field.onChange(value);
-                        const selectedOption = options.find(opt => opt.value === value);
-                        if (selectedOption) {
-                          form.setValue("authorName", selectedOption.label);
+                        if (!value) {
+                          form.setValue("authorName", null);
+                        } else {
+                          const selectedOption = options.find(opt => opt.value === value);
+                          if (selectedOption) {
+                            form.setValue("authorName", selectedOption.label);
+                          }
                         }
                       }}
                     />

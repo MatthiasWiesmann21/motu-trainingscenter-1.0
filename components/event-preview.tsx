@@ -49,13 +49,13 @@ export const EventPreview = ({
           <div className="my-2 grid grid-cols-2 items-start px-1">
             <div className="flex flex-row items-center gap-x-1">
               <Clock style={{ color: getThemeColor() }} className="h-6 w-6" />
-              <p className="text-sm font-medium">{`Starts: ${moment(
+              <p className="text-sm font-medium">{`${currentLanguage.liveEvent_start}: ${moment(
                 startDateTime
               )?.format("DD-MM-YY HH:mm")}`}</p>
             </div>
             <div className="flex flex-row items-center gap-x-1">
               <Clock8 style={{ color: getThemeColor() }} className="h-6 w-6" />
-              <p className="text-sm font-medium">{`Ends: ${moment(
+              <p className="text-sm font-medium">{`${currentLanguage.liveEvent_end}: ${moment(
                 endDateTime
               )?.format("DD-MM-YY HH:mm")}`}</p>
             </div>

@@ -70,7 +70,7 @@ const ChapterIdPage = async ({
 
   const authorImage = await db.profile.findUnique({
     where: {
-      id: chapter?.authorId!,
+      id: chapter?.authorId?? "",
     },
     select: {
       imageUrl: true,

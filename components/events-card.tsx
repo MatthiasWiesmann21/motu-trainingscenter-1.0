@@ -277,7 +277,7 @@ export const EventCard = ({
           <Link className="" href={`/live-event/${id}`}>
             <Tooltip>
               <TooltipTrigger>
-                <div className="line-clamp-2 py-2 text-start text-sm font-medium md:text-base">
+                <div className="line-clamp-2 py-1 text-start text-sm font-medium md:text-base">
                   {title}
                 </div>
               </TooltipTrigger>

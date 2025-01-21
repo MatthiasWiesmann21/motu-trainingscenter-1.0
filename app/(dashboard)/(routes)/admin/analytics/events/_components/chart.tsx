@@ -11,9 +11,10 @@ interface ChartProps {
     name: string
     total: number
   }[]
+  label: string
 }
 
-export const Chart = ({ data }: ChartProps) => {
+export const Chart = ({ data, label }: ChartProps) => {
   const [chartHeight, setChartHeight] = useState(350)
   const currentLanguage = useLanguage();
 
@@ -37,13 +38,13 @@ export const Chart = ({ data }: ChartProps) => {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-md font-medium">Event Attendance</CardTitle>
+        <CardTitle className="text-md font-medium">{label}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={{
             total: {
-              label: "Attendees",
+              label: "Likes",
               color: "hsl(var(--primary))",
             },
           }}

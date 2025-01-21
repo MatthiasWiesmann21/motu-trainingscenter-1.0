@@ -102,7 +102,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
             className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
             href={"/dashboard/favourite-chapters"}
             >
-            {currentLanguage.dashboard_courseTable_viewMyFavouriteChapters_button_text || "Favorite Chapters"}
+            {currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text}
           </Link>
         </div>
         <div className="flex w-full">

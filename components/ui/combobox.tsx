@@ -24,9 +24,10 @@ interface ComboboxProps {
   options: { label: string; value: string; color?: string; imageUrl?: string }[];
   value?: string;
   onChange: (value: string) => void;
+  showImages?: boolean;
 }
 
-export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
+export const Combobox = ({ options, value, onChange, showImages = false }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -56,41 +57,33 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
                   onChange(option.value === value ? "" : option.value);
                   setOpen(false);
                 }}
-                className="flex flex-row items-center justify-between"
+                className="flex items-center justify-between"
               >
-                <>
-                <Check
-                  className={cn(
-                    "mr-2",
-                    value === option.value ? "opacity-100" : "opacity-0"
+                <div className="flex items-center">
+                  <Check
+                    className={cn(
+                      "mr-2",
+                      value === option.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {option.label}
+                </div>
+                <div className="flex items-center">
+                  {option.color && (
+                    <div
+                      className="ml-auto h-3 w-3 rounded-full"
+                      style={{ backgroundColor: option.color }}
+                    ></div>
                   )}
-                />
-                {option.label}
-                </>
-                <div>
-                {option.color && (
-                  <div
-                    className="ml-auto h-3 w-3 rounded-full"
-                    style={{ backgroundColor: option.color }}
-                  ></div>
-                )}
-                {option.imageUrl ? (
-                  <Image
-                    src={option.imageUrl}
-                    alt={option.label}
-                    width={64}
-                    height={64}
-                    className="ml-2 h-10 w-10 rounded-full"
-                  />
-                ) : (
-                  <Image
-                    src={profileNot}
-                    alt={option.label}
-                    width={64}
-                    height={64}
-                    className="ml-2 h-10 w-10 rounded-full"
-                  />
-                )}
+                  {showImages && (
+                    <Image
+                      src={option.imageUrl || profileNot}
+                      alt={option.label}
+                      width={64}
+                      height={64}
+                      className="ml-2 h-10 w-10 rounded-full"
+                    />
+                  )}
                 </div>
               </CommandItem>
             ))}

@@ -216,7 +216,9 @@ export const PostCard = ({
           )}
           {(courseId || liveEventId) && (
             <div className="mt-4">
-              <SeparatorHeading title="Linked Items" />
+              <SeparatorHeading
+                title={currentLanguage.post_card_linked_items_title}
+              />
             </div>
           )}
           {courseId && (

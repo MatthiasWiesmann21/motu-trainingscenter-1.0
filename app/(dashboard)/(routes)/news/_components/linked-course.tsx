@@ -113,7 +113,7 @@ export const LinkedCourse = ({
                 <div className="flex items-center gap-x-2">
                   <BookOpen className="h-4 w-4" style={{ color: getThemeColor() }} />
                   <span>
-                    {course.chaptersCount} {course.chaptersCount === 1 ? "Chapter" : "Chapters"}
+                    {course.chaptersCount} {course.chaptersCount === 1 ? `${currentLanguage.course_card_chapter}` : `${currentLanguage.course_card_chapters}`}
                   </span>
                 </div>
                 <div className="flex items-center gap-x-2">
