@@ -345,7 +345,6 @@ const LikeComment = ({
           {`${commentsCount} ${currentLanguage.news_comments_button_label}`}
         </div>
       </div>
-
       {isShowComments && (
         <>
           <div className="flex items-center justify-between">

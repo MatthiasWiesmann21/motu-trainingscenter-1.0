@@ -68,7 +68,7 @@ export const LiveEventWrapper = ({
           />
           {profileRole === "ADMIN" || profileRole === "CLIENT ADMIN" && (
             <Button
-              className="mt-1 rounded-lg border-2 border-slate-300 p-3 text-start text-sm text-slate-500 hover:border-slate-100 dark:border-slate-800"
+              className="border-2"
               variant="outline"
               onClick={() => onOpen("createLiveEvent")}
             >

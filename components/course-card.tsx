@@ -212,7 +212,7 @@ export const CourseCard = ({
               )}
               <ShareLinkModal id={id} path={"/courses"}>
                 <Button variant="ghost" className="h-8 w-8 p-0">
-                  <Share2 width={16} height={16} />
+                  <Share2 size={16} />
                 </Button>
               </ShareLinkModal>
               <CourseInfoModal
@@ -229,7 +229,7 @@ export const CourseCard = ({
                   className="h-8 w-8 p-0"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Info width={16} height={16} />
+                  <Info size={16} />
                 </Button>
               </CourseInfoModal>
               {canAccess && (

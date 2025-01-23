@@ -51,7 +51,7 @@ export const CourseCounter = ({
             </div>
             {isFrontend && (
               <Button
-                className="rounded-lg border-2 border-slate-300 p-3 text-md xs:text-xs text-start text-slate-500 hover:border-slate-100 dark:border-slate-800"
+                className="border-2"
                 variant="outline"
                 onClick={() => onOpen("createCourse")}
               >

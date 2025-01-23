@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input"; // Import Input component for bet
 import { Button } from "@/components/ui/button"; // Import Button for consistency
 import Link from "next/link"; // For cancel button
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 import { useIsAdmin, useIsClientAdmin, useIsOperator } from "@/lib/roleCheck";
+import { useRouter } from "next/navigation";
 
 type Params = {
   id: string;

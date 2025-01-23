@@ -63,7 +63,7 @@ const DocumentPage = () => {
         <div className="my-4 ">
           <PathMaker />
         </div>
-        <div className="no-scrollbar m-4 rounded-lg border-2 bg-slate-100/60 dark:bg-[#0c0319]">
+        <div className="no-scrollbar m-4 rounded-lg border-2 bg-white dark:bg-[#0c0319]">
           <AssetsTable folderStructure={folderStructure} />
         </div>
       </div>

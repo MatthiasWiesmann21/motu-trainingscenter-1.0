@@ -3,23 +3,23 @@
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Love = ({ liveEvent, getLiveEvent }: any) => (
-  <div className="flex">
-    <div
+  <Button
+      variant="outline"
       onClick={async () => {
         const response = await axios?.post(`/api/like/create`, {
           liveEventId: liveEvent?.id,
         });
         if (response?.status === 200) getLiveEvent();
       }}
-      className="flex cursor-pointer items-center justify-around rounded-lg border border-[#fff] bg-slate-100 p-2 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
+      className="flex h-10 min-w-xs px-2"
     >
       <Heart
-        size={26}
+        size={24}
         fill={!!liveEvent?.currentLike ? "#f43f5e" : "#ffffff00"}
-        className={cn(
-          "transition duration-200 ease-in-out hover:scale-110", 
+        className={cn("transition duration-200 ease-in-out hover:scale-105", 
           liveEvent?.likes?.length > 0 && "mr-2"
         )}
         style={!!liveEvent?.currentLike ? { color: "#f43f5e" } : {}}
@@ -29,8 +29,7 @@ const Love = ({ liveEvent, getLiveEvent }: any) => (
           {liveEvent?.likes?.length}
         </span>
       )}
-    </div>
-  </div>
+    </Button>
 );
 
 export default Love;

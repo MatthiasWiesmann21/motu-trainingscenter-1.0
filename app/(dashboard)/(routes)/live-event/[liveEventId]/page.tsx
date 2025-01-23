@@ -111,7 +111,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
               <Button
                 onClick={handleCalendarClick}
                 variant="outline"
-                className="ml-auto h-11 w-10 border-[#fff] bg-slate-100 p-0 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
+                className="flex p-0 h-10 w-10"
               >
                 <CalendarPlus size={24} />
               </Button>
@@ -122,7 +122,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="ml-auto h-11 w-10 border-[#fff] bg-slate-100 p-0 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
+                      className="flex h-10 w-10 p-0"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <span className="sr-only">Open menu</span>

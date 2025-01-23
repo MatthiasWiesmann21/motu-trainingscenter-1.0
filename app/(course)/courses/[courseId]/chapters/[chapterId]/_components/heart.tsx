@@ -1,22 +1,23 @@
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { Heart } from "lucide-react";
 
 const Love = ({ chapter, getData }: any) => (
-  <div className="flex">
-    <div
+    <Button
+      variant="outline"
       onClick={async () => {
         const response = await axios?.post(`/api/like/create`, {
           chapterId: chapter?.id,
         });
         if (response?.status === 200) getData();
       }}
-      className="flex cursor-pointer items-center justify-around rounded-lg border border-[#fff] bg-slate-100 p-2 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]"
+      className="flex h-10 min-w-xs px-2"
     >
       <Heart
-        size={26}
+        size={24}
         fill={!!chapter?.currentLike ? "#f43f5e" : "#ffffff00"}
-        className={cn("transition duration-200 ease-in-out hover:scale-110", 
+        className={cn("transition duration-200 ease-in-out hover:scale-105", 
           chapter?.likes?.length > 0 && "mr-2"
         )}
         style={!!chapter?.currentLike ? { color: "#f43f5e" } : {}}
@@ -26,8 +27,7 @@ const Love = ({ chapter, getData }: any) => (
           {chapter?.likes?.length}
         </span>
       )}
-    </div>
-  </div>
+    </Button>
 );
 
 export default Love;
