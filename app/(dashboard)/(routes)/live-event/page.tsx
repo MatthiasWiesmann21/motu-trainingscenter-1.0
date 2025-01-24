@@ -8,6 +8,7 @@ import authOptions from "@/lib/auth"; // Make sure you have authOptions configur
 import { getServerSession } from "next-auth";
 import { isAdmin } from "@/lib/roleCheckServer";
 import { currentProfile } from "@/lib/current-profile";
+import { SearchInput } from "@/components/search-input";
 
 export const metadata: Metadata = {
   title: "Live Events",
@@ -60,6 +61,15 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     containerId: session?.user?.profile?.containerId,
   });
 
+  // Filter out events where usergroup doesn't match
+  const userGroup = session?.user?.profile?.userGroupId;
+  const filteredLiveEvents = liveEvents.filter(event => {
+    if (event.usergroupId && userGroup !== event.usergroupId) {
+      return redirect("/live-event");
+    }
+    return true;
+  });
+
   const container = await db?.container?.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
@@ -71,13 +81,20 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   }
 
   return (
-    <LiveEventWrapper
-      liveEvents={liveEvents}
-      categories={categories}
-      searchParams={searchParams}
-      container={container}
-      profileRole={profile?.role!}
-    />
+    <>
+      <div className="px-6 pt-6 md:hidden md:mb-0 block">
+        <SearchInput />
+      </div>
+      <div className="p-6">
+        <LiveEventWrapper
+          liveEvents={filteredLiveEvents}
+          categories={categories}
+          searchParams={searchParams}
+          container={container}
+          profileRole={profile?.role!}
+        />
+      </div>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { getProgress } from "@/actions/get-progress";
+import toast from "react-hot-toast";
 
 import { CourseNavbar } from "./_components/course-navbar";
 import { Sidebar } from "@/app/(dashboard)/_components/sidebar";
@@ -55,6 +56,14 @@ const CourseLayout = async ({
 
   if (!course) {
     return redirect("/");
+  }
+
+  // Check if user's usergroup matches the course's usergroup
+  const userGroup = session?.user?.profile?.userGroup;
+  const courseUserGroup = course.usergroupId;
+
+  if (courseUserGroup && userGroup !== courseUserGroup) {
+    return redirect("/search");
   }
 
   const progressCount = await getProgress(userId, course.id);
