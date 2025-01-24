@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { CourseNavbar } from "./_components/course-navbar";
 import { Sidebar } from "@/app/(dashboard)/_components/sidebar";
 import authOptions  from "@/lib/auth"; // Ensure this is properly configured
+import { currentProfile } from "@/lib/current-profile";
 
 const CourseLayout = async ({
   children,
@@ -23,6 +24,8 @@ const CourseLayout = async ({
   }
 
   const userId = session.user.id;
+
+  const profile = await currentProfile();
 
   const container = await db.container.findUnique({
     where: {
@@ -59,10 +62,10 @@ const CourseLayout = async ({
   }
 
   // Check if user's usergroup matches the course's usergroup
-  const userGroup = session?.user?.profile?.userGroup;
+  const userGroup = profile?.usergroupId;
   const courseUserGroup = course.usergroupId;
 
-  if (courseUserGroup && userGroup !== courseUserGroup) {
+  if (userGroup !== courseUserGroup) {
     return redirect("/search");
   }
 

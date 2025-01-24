@@ -13,7 +13,11 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ src, className }) => {
   return (
     <Avatar className={cn("relative h-7 w-7 md:h-10 md:w-10", className)}>
       {src ? (
-        <AvatarImage src={src} />
+        <AvatarImage
+          src={src}
+          className="rounded-full object-cover"
+          alt="profile"
+        />
       ) : (
         <AspectRatio ratio={1 / 1}>
           <Image priority alt="profileNot" src={profileNot} />
