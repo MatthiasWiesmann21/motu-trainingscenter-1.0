@@ -859,4 +859,7 @@ export const Deutch: Record<string, string> = {
     analytic_posts_avgCommentsPosts_label: "Durchschn. Kommentare pro Beitrag",
     analytic_posts_postEngagement_label: "Beitragsinteraktion",
     analytic_posts_postLikeEngagement_label: "Beitrags-Like-Interaktion",
+    page_not_found: "Seite nicht gefunden",
+    oops_the_page_you_re_look: "Oops! Die Seite, die Sie suchen, existiert nicht",
+    button_go_back: "Zurück",
 };

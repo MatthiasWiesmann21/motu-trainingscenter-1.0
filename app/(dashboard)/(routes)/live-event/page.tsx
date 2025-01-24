@@ -61,15 +61,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     containerId: session?.user?.profile?.containerId,
   });
 
-  // Filter out events where usergroup doesn't match
-  const userGroup = session?.user?.profile?.userGroupId;
-  const filteredLiveEvents = liveEvents.filter(event => {
-    if (event.usergroupId && userGroup !== event.usergroupId) {
-      return redirect("/live-event");
-    }
-    return true;
-  });
-
+  // Get the container info
   const container = await db?.container?.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
@@ -85,9 +77,9 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       <div className="px-6 pt-6 md:hidden md:mb-0 block">
         <SearchInput />
       </div>
-      <div className="p-6">
+      <div>
         <LiveEventWrapper
-          liveEvents={filteredLiveEvents}
+          liveEvents={liveEvents}
           categories={categories}
           searchParams={searchParams}
           container={container}

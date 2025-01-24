@@ -890,4 +890,7 @@ export const Italiano: Record<string, string> = {
   analytic_posts_avgCommentsPosts_label: "Media Commenti per Post",
   analytic_posts_postEngagement_label: "Interazione sui Post",
   analytic_posts_postLikeEngagement_label: "Interazione Mi Piace sui Post",
+  page_not_found: "Pagina non trovata",
+  oops_the_page_you_re_look: "Oops! La pagina che stai cercando non esiste",
+  button_go_back: "Torna indietro",
 };

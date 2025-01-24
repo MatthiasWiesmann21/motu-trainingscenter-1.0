@@ -856,4 +856,7 @@ export const English: Record<string, string> = {
     analytic_posts_avgCommentsPosts_label: "Avg. Comments per Post",
     analytic_posts_postEngagement_label: "Post Engagement",
     analytic_posts_postLikeEngagement_label: "Post Like Engagement",
+    page_not_found: "Page Not Found",
+    oops_the_page_you_re_look: "Oops! The page you're looking for doesn't exist",
+    button_go_back: "Go Back",
 };

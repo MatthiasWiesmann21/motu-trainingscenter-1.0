@@ -864,5 +864,8 @@ export const Mandarin: Record<string, string> = {
   analytic_posts_totalPostsLikes_label: "有评论的帖子",
   analytic_posts_avgCommentsPosts_label: "每帖平均评论数",
   analytic_posts_postEngagement_label: "帖子参与度",
-  analytic_posts_postLikeEngagement_label: "帖子点赞参与度"
+  analytic_posts_postLikeEngagement_label: "帖子点赞参与度",
+  page_not_found: "页面未找到",
+  oops_the_page_you_re_look: "Oops! 页面不存在",
+  button_go_back: "返回",
 };

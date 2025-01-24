@@ -899,5 +899,8 @@ export const Francaise: Record<string, string> = {
   analytic_posts_totalPostsLikes_label: "Publications avec Commentaires",
   analytic_posts_avgCommentsPosts_label: "Moy. de Commentaires par Publication",
   analytic_posts_postEngagement_label: "Engagement sur les Publications",
-  analytic_posts_postLikeEngagement_label: "Engagement J'aime sur les Publications"
+  analytic_posts_postLikeEngagement_label: "Engagement J'aime sur les Publications",
+  page_not_found: "Page Non Trouvée",
+  oops_the_page_you_re_look: "Oups ! La page que vous cherchez n'existe pas",
+  button_go_back: "Retourner",
 };

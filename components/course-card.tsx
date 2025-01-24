@@ -6,13 +6,8 @@ import { formatPrice } from "@/lib/format";
 import { CourseProgress } from "@/components/course-progress";
 import { useState } from "react";
 import { useTheme } from "next-themes";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ClubyteLoader from "./ui/clubyte-loader";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   BookOpen,
   Clock,
@@ -28,19 +23,13 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import { formatDuration } from "@/lib/formatDuration";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { ConfirmModal } from "./modals/confirm-modal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { DescriptionModal } from "./modals/description-modal";
 import { ShareLinkModal } from "./modals/share-link-modal";
 import { CourseInfoModal } from "./modals/course-info-modal";
 
@@ -85,32 +74,32 @@ export const CourseCard = ({
   DarkThemeColor,
   getAllCourses,
 }: CourseCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const { theme } = useTheme();
-  const [isLoading, setIsLoading] = useState(true);
-  const currentLanguage = useLanguage();
-  const isAdmin = useIsAdmin();
-  const isClientAdmin = useIsClientAdmin();
-  const router = useRouter();
+  const [isHovered, setIsHovered] = useState(false)
+  const { theme } = useTheme()
+  const [isLoading, setIsLoading] = useState(true)
+  const currentLanguage = useLanguage()
+  const isAdmin = useIsAdmin()
+  const isClientAdmin = useIsClientAdmin()
+  const router = useRouter()
 
-  const canAccess = isAdmin || isClientAdmin;
+  const canAccess = isAdmin || isClientAdmin
 
   const onDelete = async () => {
     try {
-      setIsLoading(true);
-      await axios.delete(`/api/courses/${id}`);
-      toast.success("Course deleted");
-      router.refresh();
+      setIsLoading(true)
+      await axios.delete(`/api/courses/${id}`)
+      toast.success("Course deleted")
+      router.refresh()
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const getThemeColor = () => {
-    return theme === "dark" ? DarkThemeColor : ThemeColor;
-  };
+    return theme === "dark" ? DarkThemeColor : ThemeColor
+  }
 
   return (
     <TooltipProvider>
@@ -148,30 +137,14 @@ export const CourseCard = ({
               {/* Show a placeholder or spinner while the image is loading */}
               {isLoading && (
                 <div className="flex h-full w-full items-center justify-center">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {theme === "dark" ? (
-                      <ClubyteLoader
-                        className="h-64 w-64"
-                        theme="dark"
-                        color="0c0319"
-                      />
-                    ) : (
-                      <ClubyteLoader
-                        className="h-64 w-64"
-                        theme="light"
-                        color="ffffff"
-                      />
-                    )}
-                  </span>
+                  <Skeleton className="h-full w-full" />
                 </div>
               )}
               <Image
                 fill
-                className={`object-cover transition-opacity duration-500 ${
-                  isLoading ? "opacity-0" : "opacity-100"
-                }`}
+                className={`object-cover transition-opacity duration-500 ${isLoading ? "opacity-0" : "opacity-100"}`}
                 alt={title}
-                src={imageUrl}
+                src={imageUrl || "/placeholder.svg"}
                 onLoadingComplete={() => setIsLoading(false)}
               />
             </div>
@@ -189,9 +162,7 @@ export const CourseCard = ({
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="whitespace-normal text-sm font-semibold">
-                    {category}
-                  </p>
+                  <p className="whitespace-normal text-sm font-semibold">{category}</p>
                 </TooltipContent>
               </Tooltip>
             )}
@@ -205,8 +176,8 @@ export const CourseCard = ({
                   onClick={async () => {
                     const response = await axios?.post(`/api/favorite/create`, {
                       courseId: id,
-                    });
-                    if (response?.status === 200) getAllCourses();
+                    })
+                    if (response?.status === 200) getAllCourses()
                   }}
                 />
               )}
@@ -224,22 +195,14 @@ export const CourseCard = ({
                 ThemeColor={ThemeColor}
                 DarkThemeColor={DarkThemeColor}
               >
-                <Button
-                  variant="ghost"
-                  className="h-8 w-8 p-0"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <Button variant="ghost" className="h-8 w-8 p-0" onClick={(e) => e.stopPropagation()}>
                   <Info size={16} />
                 </Button>
               </CourseInfoModal>
               {canAccess && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="h-8 w-8 p-0"
-                      onClick={(e) => e.stopPropagation()}
-                    >
+                    <Button variant="ghost" className="h-8 w-8 p-0" onClick={(e) => e.stopPropagation()}>
                       <span className="sr-only">Open menu</span>
                       <MoreVertical className="h-4 w-4" />
                     </Button>
@@ -252,12 +215,7 @@ export const CourseCard = ({
                       </DropdownMenuItem>
                     </Link>
                     <ConfirmModal onConfirm={onDelete}>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        disabled={isLoading}
-                        className="flex w-full justify-start p-2"
-                      >
+                      <Button size="sm" variant="ghost" disabled={isLoading} className="flex w-full justify-start p-2">
                         <Trash className="mr-2 h-4 w-4" />
                         {currentLanguage.course_card_delete}
                       </Button>
@@ -272,14 +230,10 @@ export const CourseCard = ({
             <div className="mt-1">
               <Tooltip>
                 <TooltipTrigger>
-                  <p className="text-md mx-0.5 my-2 line-clamp-2 text-start font-semibold">
-                    {title}
-                  </p>
+                  <p className="text-md mx-0.5 my-2 line-clamp-2 text-start font-semibold">{title}</p>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="max-w-xs p-2">
-                  <p className="whitespace-normal text-sm font-semibold">
-                    {title}
-                  </p>
+                  <p className="whitespace-normal text-sm font-semibold">{title}</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -293,9 +247,7 @@ export const CourseCard = ({
                   />
                   <span className="ml-1 text-xs">
                     {chaptersLength}{" "}
-                    {chaptersLength < 2
-                      ? currentLanguage.course_card_chapter
-                      : currentLanguage.course_card_chapters}
+                    {chaptersLength < 2 ? currentLanguage.course_card_chapter : currentLanguage.course_card_chapters}
                   </span>
                 </div>
                 {duration && (
@@ -304,9 +256,7 @@ export const CourseCard = ({
                       className="h-4 w-4" // ensure fixed width and height here as well
                       style={{ color: getThemeColor() }}
                     />
-                    <span className="ml-1 text-xs">
-                      {formatDuration(duration.toString())}
-                    </span>
+                    <span className="ml-1 text-xs">{formatDuration(duration.toString())}</span>
                   </div>
                 )}
                 {level && (
@@ -315,9 +265,7 @@ export const CourseCard = ({
                       className="h-4 w-4" // fixed size for GraduationCap
                       style={{ color: getThemeColor() }}
                     />
-                    <span className="ml-1 text-xs">
-                      {level || currentLanguage.course_card_no_level}
-                    </span>
+                    <span className="ml-1 text-xs">{level || currentLanguage.course_card_no_level}</span>
                   </div>
                 )}
               </div>
@@ -325,11 +273,7 @@ export const CourseCard = ({
               {/* Second row: Price or Progress */}
               <div>
                 {progress !== null ? (
-                  <CourseProgress
-                    variant={progress === 100 ? "success" : "default"}
-                    size="sm"
-                    value={progress}
-                  />
+                  <CourseProgress variant={progress === 100 ? "success" : "default"} size="sm" value={progress} />
                 ) : (
                   <p className="my-1 text-[16px] font-bold text-slate-700 dark:text-slate-200 md:text-sm">
                     {price === 0 ? "Free" : formatPrice(price)}
@@ -341,5 +285,5 @@ export const CourseCard = ({
         </div>
       </div>
     </TooltipProvider>
-  );
+  )
 };

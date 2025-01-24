@@ -34,28 +34,45 @@ import { atcb_action } from "add-to-calendar-button-react";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { theme } = useTheme();
-  const { data: session } = useSession(); // Get session data from NextAuth
+  const { data: session } = useSession();
   const [liveEvent, setLiveEvent] = useState<any>();
   const [category, setCategory] = useState<any>();
   const container = useContainerData();
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
   const isClientAdmin = useIsClientAdmin();
+  const router = useRouter();
 
   const canAccess = isAdmin || isClientAdmin;
 
   const getLiveEvent = async () => {
-    const response = await axios?.get(`/api/liveEvent/${params?.liveEventId}`, {
-      params: { liveEventId: params?.liveEventId },
-    });
-    setLiveEvent(response?.data?.liveEvent);
-    setCategory(response?.data?.category);
+    try {
+      const response = await axios?.get(`/api/liveEvent/${params?.liveEventId}`, {
+        params: { liveEventId: params?.liveEventId },
+      });
+      
+      // Check if user has access to this event based on usergroup
+      const userGroup = session?.user?.profile?.userGroupId;
+      const eventUserGroupId = response?.data?.liveEvent?.usergroupId;
+      
+      if (eventUserGroupId && userGroup !== eventUserGroupId) {
+        router.push("/live-event");
+        return;
+      }
+
+      setLiveEvent(response?.data?.liveEvent);
+      setCategory(response?.data?.category);
+    } catch (error) {
+      console.error("Error fetching live event:", error);
+      router.push("/live-event");
+    }
   };
-  const router = useRouter();
 
   useEffect(() => {
-    getLiveEvent();
-  }, []);
+    if (session?.user?.id) {
+      getLiveEvent();
+    }
+  }, [session?.user?.id]);
 
   if (!session?.user?.id) {
     return redirect("/");

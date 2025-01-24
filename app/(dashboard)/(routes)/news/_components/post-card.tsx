@@ -30,6 +30,7 @@ import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { LinkedCourse } from "./linked-course";
 import { LinkedLiveEvent } from "./linked-live-event";
 import { SeparatorHeading } from "./separator-heading";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PostCardProps {
   id: string;
@@ -187,21 +188,9 @@ export const PostCard = ({
           </div>
           {imageUrl && (
             <div className="relative flex aspect-video w-full items-center justify-center rounded-md p-2">
-              {isImageLoading ? (
-                theme === "dark" ? (
-                  <ClubyteLoader
-                    className="h-64 w-64"
-                    theme="dark"
-                    color="1b1f23"
-                  />
-                ) : (
-                  <ClubyteLoader
-                    className="h-64 w-64"
-                    theme="light"
-                    color="ffffff"
-                  />
-                )
-              ) : null}
+              {isImageLoading && (
+                <Skeleton className="absolute inset-0 h-full w-full" />
+              )}
               <Image
                 priority
                 fill
