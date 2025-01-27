@@ -16,7 +16,7 @@ export const ChapterPreviewAdmin = ({ value }: PreviewProps) => {
   );
 
   return (
-    <div className="rounded-lg border-2 bg-slate-100 dark:bg-[#0c0319]">
+    <div className="rounded-lg bg-slate-100 dark:bg-[#0c0319]">
       <span className="text-black dark:text-gray-300">
         <ReactQuill theme="bubble" value={value} readOnly />
       </span>

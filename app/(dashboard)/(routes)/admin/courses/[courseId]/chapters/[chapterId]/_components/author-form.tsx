@@ -21,25 +21,27 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/lib/check-language";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Combobox } from "@/components/ui/combobox";
 
 interface AuthorFormProps {
   initialData: Chapter;
   courseId: string;
   chapterId: string;
+  options: { label: string; value: string; imageUrl?: string }[];
 }
 
 const formSchema = z.object({
-  author: z.string().min(1, {
-    message: "Author is required",
-  }),
+  authorId: z.string().nullable(),
+  authorName: z.string().nullable(),
 });
 
 export const AuthorForm = ({
   initialData,
   courseId,
   chapterId,
+  options,
 }: AuthorFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const currentLanguage = useLanguage();
@@ -50,7 +52,8 @@ export const AuthorForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      author: initialData?.author || "",
+      authorId: initialData?.authorId || "",
+      authorName: initialData?.authorName || "",
     },
   });
 
@@ -60,7 +63,10 @@ export const AuthorForm = ({
     try {
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}`,
-        values
+        {
+          authorId: values.authorId,
+          authorName: values.authorName,
+        }
       );
       toast.success("Chapter updated");
       toggleEdit();
@@ -69,6 +75,10 @@ export const AuthorForm = ({
       toast.error("Something went wrong");
     }
   };
+
+  const selectedOption = options.find(
+    (option) => option.value === initialData.authorName
+  );
 
   return (
     <Card className="my-4 w-full">
@@ -94,58 +104,60 @@ export const AuthorForm = ({
           <p
             className={cn(
               "text-md font-medium",
-              !initialData.author && "italic text-slate-500"
+              !initialData.authorName && "italic text-slate-500"
             )}
           >
-            {initialData?.author ||
+            {initialData?.authorName ||
               `${currentLanguage.chapters_levelForm_noAuthor}`}
           </p>
         )}
         {isEditing && (
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-              <FormField
-                control={form.control}
-                name="author"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isSubmitting}
-                        placeholder={
-                          currentLanguage.courses_authorForm_placeholder
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="authorId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Combobox 
+                      options={options} 
+                      value={field.value || undefined}
+                      showImages
+                      onChange={(value) => {
+                        field.onChange(value);
+                        if (!value) {
+                          form.setValue("authorName", null);
+                        } else {
+                          const selectedOption = options.find(opt => opt.value === value);
+                          if (selectedOption) {
+                            form.setValue("authorName", selectedOption.label);
+                          }
                         }
-                        className="text-md"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex items-center justify-end space-x-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={toggleEdit}
-                  disabled={isSubmitting}
-                >
-                  {currentLanguage.commonButton_cancel}
-                </Button>
-                <Button
-                  type="submit"
-                  size="sm"
-                  disabled={!isValid || isSubmitting}
-                  onClick={() => onSubmit(form.getValues())}
-                >
-                  {currentLanguage.commonButton_save}
-                </Button>
-              </div>
-            </form>
-          </Form>
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
         )}
       </CardContent>
+      {isEditing && (
+        <CardFooter className="flex justify-end space-x-2">
+          <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+            {currentLanguage.commonButton_cancel}
+          </Button>
+          <Button
+            disabled={!isValid || isSubmitting}
+            onClick={() => onSubmit(form.getValues())}
+          >
+            {currentLanguage.commonButton_save}
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 };

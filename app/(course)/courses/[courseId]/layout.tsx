@@ -3,10 +3,12 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { getProgress } from "@/actions/get-progress";
+import toast from "react-hot-toast";
 
 import { CourseNavbar } from "./_components/course-navbar";
 import { Sidebar } from "@/app/(dashboard)/_components/sidebar";
 import authOptions  from "@/lib/auth"; // Ensure this is properly configured
+import { currentProfile } from "@/lib/current-profile";
 
 const CourseLayout = async ({
   children,
@@ -23,10 +25,12 @@ const CourseLayout = async ({
 
   const userId = session.user.id;
 
+  const profile = await currentProfile();
+
   const container = await db.container.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
-    },
+    }
   })
 
   const course = await db.course.findUnique({
@@ -55,6 +59,14 @@ const CourseLayout = async ({
 
   if (!course) {
     return redirect("/");
+  }
+
+  // Check if user's usergroup matches the course's usergroup if one is set
+  const userGroup = profile?.usergroupId;
+  const courseUserGroup = course.usergroupId;
+
+  if (courseUserGroup && userGroup !== courseUserGroup) {
+    return redirect("/search");
   }
 
   const progressCount = await getProgress(userId, course.id);

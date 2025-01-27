@@ -68,7 +68,7 @@ export const CategoryTypeForm = ({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{currentLanguage.post_CategoryTypeForm_title}</CardTitle>
+        <CardTitle className="text-xl flex items-center justify-between">{currentLanguage.post_CategoryTypeForm_title}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -155,4 +155,3 @@ export const CategoryTypeForm = ({
     </Card>
   )
 }
-

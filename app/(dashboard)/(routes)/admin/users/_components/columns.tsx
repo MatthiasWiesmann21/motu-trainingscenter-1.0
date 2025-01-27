@@ -12,18 +12,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/lib/check-language";
 
 
 export const columns: ColumnDef<Profile>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Username
+          {currentLanguage.data_table_name}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -32,12 +34,13 @@ export const columns: ColumnDef<Profile>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          E-Mail
+          {currentLanguage.data_table_email}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -46,12 +49,13 @@ export const columns: ColumnDef<Profile>[] = [
   {
     accessorKey: "role",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-           Role
+           {currentLanguage.data_table_role}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -60,12 +64,13 @@ export const columns: ColumnDef<Profile>[] = [
   {
     accessorKey: "isBanned",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-           User is Banned
+           {currentLanguage.data_table_userIsBanned}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -75,6 +80,7 @@ export const columns: ColumnDef<Profile>[] = [
     id: "actions",
     cell: ({ row }) => {
       const { id } = row.original;
+      const currentLanguage = useLanguage();
 
       return (
         <DropdownMenu>
@@ -88,7 +94,7 @@ export const columns: ColumnDef<Profile>[] = [
             <Link href={`/admin/users/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="h-4 w-4 mr-2" />
-                Edit
+                {currentLanguage.data_table_edit}
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

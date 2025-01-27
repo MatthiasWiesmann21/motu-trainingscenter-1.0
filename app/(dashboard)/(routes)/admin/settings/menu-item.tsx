@@ -41,25 +41,22 @@ export const MenuItem = ({
 
   return (
     <Card
-      className={cn(
-        "overflow-hidden border-2 transition-all duration-300 hover:shadow-lg",
-        isHovered && "ring-2 ring-offset-2",
-      )}
+      className="overflow-hidden border-2 transition-all duration-300 hover:shadow-lg"
       style={{
         borderColor: isHovered ? getThemeColor() : undefined,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <CardHeader className="p-6">
+      <CardHeader className="p-4">
         <div className="flex items-center justify-center">
-          <Icon size={64} className="text-primary transition-transform duration-300 ease-in-out group-hover:scale-110" />
+          <Icon size={48} className="text-primary transition-transform duration-300 ease-in-out group-hover:scale-110" />
         </div>
       </CardHeader>
       <CardContent>
         <h2 className="text-center text-xl font-semibold">{label}</h2>
       </CardContent>
-      <CardFooter className="flex justify-between p-4">
+      <CardFooter className="flex justify-between px-4 pb-4">
         <div className="flex space-x-2 mr-2">
           {isNew && (
             <Badge variant="secondary" className="bg-green-500 text-white">

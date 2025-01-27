@@ -29,6 +29,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { EventDescriptionAdminPreview } from "@/components/event-description-admin-preview";
 
 interface EventDescriptionFormProps {
   initialData: LiveEvent;
@@ -101,7 +102,7 @@ export const EventDescriptionForm = ({
           >
             {!initialData.description && "No description"}
             {initialData.description && (
-              <EventPreview value={initialData.description} isAdmin={true} />
+              <EventDescriptionAdminPreview value={initialData.description} />
             )}
           </div>
         )}

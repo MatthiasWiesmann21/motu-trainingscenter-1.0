@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, File, LayoutDashboard, Video } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -18,6 +18,7 @@ import authOptions from "@/lib/auth"; // Ensure this is correctly configured
 import { DurationForm } from "./_components/duration-form";
 import { LevelForm } from "./_components/level-form";
 import GoBackButton from "@/components/goBackButton";
+import { AttachmentForm } from "./_components/attachment-form";
 
 const ChapterIdPage = async ({
   params,
@@ -37,11 +38,28 @@ const ChapterIdPage = async ({
       id: params.chapterId,
       courseId: params.courseId,
     },
+    include: {
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   if (!chapter) {
     return redirect("/");
   }
+
+  const authorProfile = await db.profile.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
+      role: { in: ["CLIENT ADMIN", "ADMIN", "OPERATOR", "MODERATOR"] },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
 
   const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
 
@@ -111,11 +129,11 @@ const ChapterIdPage = async ({
                 courseId={params.courseId}
                 chapterId={params.chapterId}
                 options={[
-                  { label: "Beginner", value: "Beginner" },
-                  { label: "Intermediate", value: "Intermediate" },
-                  { label: "Advanced", value: "Advanced" },
-                  { label: "Expert", value: "Expert" },
-                  { label: "Master", value: "Master" },
+                  { label: `${currentLanguage.level_beginner}`, value: "Beginner" },
+                  { label: `${currentLanguage.level_intermediate}`, value: "Intermediate" },
+                  { label: `${currentLanguage.level_advanced}`, value: "Advanced" },
+                  { label: `${currentLanguage.level_expert}`, value: "Expert" },
+                  { label: `${currentLanguage.level_master}`, value: "Master" },
                 ]}
               />
             </div>
@@ -149,6 +167,24 @@ const ChapterIdPage = async ({
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
+              options={authorProfile.map((profile) => ({
+                label: profile.name!,
+                value: profile.id,
+                imageUrl: profile.imageUrl,
+              }))}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={File} />
+              <h2 className="text-xl">
+                {currentLanguage.course_setup_attachments_title}
+              </h2>
+            </div>
+            <AttachmentForm
+              initialData={chapter}
+              courseId={params.courseId!}
+              chapterId={params.chapterId!}
             />
           </div>
         </div>

@@ -1,4 +1,3 @@
-import PrivacyPolicyModal from "@/components/modals/privacy-policy-modal";
 import { Logo } from "./logo";
 import { SidebarRoutes } from "./sidebar-routes";
 import { languageServer } from "@/lib/check-language-server";
@@ -36,7 +35,6 @@ export const Sidebar = async () => {
 
   return (
     <div className="-y-auto flex h-full flex-col border-r-2 bg-white shadow-sm dark:bg-[#0A0118]">
-      <PrivacyPolicyModal profile={profile} />
       <div className="flex h-[80px] items-center justify-center border-b-2">
         <Logo
           imageUrl={container?.imageUrl || ""}

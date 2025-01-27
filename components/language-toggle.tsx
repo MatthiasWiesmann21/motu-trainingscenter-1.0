@@ -59,41 +59,41 @@ export function LanguageToggle({profileId} : LanguageToggleProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="ml-2 h-10 w-14 rounded-md hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b] bg-transparent flex items-center justify-center">
-          <AppSVGIcon customclass="" icon={icon[language]} />
+        <div className="h-10 w-14 rounded-md hover:bg-[#f1f5f9] dark:hover:bg-[#1e293b] bg-transparent flex items-center justify-center">
+          <AppSVGIcon customclass="rounded" icon={icon[language]} />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setLanguage("English")}>
-          <AppSVGIcon customclass="mr-1" icon={"gb"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"gb"} />
           {currentLanguage.navigation_language_toggle_english}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Deutsch")}>
-          <AppSVGIcon customclass="mr-1" icon={"de"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"de"} />
           {currentLanguage.navigation_language_toggle_german}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Francaise")}>
-          <AppSVGIcon customclass="mr-1" icon={"fr"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"fr"} />
           {currentLanguage.navigation_language_toggle_french}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Italiano")}>
-          <AppSVGIcon customclass="mr-1" icon={"it"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"it"} />
           {currentLanguage.navigation_language_toggle_italian}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Espanol")}>
-          <AppSVGIcon customclass="mr-1" icon={"es"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"es"} />
           {currentLanguage.navigation_language_toggle_spanish}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Portugues")}>
-          <AppSVGIcon customclass="mr-1" icon={"pt"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"pt"} />
           {currentLanguage.navigation_language_toggle_portuguese}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Russian")}>
-          <AppSVGIcon customclass="mr-1" icon={"ru"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"ru"} />
           {currentLanguage.navigation_language_toggle_russian}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage("Mandarin")}>
-          <AppSVGIcon customclass="mr-1" icon={"tw"} />
+          <AppSVGIcon customclass="mr-2 rounded" icon={"tw"} />
           {currentLanguage.navigation_language_toggle_mandarin}
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -90,10 +90,10 @@ export const PostFavoriteCard = ({
 
   return (
     <TooltipProvider>
-      <div className="group my-5 h-full overflow-hidden rounded-lg border-2 bg-[#f6f8fa] hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
-        <div className="group h-full overflow-hidden hover:shadow-sm">
-          <div className="flex flex-col">
-            <div className="mx-4 mt-5 flex items-start justify-between">
+      <div className="group my-4 h-full overflow-hidden rounded-lg border-2 bg-white py-1 dark:border-[#2e3135] dark:bg-[#1b1f23]">
+        <div className="group h-full overflow-hidden">
+          <div className="m-4 flex flex-col">
+            <div className="flex items-start justify-between">
               <div className="flex items-center">
                 <UserAvatar
                   src={publisherImageUrl}
@@ -112,20 +112,28 @@ export const PostFavoriteCard = ({
                       </div>
                     </TooltipContent>
                   </Tooltip>
+
                   <div className="text-xs text-black text-muted-foreground dark:text-white">
                     {createdAt}
                   </div>
                 </div>
               </div>
               <div className="flex items-center">
-                {category && (
-                  <div
-                    className={`font-600 flex items-center gap-x-1 rounded-lg border-2 px-3 py-1 text-xs transition`}
-                    style={{ borderColor: colorCode }}
-                  >
-                    <div className="truncate">{category}</div>
-                  </div>
-                )}
+                <Tooltip>
+                  <TooltipTrigger>
+                    {category && (
+                      <div
+                        className={`flex items-center rounded-lg border-2 px-3 py-1 text-xs`}
+                        style={{ borderColor: colorCode }}
+                      >
+                        <div className="truncate">{category}</div>
+                      </div>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="whitespace-normal text-sm">{category}</div>
+                  </TooltipContent>
+                </Tooltip>
                 {canAccess && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -160,46 +168,50 @@ export const PostFavoriteCard = ({
                 )}
               </div>
             </div>
-            <div className="font-500 mx-4 text-sm text-black dark:text-white">
+            <div className="font-400 mt-6 text-sm text-black dark:text-white">
               <PostPreview value={description} />
             </div>
-            {imageUrl && (
-              <div className="relative mt-4 flex aspect-video w-full items-center justify-center rounded-md">
-                {isImageLoading ? (
-                  theme === "dark" ? (
-                    <ClubyteLoader
-                      className="h-64 w-64"
-                      theme="dark"
-                      color="1b1f23"
-                    />
-                  ) : (
-                    <ClubyteLoader
-                      className="h-64 w-64"
-                      theme="light"
-                      color="f6f8fa"
-                    />
-                  )
-                ) : null}
-                <Image
-                  src={imageUrl}
-                  alt="post"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <LikeComment
-              id={id}
-              profileImage={profileImage}
-              likesCount={likesCount}
-              currentLike={currentLike}
-              currentFavorite={currentFavorite}
-              commentsWithLikes={commentsWithLikes}
-              commentsCount={commentsCount}
-              updateLikeComment={updateLikeComment}
-              currentProfileId={currentProfileId}
-            />
           </div>
+          {imageUrl && (
+            <div className="relative flex aspect-video w-full items-center justify-center rounded-md p-2">
+              {isImageLoading ? (
+                theme === "dark" ? (
+                  <ClubyteLoader
+                    className="h-64 w-64"
+                    theme="dark"
+                    color="1b1f23"
+                  />
+                ) : (
+                  <ClubyteLoader
+                    className="h-64 w-64"
+                    theme="light"
+                    color="ffffff"
+                  />
+                )
+              ) : null}
+              <Image
+                priority
+                fill
+                className={`cover transition-opacity duration-500 ${
+                  isImageLoading ? "opacity-0" : "opacity-100"
+                }`}
+                alt={id}
+                src={imageUrl}
+                onLoadingComplete={handleImageLoad}
+              />
+            </div>
+          )}
+          <LikeComment
+            id={id}
+            profileImage={profileImage}
+            likesCount={likesCount}
+            currentLike={currentLike}
+            currentFavorite={currentFavorite}
+            commentsWithLikes={commentsWithLikes}
+            commentsCount={commentsCount}
+            updateLikeComment={updateLikeComment}
+            currentProfileId={currentProfileId}
+          />
         </div>
       </div>
     </TooltipProvider>

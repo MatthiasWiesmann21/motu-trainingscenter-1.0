@@ -1,51 +1,52 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 import { getAnalytics } from "@/actions/get-analytics";
-
-import { DataCard } from "./_components/data-card";
-import { Chart } from "./_components/chart";
 import { isOwner } from "@/lib/owner";
 import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
-import authOptions  from "@/lib/auth"; // Ensure this is properly configured
+import authOptions from "@/lib/auth";
+import { db } from "@/lib/db";
+import { MenuRoutes } from "./menu-routes";
 
 const AnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-  
   const currentLanguage = await languageServer();
-
-  if (!userId) {
-    return redirect("/search");
-  }
-
+  const userId = session?.user.id || ''; 
   const isRoleAdmins = await isAdmin();
   const isRoleOperator = await isOperator();
   const isRoleClientAdmin = await isClientAdmin();
-  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || isOwner(userId);
+  const canAccess = isRoleAdmins || isRoleOperator || isRoleClientAdmin || (userId && await isOwner(userId));
 
   if (!canAccess) {
     return redirect("/search");
   }
 
-  const { data, totalRevenue, totalSales } = await getAnalytics(userId);
+  const container = await db.container.findUnique({
+    where: {
+      id: session?.user?.profile?.containerId,
+    },
+  });
+
+  if (!container) {
+    return redirect("/");
+  }
 
   return (
-    <div className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <DataCard
-          label={currentLanguage.analytics_total_revenue_label}
-          value={totalRevenue}
-          shouldFormat
-        />
-        <DataCard
-          label={currentLanguage.analytics_total_sales_label}
-          value={totalSales}
-        />
+    <>
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">
+              {currentLanguage?.analytics_overviewContainer_title}
+            </h1>
+          </div>
+        </div>
+        <MenuRoutes container={container}/>
       </div>
-      <Chart data={data} />
-    </div>
+    </>
   );
 };
 

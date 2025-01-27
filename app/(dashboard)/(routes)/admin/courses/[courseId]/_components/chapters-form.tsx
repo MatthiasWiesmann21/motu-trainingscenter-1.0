@@ -85,7 +85,7 @@ export const ChaptersForm = ({
   return (
     <Card className="my-4">
       <CardHeader>
-        <CardTitle className="flex text-lg items-center justify-between">
+        <CardTitle className="text-xl flex items-center justify-between">
           {currentLanguage.courses_chaptersForm_title}
           <Button onClick={toggleCreating} variant="ghost">
             {isCreating ? (
@@ -122,6 +122,7 @@ export const ChaptersForm = ({
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                onClick={() => onSubmit(form.getValues())}
               >
                 {currentLanguage.courses_chaptersForm_save}
               </Button>
@@ -159,4 +160,3 @@ export const ChaptersForm = ({
     </Card>
   )
 }
-

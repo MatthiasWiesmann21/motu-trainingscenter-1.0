@@ -1,76 +1,75 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Calendar, Pencil, X } from "lucide-react";
-import { useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import moment from "moment";
-import { useLanguage } from "@/lib/check-language";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import * as z from "zod"
+import axios from "axios"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { CalendarIcon, Pencil, X } from 'lucide-react'
+import { useState } from "react"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import { format } from "date-fns"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/check-language"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { LiveEvent } from "@prisma/client"
 
 interface DateFormProps {
-  initialData: {
-    endDateTime: Date | any;
-  };
-  liveEventId: string;
+  initialData: LiveEvent;
+  liveEventId: string
 }
 
 const formSchema = z.object({
-  endDateTime: z
-    .string()
-    ?.min(1, {
-      message: "This is required",
-    })
-    ?.transform((str) => new Date(str)),
-});
+  endDateTime: z.date(),
+})
 
 export const EndDateTimeForm = ({
   initialData,
   liveEventId,
 }: DateFormProps) => {
-  const dateInputRef = useRef(null);
-  const [selectedDate, setSelectedDate] = useState("");
-  const currentLanguage = useLanguage();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false)
+  const [date, setDate] = useState<Date | undefined>(
+    initialData.endDateTime ? new Date(initialData.endDateTime) : undefined
+  )
+  const currentLanguage = useLanguage()
+  const toggleEdit = () => setIsEditing((current) => !current)
 
-  const toggleEdit = () => setIsEditing((current) => !current);
-
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
-  });
+    defaultValues: {
+      endDateTime: initialData.endDateTime ? new Date(initialData.endDateTime) : undefined,
+    },
+  })
 
-  const { isSubmitting } = form?.formState;
+  const { isSubmitting } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/liveEvent/${liveEventId}`, {
         ...values,
         isEnded: false,
-      });
-      toast.success("Event updated");
-      toggleEdit();
-      router.refresh();
+      })
+      toast.success("Event updated")
+      toggleEdit()
+      router.refresh()
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong")
     }
-  };
+  }
 
   return (
-    <Card className="my-4 w-full">
+    <Card className="w-full my-4">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between text-xl">
+        <CardTitle className="flex items-center text-xl justify-between">
           <span className="flex items-center">
-            <Calendar className="mr-2 h-5 w-5" />
+            <CalendarIcon className="mr-2 h-5 w-5" />
             {currentLanguage.liveEvent_endDateTimeForm_title}
           </span>
           <Button
@@ -92,51 +91,68 @@ export const EndDateTimeForm = ({
           <p
             className={cn(
               "text-md font-medium",
-              !initialData?.endDateTime && "italic text-muted-foreground"
+              !date && "italic text-muted-foreground"
             )}
           >
-            {initialData?.endDateTime
-              ? moment(initialData?.endDateTime).format("DD-MM-YY HH:mm")
+            {date
+              ? format(date, "PPP p")
               : "No Date Selected"}
           </p>
         )}
         {isEditing && (
-          <div className="relative space-y-4">
-            <input
-              type="datetime-local"
-              ref={dateInputRef}
-              className="sr-only"
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-            <Input
-              // @ts-ignore
-              onClick={() => dateInputRef.current?.showPicker()}
-              type="text"
-              placeholder="Select Date & Time"
-              value={
-                selectedDate
-                  ? moment(selectedDate).format("YYYY-MM-DD HH:mm")
-                  : ""
-              }
-              readOnly
-              className="cursor-pointer"
-            />
-          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date ? format(date, "PPP p") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                initialFocus
+              />
+              <div className="p-3 border-t">
+                <Input
+                  type="time"
+                  value={date ? format(date, "HH:mm") : ""}
+                  onChange={(e) => {
+                    const [hours, minutes] = e.target.value.split(':')
+                    const newDate = date ? new Date(date) : new Date()
+                    newDate.setHours(parseInt(hours), parseInt(minutes))
+                    setDate(newDate)
+                  }}
+                />
+              </div>
+            </PopoverContent>
+          </Popover>
         )}
       </CardContent>
       {isEditing && (
         <CardFooter className="flex justify-end space-x-2">
-          <Button variant="ghost" onClick={toggleEdit} disabled={isSubmitting}>
+          <Button
+            variant="ghost"
+            onClick={toggleEdit}
+            disabled={isSubmitting}
+          >
             {currentLanguage.commonButton_cancel}
           </Button>
           <Button
-            disabled={selectedDate === "" || isSubmitting}
-            onClick={() => onSubmit({ endDateTime: new Date(selectedDate) })}
+            disabled={!date || isSubmitting}
+            onClick={() => onSubmit({ endDateTime: date! })}
           >
             {currentLanguage.commonButton_save}
           </Button>
         </CardFooter>
       )}
     </Card>
-  );
-};
+  )
+}

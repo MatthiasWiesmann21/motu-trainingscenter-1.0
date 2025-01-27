@@ -73,7 +73,7 @@ export const SpecialTypeForm = ({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{currentLanguage.course_SpecialTypeForm_title}</CardTitle>
+        <CardTitle className="text-xl flex items-center justify-between">{currentLanguage.course_SpecialTypeForm_title}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>

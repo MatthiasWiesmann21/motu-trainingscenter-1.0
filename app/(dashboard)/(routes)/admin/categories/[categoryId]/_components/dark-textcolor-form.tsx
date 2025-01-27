@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input";
 
 interface DarkTextColorFormProps {
   initialData: {
+    colorCode: string;
+    textColorCode: string;
     darkTextColorCode: string;
   };
   categoryId: string;
@@ -55,7 +57,13 @@ export const DarkTextColorForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/category/${categoryId}`, values);
+      // Preserve existing colors when updating the dark text color
+      const updateData = {
+        colorCode: initialData.colorCode,
+        textColorCode: initialData.textColorCode,
+        darkTextColorCode: values.darkTextColorCode,
+      };
+      await axios.patch(`/api/category/${categoryId}`, updateData);
       toast.success("Category updated");
       toggleEdit();
       router.refresh();
@@ -67,7 +75,7 @@ export const DarkTextColorForm = ({
   return (
     <Card className="my-4 w-full">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between space-x-2">
+        <CardTitle className="text-xl flex items-center justify-between">
           <div className="flex space-x-2">
             <Palette className="h-6 w-6" />
             <span>{currentLanguage.categories_DarkTextColorForm_title}</span>

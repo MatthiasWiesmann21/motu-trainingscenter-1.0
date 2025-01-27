@@ -1,10 +1,11 @@
-import { Category, Course, LiveEvent } from "@prisma/client";
+import { Category, Course, LiveEvent, Like } from "@prisma/client";
 
 import { getProgress } from "@/actions/get-progress";
 import { db } from "@/lib/db";
 
 type EventWithProgressWithCategory = LiveEvent & {
   category: Category | null;
+  likes: Like[];
 };
 
 type GetEvents = {
@@ -30,6 +31,7 @@ export const getEvents = async ({
       },
       include: {
         category: true,
+        likes: true,
       },
       orderBy: {
         createdAt: "desc",

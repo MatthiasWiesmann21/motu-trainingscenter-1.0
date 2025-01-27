@@ -52,7 +52,7 @@ export const LiveEventWrapper = ({
   }
 
   if (!session) {
-    router.push("/auth/signin?callbackUrl= ");
+    router.push("/auth/sign-in");
     return <></>; // Ensure a valid JSX element is always returned
   }
 
@@ -68,7 +68,7 @@ export const LiveEventWrapper = ({
           />
           {profileRole === "ADMIN" || profileRole === "CLIENT ADMIN" && (
             <Button
-              className="mt-1 rounded-lg border-2 border-slate-300 p-3 text-start text-sm text-slate-500 hover:border-slate-100 dark:border-slate-800"
+              className="border-2"
               variant="outline"
               onClick={() => onOpen("createLiveEvent")}
             >
@@ -88,6 +88,14 @@ export const LiveEventWrapper = ({
           />
         </div>
       </div>
+      <div className="block lg:hidden mb-2 max-w-3xl mx-auto lg:ml-auto lg:mr-0">
+        <Link
+          className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+          href={"/live-event/favourite-events"}
+        >
+          {currentLanguage.dashboard_eventTable_viewFavoriteEvents_button_text}
+        </Link>
+      </div>
       <div className="flex w-full">
         <div className="w-full lg:w-[85%]">
           <Categories
@@ -97,14 +105,12 @@ export const LiveEventWrapper = ({
           />
         </div>
 
-        <div className="hidden w-[15%] items-center justify-center lg:block">
+        <div className="hidden lg:flex w-[15%] items-center justify-center">
           <Link
-            className="mt-1 flex h-8 w-full items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
             href={"/live-event/favourite-events"}
           >
-            {
-              currentLanguage.dashboard_eventTable_viewFavoriteEvents_button_text
-            }
+            {currentLanguage.dashboard_eventTable_viewFavoriteEvents_button_text}
           </Link>
         </div>
       </div>

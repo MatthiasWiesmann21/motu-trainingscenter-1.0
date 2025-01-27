@@ -27,6 +27,10 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
+import { LinkedCourse } from "./linked-course";
+import { LinkedLiveEvent } from "./linked-live-event";
+import { SeparatorHeading } from "./separator-heading";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PostCardProps {
   id: string;
@@ -47,6 +51,10 @@ interface PostCardProps {
   updateLikeComment: any;
   profileImage: string;
   currentProfileId: string;
+  courseId?: string;
+  liveEventId?: string;
+  ThemeColor: string;
+  DarkThemeColor: string;
 }
 
 export const PostCard = ({
@@ -67,6 +75,10 @@ export const PostCard = ({
   updateLikeComment,
   profileImage,
   currentProfileId,
+  courseId,
+  liveEventId,
+  ThemeColor,
+  DarkThemeColor,
 }: PostCardProps) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const { theme } = useTheme();
@@ -92,8 +104,8 @@ export const PostCard = ({
 
   return (
     <TooltipProvider>
-      <div className="group my-4 h-full overflow-hidden rounded-lg border-2 bg-[#f6f8fa] py-1 hover:shadow-sm dark:border-[#2e3135] dark:bg-[#1b1f23]">
-        <div className="group h-full overflow-hidden hover:shadow-sm">
+      <div className="group my-4 h-full overflow-hidden rounded-lg border-2 bg-white py-1 dark:border-[#2e3135] dark:bg-[#1b1f23]">
+        <div className="group h-full overflow-hidden">
           <div className="m-4 flex flex-col">
             <div className="flex items-start justify-between">
               <div className="flex items-center">
@@ -170,27 +182,15 @@ export const PostCard = ({
                 )}
               </div>
             </div>
-            <div className="font-400 text-sm text-black dark:text-white">
+            <div className="font-400 mt-6 text-sm text-black dark:text-white">
               <PostPreview value={description} />
             </div>
           </div>
           {imageUrl && (
             <div className="relative flex aspect-video w-full items-center justify-center rounded-md p-2">
-              {isImageLoading ? (
-                theme === "dark" ? (
-                  <ClubyteLoader
-                    className="h-64 w-64"
-                    theme="dark"
-                    color="1b1f23"
-                  />
-                ) : (
-                  <ClubyteLoader
-                    className="h-64 w-64"
-                    theme="light"
-                    color="f6f8fa"
-                  />
-                )
-              ) : null}
+              {isImageLoading && (
+                <Skeleton className="absolute inset-0 h-full w-full" />
+              )}
               <Image
                 priority
                 fill
@@ -202,6 +202,27 @@ export const PostCard = ({
                 onLoadingComplete={handleImageLoad}
               />
             </div>
+          )}
+          {(courseId || liveEventId) && (
+            <div className="mt-4">
+              <SeparatorHeading
+                title={currentLanguage.post_card_linked_items_title}
+              />
+            </div>
+          )}
+          {courseId && (
+            <LinkedCourse
+              courseId={courseId}
+              ThemeColor={ThemeColor}
+              DarkThemeColor={DarkThemeColor}
+            />
+          )}
+          {liveEventId && (
+            <LinkedLiveEvent
+              eventId={liveEventId}
+              ThemeColor={ThemeColor}
+              DarkThemeColor={DarkThemeColor}
+            />
           )}
         </div>
         <LikeComment

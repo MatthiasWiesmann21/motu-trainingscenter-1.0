@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PathMaker from "../_components/path-maker";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/check-language";
 import { Switch } from "@/components/ui/switch"; // Import Switch from UI components
 import { Input } from "@/components/ui/input"; // Import Input from UI components
 import { Button } from "@/components/ui/button"; // Import Button for consistency
 import Link from "next/link"; // For cancel button
 import toast from "react-hot-toast";
+import { useIsAdmin, useIsClientAdmin, useIsOperator } from "@/lib/roleCheck";
 
 type Params = {
   id: string;
@@ -26,6 +27,15 @@ const DocumentCreatePage = () => {
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const encodedObj = useParams()?.id as string;
   const currentLanguage = useLanguage();
+  const router = useRouter();
+
+  const isAdmin = useIsAdmin();
+  const isOperator = useIsOperator();
+  const isClientAdmin = useIsClientAdmin();
+
+  if (!isAdmin && !isOperator && !isClientAdmin) {
+    return router.push("/documents");
+  }
 
   // Initialize id and action with default values
   let id: string | string[];
@@ -141,7 +151,7 @@ const DocumentCreatePage = () => {
             id="name"
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
-            className="block rounded-md px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 dark:bg-[#1e293b] dark:text-gray-300 sm:text-sm sm:leading-6"
+            className="rounded-md"
             placeholder={currentLanguage.placeholder}
           />
         </div>
@@ -159,7 +169,7 @@ const DocumentCreatePage = () => {
           <button
             onClick={handleUploadButtonClick}
             type="button"
-            className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 dark:hover:bg-[#1e293b]"
+            className="relative block w-full rounded-lg border-2 border-dashed border-slate-300 p-12 text-center hover:border-gray-400 dark:hover:bg-[#1e293b]"
           >
             <input
               type="file"
@@ -198,14 +208,14 @@ const DocumentCreatePage = () => {
         <Link
           href={`/documents/${parentId || ""}`}
           type="button"
-          className="rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-[#1e293b]"
+          className="rounded-md px-3.5 py-2.5 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-[#1e293b]"
         >
           {currentLanguage.cancel}
         </Link>
         <Button
           onClick={isEdit ? handleFileUpdate : handleFileUpload}
           disabled={loading}
-          className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm"
+          className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold"
         >
           {isEdit ? `${currentLanguage.update}` : `${currentLanguage.save}`}
         </Button>

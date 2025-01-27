@@ -13,6 +13,7 @@ import Link from "next/link";
 import GoBackButton from "@/components/goBackButton";
 import { NewPasswordForm } from "./_components/newPassword-form";
 import { DeleteProfileForm } from "./_components/deleteProfile-form";
+import PrivacyPolicyModal from "@/components/modals/privacy-policy-modal";
 
 const UserNamePage = async () => {
   const user = await currentProfile();
@@ -33,6 +34,7 @@ const UserNamePage = async () => {
 
   return (
     <div className="p-4">
+      <PrivacyPolicyModal profile={profile} />
       <GoBackButton buttonText={currentLanguage.goBack_button_text} />
       <div className="mt-8 items-center justify-center">
         <div>

@@ -33,7 +33,7 @@ import {
 interface CategoryFormProps {
   initialData: LiveEvent | Course;
   liveEventId: string;
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; color?: string;}[];
 }
 
 const formSchema = z.object({

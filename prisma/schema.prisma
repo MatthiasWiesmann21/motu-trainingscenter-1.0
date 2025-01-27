@@ -16,9 +16,10 @@ model Container {
   domain        String? @unique
   clientMail    String? @db.Text
   link          String? @db.Text
-  icon          String? @db.Text
-  imageUrl      String? @db.Text
-  imageUrlDark  String? @db.Text
+  defaultLanguage String? @default("Englisch")
+  icon          String? @default("https://utfs.io/f/ba857523-9c9e-4f38-8069-5cfdccbe03c3-m8j6ml.png")
+  imageUrl      String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  imageUrlDark  String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
   clientPackage String? @db.Text
   maxCourses    Int?    @default(0)
 
@@ -33,14 +34,14 @@ model Container {
   ThemeColor     String? @default("#e72192")
   DarkThemeColor String? @default("#e72192")
 
-  signUpImageUrl     String? @db.Text
-  darkSignUpImageUrl String? @db.Text
+  signUpImageUrl     String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkSignUpImageUrl String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
-  signInImageUrl     String? @db.Text
-  darkSignInImageUrl String? @db.Text
+  signInImageUrl     String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkSignInImageUrl String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
-  forgetPasswordImageUrl     String? @db.Text
-  darkForgetPasswordImageUrl String? @db.Text
+  forgetPasswordImageUrl     String? @default("https://utfs.io/f/d85a9400-185c-48ae-a8bc-d429b0b3dfd0-mokt05.png")
+  darkForgetPasswordImageUrl String? @default("https://utfs.io/f/a8KXLgULfRCShbtFAVaYFAan09MlWtLwN3Bob4d6xPCUj5vV")
 
   courses    Course[]
   categories Category[]
@@ -89,6 +90,7 @@ enum SubscriptionType {
 model Profile {
   id                    String           @id @default(cuid())
   userId                String           @db.Text
+  stripeCustomerId      String?          @default("")
   name                  String?          @db.Text
   imageUrl              String           @db.Text
   email                 String           @db.Text
@@ -101,6 +103,11 @@ model Profile {
   isBanned              String           @default("NOT BANNED")
   acceptedPrivacyPolicy Boolean          @default(false)
   subscriptionType      SubscriptionType @default(NONE)
+  stripeSubscriptionId  String?          @db.Text // Add this field
+  stripePriceId         String?          @db.Text // Add this field
+  paymentIntentId       String?          @db.Text // Add this field
+  productId             String?          @db.Text // Add this field
+  subscriptionEndDate   String?          @db.Text // Add this field
 
   containerId String
   container   Container @relation(fields: [containerId], references: [id])
@@ -120,6 +127,9 @@ model Profile {
 
   @@index([containerId])
   @@index([usergroupId])
+
+  trialStartDate DateTime? @db.DateTime(6)
+  trialEndDate   DateTime? @db.DateTime(6)
 }
 
 model Usergroup {
@@ -209,8 +219,8 @@ model Course {
   usergroupId String?
   usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
 
+  posts       Post[]
   chapters    Chapter[]
-  attachments Attachment[]
   purchases   Purchase[]
   favorites   Favorite[]
 
@@ -255,13 +265,13 @@ model Attachment {
   name String @db.Text
   url  String @db.Text
 
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([courseId])
+  @@index([chapterId])
 }
 
 model Chapter {
@@ -274,7 +284,8 @@ model Chapter {
   level       String?
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
-  author      String? @db.Text
+  authorId      String? @db.Text
+  authorName    String? @db.Text
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -284,6 +295,7 @@ model Chapter {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  attachments Attachment[]
   comments  Comment[]
   likes     Like[]
   favorites Favorite[]
@@ -402,6 +414,12 @@ model Post {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id])
+
+  liveEventId String?
+  liveEvent   LiveEvent? @relation(fields: [liveEventId], references: [id])
+
   usergroupId String?
   usergroup   Usergroup? @relation(fields: [usergroupId], references: [id])
 
@@ -415,10 +433,10 @@ model Post {
   @@index([categoryId])
   @@index([usergroupId])
   @@index([containerId])
+  @@index([courseId])
+  @@index([liveEventId])
   @@fulltext([title])
 }
-
-// TODO: Live Event Models
 
 model LiveEvent {
   id           String   @id @default(uuid())
@@ -442,6 +460,8 @@ model LiveEvent {
 
   comments  Comment[]
   favorites Favorite[]
+  posts     Post[]
+  likes     Like[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -449,7 +469,6 @@ model LiveEvent {
   startDateTime DateTime?
   endDateTime   DateTime?
 
-  likes Like[]
 
   @@index([categoryId])
   @@index([usergroupId])

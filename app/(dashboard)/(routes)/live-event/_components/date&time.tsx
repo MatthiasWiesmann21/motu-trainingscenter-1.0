@@ -4,8 +4,22 @@ import { Button } from "@/components/ui/button";
 import { SheetClose } from "@/components/ui/sheet";
 import { useLanguage } from "@/lib/check-language";
 import axios from "axios";
-import moment from "moment";
-import { useRef, useState } from "react";
+import { format } from "date-fns";
+import { useState } from "react";
+import { CalendarIcon, Filter } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 
 export const DateandTime = ({
   setLiveEvent,
@@ -16,90 +30,185 @@ export const DateandTime = ({
   getEvent: any;
   liveEvent: any[];
 }) => {
-  const endDateInputRef = useRef(null);
-  const startDateInputRef = useRef(null);
   const [startDateTime, setStartDateTime] = useState<Date | undefined>();
   const [endDateTime, setEndDateTime] = useState<Date | undefined>();
   const currentLanguage = useLanguage();
 
+  const handleApplyFilter = async (closeSheet: () => void) => {
+    try {
+      const response = await axios?.post(`/api/liveEvent/filter`, {
+        ...getEvent,
+        startDateTime,
+        endDateTime,
+      });
+      setLiveEvent(response?.data);
+      closeSheet();
+    } catch (error) {
+      console.error("Error applying filter:", error);
+    }
+  };
+
+  const handleClearFilter = async (closeSheet: () => void) => {
+    try {
+      const response = await axios?.get(`/api/liveEvent`);
+      setLiveEvent(response?.data);
+      setStartDateTime(undefined);
+      setEndDateTime(undefined);
+      closeSheet();
+    } catch (error) {
+      console.error("Error clearing filter:", error);
+    }
+  };
+
   return (
-    <div className="mt-4 flex w-full flex-col space-y-4">
-      <div className="flex flex-col items-start gap-2">
-        <div className="relative mb-2 w-full overflow-hidden">
-          <div className="text-sm">{currentLanguage.live_event_filter_start_date_text}</div>
-          <input
-            type="datetime-local"
-            ref={startDateInputRef}
-            className="absolute -z-[1] w-full"
-            onChange={(e) => {
-              setStartDateTime(new Date(e?.target?.value));
-            }}
-          />
-          <input
-            // @ts-ignore
-            onClick={() => startDateInputRef?.current?.showPicker()}
-            type="text"
-            placeholder={currentLanguage.live_event_filter_start_date}
-            value={
-              startDateTime
-                ? moment(startDateTime)?.format("YYYY-MM-DD HH:mm")
-                : ""
-            }
-            className="border-1 z-[1] w-full cursor-pointer rounded border border-black dark:border-white px-2"
-          />
+    <Card className="my-4 w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between text-xl">
+          <span className="flex items-center">
+            <Filter className="mr-2 h-5 w-5" />
+            {currentLanguage.live_event_filter_title}
+          </span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <Popover modal={true}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !startDateTime && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {startDateTime ? (
+                  format(startDateTime, "PPP p")
+                ) : (
+                  <span>Start Date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverPrimitive.Portal>
+              <PopoverPrimitive.Content
+                className="z-[999] w-auto rounded-md border-2 bg-white p-0 dark:bg-black"
+                align="start"
+                side="bottom"
+                sideOffset={10}
+                onCloseAutoFocus={(e) => e.preventDefault()}
+                onOpenAutoFocus={(e) => e.preventDefault()}
+              >
+                <Calendar
+                  mode="single"
+                  selected={startDateTime}
+                  onSelect={(date) => {
+                    if (date) {
+                      const currentTime = startDateTime || new Date();
+                      date.setHours(
+                        currentTime.getHours(),
+                        currentTime.getMinutes()
+                      );
+                      setStartDateTime(date);
+                    }
+                  }}
+                  initialFocus
+                />
+                <div className="border-t p-3">
+                  <Input
+                    type="time"
+                    value={startDateTime ? format(startDateTime, "HH:mm") : ""}
+                    onChange={(e) => {
+                      const [hours, minutes] = e.target.value.split(":");
+                      const newDate = startDateTime
+                        ? new Date(startDateTime)
+                        : new Date();
+                      newDate.setHours(parseInt(hours), parseInt(minutes));
+                      setStartDateTime(newDate);
+                    }}
+                  />
+                </div>
+              </PopoverPrimitive.Content>
+            </PopoverPrimitive.Portal>
+          </Popover>
+
+          <Popover modal={true}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !endDateTime && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {endDateTime ? (
+                  format(endDateTime, "PPP p")
+                ) : (
+                  <span>End Date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverPrimitive.Portal>
+              <PopoverPrimitive.Content
+                className="z-[999] w-auto rounded-md border-2 bg-white p-0 dark:bg-black"
+                align="start"
+                side="bottom"
+                sideOffset={10}
+                onCloseAutoFocus={(e) => e.preventDefault()}
+                onOpenAutoFocus={(e) => e.preventDefault()}
+              >
+                <Calendar
+                  mode="single"
+                  selected={endDateTime}
+                  onSelect={(date) => {
+                    if (date) {
+                      const currentTime = endDateTime || new Date();
+                      date.setHours(
+                        currentTime.getHours(),
+                        currentTime.getMinutes()
+                      );
+                      setEndDateTime(date);
+                    }
+                  }}
+                  initialFocus
+                />
+                <div className="border-t p-3">
+                  <Input
+                    type="time"
+                    value={endDateTime ? format(endDateTime, "HH:mm") : ""}
+                    onChange={(e) => {
+                      const [hours, minutes] = e.target.value.split(":");
+                      const newDate = endDateTime
+                        ? new Date(endDateTime)
+                        : new Date();
+                      newDate.setHours(parseInt(hours), parseInt(minutes));
+                      setEndDateTime(newDate);
+                    }}
+                  />
+                </div>
+              </PopoverPrimitive.Content>
+            </PopoverPrimitive.Portal>
+          </Popover>
         </div>
-        <div className="relative mb-2 w-full overflow-hidden">
-          <div className="text-sm">{currentLanguage.live_event_filter_end_date_text}</div>
-          <input
-            type="datetime-local"
-            ref={endDateInputRef}
-            className="absolute -z-[1] w-full"
-            onChange={(e) => {
-              setEndDateTime(new Date(e?.target?.value));
-            }}
-          />
-          <input
-            // @ts-ignore
-            onClick={() => endDateInputRef?.current?.showPicker()}
-            type="text"
-            placeholder={currentLanguage.live_event_filter_end_date}
-            value={
-              endDateTime ? moment(endDateTime)?.format("YYYY-MM-DD HH:mm") : ""
-            }
-            className="border-1 z-[1] w-full cursor-pointer rounded border border-black dark:border-white px-2"
-          />
-        </div>
-      </div>
-      <div className="flex items-center space-x-4">
-        <SheetClose>
-          <Button
-            onClick={async () => {
-              const response = await axios?.get(`/api/liveEvent`);
-              setLiveEvent(response?.data);
-            }}
-            variant="default"
-            className="border-1 cursor-pointer rounded-lg border p-1 px-2"
+      </CardContent>
+      <CardFooter className="flex justify-end space-x-2">
+        <SheetClose asChild>
+          <Button 
+            variant="ghost" 
+            onClick={() => handleClearFilter(() => {})}
           >
             {currentLanguage.live_event_filter_clearFilter_button_text}
           </Button>
         </SheetClose>
-         <SheetClose>
+        <SheetClose asChild>
           <Button
-            onClick={async () => {
-              const response = await axios?.post(`/api/liveEvent/filter`, {
-                ...getEvent,
-                startDateTime,
-                endDateTime,
-              });
-              setLiveEvent(response?.data);
-            }}
-            variant="success"
-            className="border-1 cursor-pointer rounded-lg border p-1 px-2"
+            onClick={() => handleApplyFilter(() => {})}
+            disabled={!startDateTime && !endDateTime}
           >
             {currentLanguage.live_event_filter_applyFilter_button_text}
           </Button>
         </SheetClose>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };

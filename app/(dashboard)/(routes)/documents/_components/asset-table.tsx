@@ -57,8 +57,6 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
   const isOperator = useIsOperator();
   const isClientAdmin = useIsClientAdmin();
 
-  const canAccess = isAdmin || isOperator || isClientAdmin || session?.user;
-
   function openModal() {
     setIsOpen(true);
   }
@@ -196,7 +194,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
         </div>
         <div className="mt-4 flex justify-end">
           <Button
-            className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm dark:hover:bg-[#f1f5f9] hover:bg-[#272e3f]"
+            className="mx-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm hover:bg-[#272e3f] dark:hover:bg-[#f1f5f9]"
             onClick={closeModal}
           >
             {currentLanguage.cancel}
@@ -237,7 +235,7 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
           </Button>
           <Button
             type="button"
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white"        
+            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white"
             disabled={loading}
             onClick={() => deleteDirectory()}
             variant="destructive"
@@ -253,14 +251,11 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
             {currentLanguage.document_hub}
           </h1>
         </div>
-
-        <div
-          className={`${
-            canAccess ? "block" : "hidden"
-          } mt-4 sm:ml-16 sm:mt-0 sm:flex-none`}
-        >
-          <FlyoutMenuCreate />
-        </div>
+        {(isAdmin || isOperator || isClientAdmin) && (
+          <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+            <FlyoutMenuCreate />
+          </div>
+        )}
       </div>
 
       <ScrollArea>
@@ -288,12 +283,12 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                     {folderStructure?.subFolders?.map(
                       (item: any, i: number) => (
                         <tr key={i}>
-                          <td className="relative px-3.5 sm:w-18 py-1">
+                          <td className="sm:w-18 relative px-3.5 py-1">
                             <div
                               onClick={() =>
                                 (location.href = `${currentDocPath}${item.id}`)
                               }
-                              className="m-1 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
+                              className="m-1 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-200 p-3 dark:bg-slate-600"
                             >
                               <FolderOpen />
                             </div>
@@ -306,32 +301,36 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                           >
                             {item.name}
                           </td>
-                          <td className="flex items-center justify-end py-3 text-sm font-medium">
-                            <FlyoutMenuSetting
-                              type="folder"
-                              index={i}
-                              key={i?.toString()}
-                              isMenuOpen={isMenuOpen}
-                              setMenuOpen={setMenuOpen}
-                              onRenameClick={() =>
-                                handleRenameClick(item, true)
-                              }
-                              onDeleteClick={() => {
-                                setIsFolder("folder");
-                                setRenamingItem(item);
-                              }}
-                              onEditClick={() => onEditClick(item?.id, true)}
-                            />
-                          </td>
+                          {(isAdmin || isOperator || isClientAdmin) && (
+                              <td className="flex items-center justify-end py-3 text-sm font-medium">
+                                <FlyoutMenuSetting
+                                  type="folder"
+                                  index={i}
+                                  key={i?.toString()}
+                                  isMenuOpen={isMenuOpen}
+                                  setMenuOpen={setMenuOpen}
+                                  onRenameClick={() =>
+                                    handleRenameClick(item, true)
+                                  }
+                                  onDeleteClick={() => {
+                                    setIsFolder("folder");
+                                    setRenamingItem(item);
+                                  }}
+                                  onEditClick={() =>
+                                    onEditClick(item?.id, true)
+                                  }
+                                />
+                              </td>
+                            )}
                         </tr>
                       )
                     )}
                     {folderStructure?.files?.map((file: any, index: number) => (
                       <tr key={index}>
-                        <td className="relative px-3.5 sm:w-18 py-1">
+                        <td className="sm:w-18 relative px-3.5 py-1">
                           <div
                             onClick={() => handleDownload(file.key, file.name)}
-                            className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-300 p-3 dark:bg-slate-600"
+                            className="m-1 mr-3 flex h-10 w-10 cursor-pointer items-center justify-center rounded bg-slate-200 p-3 dark:bg-slate-600"
                           >
                             <File />
                           </div>
@@ -345,23 +344,25 @@ const AssetsTable: React.FC<AssetsTableProps> = (props) => {
                         <td className="relative flex items-center justify-between py-3 text-sm font-medium">
                           <Download
                             onClick={() => handleDownload(file.key, file.name)}
-                            className="h-10 w-10 cursor-pointer rounded-md p-2 text-slate-900 hover:bg-[#cbd5e1] dark:text-slate-100 dark:hover:bg-[#1e293b]"
+                            className="h-10 w-10 cursor-pointer rounded-md p-2 text-slate-900 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-[#1e293b]"
                           />
-                          <FlyoutMenuSetting
-                            type="file"
-                            index={index}
-                            key={index?.toString()}
-                            isMenuOpen={isMenuOpen}
-                            setMenuOpen={setMenuOpen}
-                            onRenameClick={() => {
-                              handleRenameClick(file, false);
-                            }}
-                            onDeleteClick={() => {
-                              setIsFolder("file");
-                              setRenamingItem(file);
-                            }}
-                            onEditClick={() => onEditClick(file?.id, false)}
-                          />
+                          {(isAdmin || isOperator || isClientAdmin) && (
+                              <FlyoutMenuSetting
+                                type="file"
+                                index={index}
+                                key={index?.toString()}
+                                isMenuOpen={isMenuOpen}
+                                setMenuOpen={setMenuOpen}
+                                onRenameClick={() => {
+                                  handleRenameClick(file, false);
+                                }}
+                                onDeleteClick={() => {
+                                  setIsFolder("file");
+                                  setRenamingItem(file);
+                                }}
+                                onEditClick={() => onEditClick(file?.id, false)}
+                              />
+                            )}
                         </td>
                       </tr>
                     ))}

@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// @ts-ignore
-import CanvasJSReact from "@canvasjs/react-charts";
 import Image from "next/image";
 import { Container } from "@prisma/client";
 import Link from "next/link";
@@ -14,9 +12,8 @@ import {
   Tooltip,
 } from "@/components/tooltip";
 import { Eye } from "lucide-react";
-import { set } from "date-fns";
-
-const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip as RechartsTooltip } from 'recharts';
+import { cn } from "@/lib/utils";
 
 const PolygonChart = ({
   colors,
@@ -51,74 +48,62 @@ const PolygonChart = ({
   useEffect(() => {
     fetchCoursesProgress();
   }, []);
-  useEffect(() => {
-    courses?.map((each: any) =>
-      each?.chapters?.map((each2: any) =>
-        console.log("each", each2?.id, each2?.userProgress[0])
-      )
-    );
-  }, [courses]);
 
-  const progressArray = courses?.map(
-    (each: any) =>
-      each?.chapters?.reduce(
-        (acc: any, val: any) => acc + (val?.userProgress[0]?.progress || 0),
-        0
-      ) / each?.chapters?.length
-  );
+  const progressArray = courses?.map((course: any) => {
+    // Only consider courses that have been purchased
+    if (!course.purchases?.length) return null;
+    
+    // Calculate progress for each chapter
+    const chapterProgresses = course.chapters.map((chapter: any) => {
+      const progress = chapter.userProgress?.[0]?.isCompleted ? 100 : (chapter.userProgress?.[0]?.progress || 0);
+      return progress;
+    });
+    
+    // Course is completed if all chapters are completed
+    const isAllCompleted = chapterProgresses.every((progress: number) => progress === 100);
+    if (isAllCompleted) return 100;
+    
+    // Calculate average progress if not completed
+    const totalProgress = chapterProgresses.reduce((acc: number, val: number) => acc + val, 0);
+    return Math.round(totalProgress / course.chapters.length);
+    // @ts-ignore
+  }).filter(progress => progress !== null);
 
   const inProgress = Math.round(
     (progressArray.filter((val: number) => val > 0 && val < 100)?.length /
       progressArray?.length) *
       100
-  );
+  ) || 0;
+
   const notStarted = Math.round(
     (progressArray.filter((val: number) => val === 0)?.length /
       progressArray?.length) *
       100
-  );
+  ) || 0;
+
   const completed = Math.round(
     (progressArray.filter((val: number) => val === 100)?.length /
       progressArray?.length) *
       100
-  );
+  ) || 0;
 
-  const getCourseStatusPercentage = (status: string) => {
-    const filteredCourses = coursesProgress.filter(
-      (course: { status: string }) => course.status === status
-    );
-    return (
-      Math.round((filteredCourses.length / coursesProgress.length) * 100) || 0
-    );
-  };
-
-  const doughnutOptions = {
-    animationEnabled: true,
-    backgroundColor: "transparent",
-    data: [
-      {
-        type: "doughnut",
-        innerRadius: "80%",
-        dataPoints: [
-          {
-            name: `${currentLanguage.dashboard_doughnut_completed}`,
-            y: completed,
-            color: "#12b76a",
-          },
-          {
-            name: `${currentLanguage.dashboard_doughnut_inprogress}`,
-            y: inProgress,
-            color: "#f79009",
-          },
-          {
-            name: `${currentLanguage.dashboard_doughnut_notStarted}`,
-            y: notStarted,
-            color: "#84caff",
-          },
-        ],
-      },
-    ],
-  };
+  const chartData = [
+    {
+      name: currentLanguage.dashboard_doughnut_completed,
+      value: completed,
+      color: "#12b76a"
+    },
+    {
+      name: currentLanguage.dashboard_doughnut_inprogress,
+      value: inProgress,
+      color: "#f79009"
+    },
+    {
+      name: currentLanguage.dashboard_doughnut_notStarted,
+      value: notStarted,
+      color: "#84caff"
+    }
+  ];
 
   const maxCourses = 5;
 
@@ -128,16 +113,29 @@ const PolygonChart = ({
         ...course,
         ...chapter,
         courseName: course?.title,
-        totalCount:
-          (chapter.likes.length || 0) + (chapter.comments.length || 0),
+        totalCount: (chapter.likes.length || 0) + (chapter.comments.length || 0),
       };
     })
   );
 
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className={cn(
+          "rounded-lg p-2 shadow-lg",
+          theme === "dark" ? "bg-slate-800" : "bg-white"
+        )}>
+          <p className="font-medium">{`${payload[0].name}: ${payload[0].value}%`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <TooltipProvider>
-      <div className="graphParent flex justify-between">
-        <div className="min-w-xs mr-2 w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
+      <div className="graphParent flex flex-col lg:flex-row gap-4">
+        <div className="min-w-xs w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
             <Link
@@ -156,7 +154,7 @@ const PolygonChart = ({
               }
             </Link>
           </div>
-          <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
+          <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
             <p className="w-[40%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>
@@ -257,41 +255,45 @@ const PolygonChart = ({
               </div>
             ))}
         </div>
-        <div className="doughnutParent flex w-[30%] min-w-[360px] max-w-full flex-col justify-around rounded border-2 px-4 dark:border-[#221b2e] dark:bg-[#0D071A]">
-          <p className="mt-3 text-lg">
-            {currentLanguage.dashboard_doughnutChart_title}
-          </p>
-          <CanvasJSChart options={doughnutOptions} />
-          <div className="flex flex-wrap justify-between">
-            {[
-              {
-                label: "Complete",
-                color: "#12b76a",
-                value: completed,
-              },
-              {
-                label: "Inprogress",
-                color: "#f79009",
-                value: inProgress,
-              },
-              {
-                label: "Not Started",
-                color: "#84caff",
-                value: notStarted,
-              },
-            ].map(({ label, color, value }) => (
-              <div key={label} className="flex items-start">
-                <div
-                  className="mr-1 mt-1 rounded-full border-[6px]"
-                  style={{ borderColor: color }}
-                />
-                <div>
-                  <p className="text-md m-0 text-gray-500">{label}</p>
-                  <p className="text-md m-0 font-extrabold">{value}%</p>
-                </div>
-                <div className="border-1 mx-2 my-[2%] border-r border-gray-500" />
-              </div>
-            ))}
+        <div className="w-full lg:w-[30%] min-w-[300px] rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A] p-4">
+          <div className="flex flex-col justify-between h-full">
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-lg">{currentLanguage.dashboard_doughnutChart_title}</div>
+            </div>
+            <div className="h-[250px] w-full">
+              <ResponsiveContainer className="w-full h-full">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                    label={({ value }) => `${value}%`}
+                    labelLine={false}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Legend 
+                    verticalAlign="bottom" 
+                    height={36}
+                    formatter={(value: string) => (
+                      <span className={cn(
+                        "text-md font-medium",
+                        theme === "dark" ? "text-slate-200" : "text-slate-900"
+                      )}>
+                        {value}
+                      </span>
+                    )}
+                  />
+                  <RechartsTooltip content={<CustomTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>

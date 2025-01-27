@@ -6,7 +6,7 @@ import { CourseFavoriteCard } from "@/app/(dashboard)/(routes)/dashboard/_compon
 import { Separator } from "@/components/ui/separator";
 import { CourseCard } from "@/components/course-card";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, VideoOff } from "lucide-react";
 import { EventCard } from "@/components/events-card";
 import GoBackButton from "@/components/goBackButton";
 
@@ -40,7 +40,7 @@ export const FavouriteEventsList = ({
   }, [categoryId, title]);
 
   return (
-    <div className="flex w-full flex-col items-start justify-center gap-4">
+    <div>
       <GoBackButton buttonText={currentLanguage.goBack_button_text} />
       {/* My Favorites Section (hidden on mobile) */}
       <div>
@@ -66,9 +66,12 @@ export const FavouriteEventsList = ({
           </div>
         )}
         {items.length === 0 && (
-          <div className="mt-10 text-center text-sm text-muted-foreground">
+          <div className="mt-10 flex flex-col items-center justify-center text-sm text-muted-foreground">
+          <VideoOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+          <p className="mt-2 text-md font-medium">
             {currentLanguage.no_events_found}
-          </div>
+          </p>
+        </div>
         )}
       </div>
     </div>

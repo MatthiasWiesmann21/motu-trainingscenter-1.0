@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
   Tooltip,
 } from "@/components/tooltip";
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 const FavoriteChaptersList = ({
   colors,
@@ -39,7 +39,7 @@ const FavoriteChaptersList = ({
     <TooltipProvider>
       <div className="graphParent flex justify-between">
         <div className="min-w-xs mr-2 w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
-          <div className="flex items-center justify-between bg-slate-200 p-2 dark:bg-[#150D22]">
+          <div className="flex items-center justify-between bg-slate-100 p-2 dark:bg-[#150D22]">
             <p className="w-[90%] text-xs">
               {currentLanguage.dashboard_popularChapter_chapterName_text}
             </p>
@@ -47,76 +47,83 @@ const FavoriteChaptersList = ({
               {currentLanguage.dashboard_popularChapter_action_text}
             </p>
           </div>
-          {favoriteChapters
-            ?.sort(
-              (a: any, b: any) => (b.totalCount || 0) - (a.totalCount || 0)
-            )
-            ?.map((each: any, index: React.SetStateAction<number | null>) => (
-              <div
-                key={each?.id}
-                className="flex items-center justify-between p-2"
-              >
-                <Tooltip>
-                  <TooltipTrigger className="flex w-[45%] items-center">
-                    <Image
-                      alt="img"
-                      src={each?.course?.imageUrl}
-                      objectFit="contain"
-                      width={64}
-                      height={36}
-                      className="rounded-sm"
-                    />
-                    <div className="ml-2">
-                      <p className="m-0 line-clamp-1 text-start">
-                        {each?.title}
-                      </p>
-                      <p className="m-0 line-clamp-1 text-start text-xs text-gray-500">
-                        {each?.category?.name}
-                      </p>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="font-semibolb h-full max-w-[300px] whitespace-normal">
-                      {each?.title}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-                <div className="flex w-[10%]">
+          {favoriteChapters?.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <EyeOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+              <p className="text-sm text-gray-500">{currentLanguage.dashboard_popularCHapter_noFavorites}</p>
+            </div>
+          ) : (
+            favoriteChapters
+              ?.sort(
+                (a: any, b: any) => (b.totalCount || 0) - (a.totalCount || 0)
+              )
+              ?.map((each: any, index: React.SetStateAction<number | null>) => (
+                <div
+                  key={each?.id}
+                  className="flex items-center justify-between p-2"
+                >
                   <Tooltip>
-                    <TooltipTrigger>
-                      <Link
-                        href={`/courses/${each?.courseId}/chapters/${each?.id}`}
-                      >
-                        <div
-                          onMouseEnter={() => setHoveredCourse(index)}
-                          onMouseLeave={() => setHoveredCourse(null)}
-                          className="rounded-full border-2 p-1 text-xs transition duration-300 ease-in-out"
-                          style={{
-                            borderColor: getButtonColor(),
-                            backgroundColor:
-                              hoveredCourse === index ? getButtonColor() : "",
-                          }}
-                        >
-                          <Eye
-                            className="h-5 w-5"
-                            style={{
-                              color: hoveredCourse === index ? "#ffffff" : "",
-                            }}
-                          />
-                        </div>
-                      </Link>
+                    <TooltipTrigger className="flex w-[45%] items-center">
+                      <Image
+                        alt="img"
+                        src={each?.course?.imageUrl}
+                        objectFit="contain"
+                        width={64}
+                        height={36}
+                        className="rounded-sm"
+                      />
+                      <div className="ml-2">
+                        <p className="m-0 line-clamp-1 text-start">
+                          {each?.title}
+                        </p>
+                        <p className="m-0 line-clamp-1 text-start text-xs text-gray-500">
+                          {each?.category?.name}
+                        </p>
+                      </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p className="h-full max-w-[300px] whitespace-normal font-semibold">
-                        {
-                          currentLanguage.dashboard_courseTable_viewCourse_button_text
-                        }
+                      <p className="font-semibolb h-full max-w-[300px] whitespace-normal">
+                        {each?.title}
                       </p>
                     </TooltipContent>
                   </Tooltip>
+                  <div className="flex w-[10%]">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Link
+                          href={`/courses/${each?.courseId}/chapters/${each?.id}`}
+                        >
+                          <div
+                            onMouseEnter={() => setHoveredCourse(index)}
+                            onMouseLeave={() => setHoveredCourse(null)}
+                            className="rounded-full border-2 p-1 text-xs transition duration-300 ease-in-out"
+                            style={{
+                              borderColor: getButtonColor(),
+                              backgroundColor:
+                                hoveredCourse === index ? getButtonColor() : "",
+                            }}
+                          >
+                            <Eye
+                              className="h-5 w-5"
+                              style={{
+                                color: hoveredCourse === index ? "#ffffff" : "",
+                              }}
+                            />
+                          </div>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="h-full max-w-[300px] whitespace-normal font-semibold">
+                          {
+                            currentLanguage.dashboard_courseTable_viewCourse_button_text
+                          }
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+          )}
         </div>
       </div>
     </TooltipProvider>

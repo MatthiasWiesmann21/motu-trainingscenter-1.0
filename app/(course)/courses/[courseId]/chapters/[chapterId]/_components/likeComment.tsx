@@ -4,7 +4,15 @@ import { useSelector } from "react-redux";
 import { UserAvatar } from "@/components/user-avatar";
 import axios from "axios";
 import moment from "moment";
-import { Check, Edit, Heart, MessageSquare, ReplyAll, Star, X } from "lucide-react";
+import {
+  Check,
+  Edit,
+  Heart,
+  MessageSquare,
+  ReplyAll,
+  Star,
+  X,
+} from "lucide-react";
 import { ChatInputPost } from "./chatInput";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/check-language";
@@ -91,7 +99,7 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
           />
         )}
 
-        <div className="my-2 flex items-center">
+        <div className="mt-2 flex items-center">
           <button
             onClick={async () => {
               const response = await axios.post(`/api/like/create`, {
@@ -99,8 +107,7 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium transition-all duration-200 ease-in-out
-                 hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
+            className="inline-flex items-center gap-1 rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
             aria-label={!!val?.currentCommentLike ? "Unlike" : "Like"}
           >
             <Heart
@@ -111,11 +118,17 @@ const SubReply = ({ val, updateLikeComment, currentProfileId }: any) => {
                   : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
               }`}
             />
-             <span
-              className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
-            >
-              {val?.likes?.length}
-            </span>
+            {val?.likes?.length > 0 && (
+              <span
+                className={`${
+                  val?.currentCommentLike
+                    ? "text-rose-500"
+                    : "text-gray-800 dark:text-gray-100"
+                }`}
+              >
+                {val?.likes?.length}
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -226,7 +239,7 @@ const Reply = ({
               });
               if (response?.status === 200) updateLikeComment(true);
             }}
-            className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium transition-all duration-200 ease-in-out
+            className="inline-flex items-center gap-1.5 rounded-full px-2 py-2 text-sm font-medium transition-all duration-200 ease-in-out
                  hover:bg-rose-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-opacity-50 dark:hover:bg-rose-900"
             aria-label={!!val?.currentCommentLike ? "Unlike" : "Like"}
           >
@@ -238,16 +251,21 @@ const Reply = ({
                   : "text-gray-800 hover:text-rose-500 dark:text-gray-100 dark:hover:text-rose-400"
               }`}
             />
-            <span
-              className={`${val?.currentCommentLike ? "text-rose-500" : ""}`}
-            >
-              {val?.likes?.length}
-            </span>
+            {val?.likes?.length > 0 && (
+              <span
+                className={`${
+                  val?.currentCommentLike
+                    ? "text-rose-500"
+                    : "text-gray-800 dark:text-gray-100"
+                }`}
+              >
+                {val?.likes?.length}
+              </span>
+            )}
           </button>
           <button
-             className={`
-              mx-1 inline-flex items-center gap-2 rounded-full px-2
-              py-1.5 text-xs font-medium transition-colors duration-200 ease-in-out
+            className={`
+              mx-1 inline-flex items-center gap-2 rounded-full px-2 py-2 text-xs font-medium transition-colors duration-200 ease-in-out
             ${isHovered ? "bg-[#e2e8f0] dark:bg-[#334155]" : ""}
           `}
             onClick={() => setShowReplyInput(!showReplyInput)}
@@ -255,7 +273,9 @@ const Reply = ({
             onMouseLeave={() => setIsHovered(false)}
           >
             <ReplyAll size={18} />
-            <span>{val?.subCommentsWithLikes?.length}</span>
+            {val?.subCommentsWithLikes?.length > 0 && (
+              <span>{val?.subCommentsWithLikes?.length}</span>
+            )}
             <span className="sr-only">
               {currentLanguage?.news_comments_reply_button_label}
             </span>
@@ -318,14 +338,13 @@ const LikeComment = ({
     <div className="mx-4">
       <div className="flex items-center justify-between py-3">
         <div
-          className="flex cursor-pointer items-center rounded-lg bg-slate-200 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-300 dark:bg-slate-800/50 dark:hover:bg-slate-700/80"
+          className="flex cursor-pointer items-center rounded-lg bg-slate-100 p-3 text-sm transition duration-300 ease-in-out hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80"
           onClick={() => setShowComments(!isShowComments)}
         >
           <MessageSquare className="mr-1 h-5 w-6" />
           {`${commentsCount} ${currentLanguage.news_comments_button_label}`}
         </div>
       </div>
-
       {isShowComments && (
         <>
           <div className="flex items-center justify-between">

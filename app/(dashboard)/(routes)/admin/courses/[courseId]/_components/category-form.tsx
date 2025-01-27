@@ -33,7 +33,7 @@ import {
 interface CategoryFormProps {
   initialData: Course;
   courseId: string;
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; color?: string; }[];
 }
 
 const formSchema = z.object({
@@ -81,7 +81,7 @@ export const CategoryForm = ({
         <CardTitle className="flex items-center justify-between text-xl">
           <div className="flex items-center">
             <Tag className="mr-2 h-5 w-5" />
-            {currentLanguage.liveEvent_CategoryForm_title}
+            {currentLanguage.courses_categoryForm_title}
             <span className="pl-2 text-xs text-rose-600">
               {currentLanguage.requiredFields}
             </span>

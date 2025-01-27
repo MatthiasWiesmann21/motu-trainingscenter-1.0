@@ -12,7 +12,6 @@ import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-form";
-import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
 import { languageServer } from "@/lib/check-language-server";
@@ -48,11 +47,6 @@ const CourseIdPage = async ({
       chapters: {
         orderBy: {
           position: "asc",
-        },
-      },
-      attachments: {
-        orderBy: {
-          createdAt: "desc",
         },
       },
     },
@@ -152,6 +146,7 @@ const CourseIdPage = async ({
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
+                color: category.colorCode,
               }))}
             />
             <UsergroupForm
@@ -170,11 +165,11 @@ const CourseIdPage = async ({
               initialData={course}
               courseId={course.id}
               options={[
-                { label: "Beginner", value: "Beginner" },
-                { label: "Intermediate", value: "Intermediate" },
-                { label: "Advanced", value: "Advanced" },
-                { label: "Expert", value: "Expert" },
-                { label: "Master", value: "Master" },
+                { label: `${currentLanguage.level_beginner}`, value: "Beginner" },
+                { label: `${currentLanguage.level_intermediate}`, value: "Intermediate" },
+                { label: `${currentLanguage.level_advanced}`, value: "Advanced" },
+                { label: `${currentLanguage.level_expert}`, value: "Expert" },
+                { label: `${currentLanguage.level_master}`, value: "Master" },
               ]}
             />
             <SpecialTypeForm
@@ -204,18 +199,6 @@ const CourseIdPage = async ({
                 </h2>
               </div>
               <PriceForm
-                initialData={course}
-                courseId={course.id}
-              />
-            </div>
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={File} />
-                <h2 className="text-xl">
-                  {currentLanguage.course_setup_attachments_title}
-                </h2>
-              </div>
-              <AttachmentForm
                 initialData={course}
                 courseId={course.id}
               />

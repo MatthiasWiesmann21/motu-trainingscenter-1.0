@@ -14,17 +14,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/check-language";
 
 export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          {currentLanguage.data_table_title}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -33,39 +35,50 @@ export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "colorCode",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Color
+          {currentLanguage.data_table_color}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
+    cell: ({ row }) => {
+      const colorCode = row.getValue("colorCode");
+
+      return (
+        // @ts-ignore
+        <Badge className="mt-1 h-6 w-6" style={{ backgroundColor: colorCode }} />
+      )
+    }
   },
   {
     accessorKey: "isPublished",
     header: ({ column }) => {
+      const currentLanguage = useLanguage();
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Published
+          {currentLanguage.data_table_published}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
       const isPublished = row.getValue("isPublished") || false;
+      const currentLanguage = useLanguage();
 
       return (
         <Badge className={cn(
           "bg-slate-500",
           isPublished && "bg-sky-700"
         )}>
-          {isPublished ? "Published" : "Draft"}
+          {isPublished ? `${currentLanguage.data_table_published}` : `${currentLanguage.data_table_draft}`}
         </Badge>
       )
     }
@@ -74,6 +87,7 @@ export const columns: ColumnDef<Post>[] = [
     id: "actions",
     cell: ({ row }) => {
       const { id } = row.original;
+      const currentLanguage = useLanguage();
 
       return (
         <DropdownMenu>
@@ -87,7 +101,7 @@ export const columns: ColumnDef<Post>[] = [
             <Link href={`/admin/categories/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="h-4 w-4 mr-2" />
-                Edit
+                {currentLanguage.data_table_edit}
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

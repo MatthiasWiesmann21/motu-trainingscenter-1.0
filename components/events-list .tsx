@@ -1,6 +1,7 @@
 import { Category, LiveEvent } from "@prisma/client";
 import { EventCard } from "@/components/events-card";
 import { useLanguage } from "@/lib/check-language";
+import { VideoOff } from "lucide-react";
 
 type EventsWithProgressWithCategory = LiveEvent & {
   category: Category | null;
@@ -22,7 +23,7 @@ export const EventsList = ({
 }: EventsListProps) => {
   const currentLanguage = useLanguage();
   return (
-    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 w-full h-full">
       {items.map((item: any) => (
         <EventCard
           key={item.id}
@@ -41,8 +42,11 @@ export const EventsList = ({
         />
       ))}
       {items.length === 0 && (
-        <div className="mt-10 text-center text-sm text-muted-foreground">
-          {currentLanguage.no_events_found}
+        <div className="mt-10 flex flex-col items-center justify-center text-sm text-muted-foreground">
+          <VideoOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+          <p className="mt-2 text-md font-medium">
+            {currentLanguage.no_events_found}
+          </p>
         </div>
       )}
     </div>

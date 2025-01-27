@@ -11,6 +11,7 @@ import { useLanguage } from "@/lib/check-language";
 import { Button } from "@/components/ui/button";
 import { languageServer } from "@/lib/check-language-server";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Courses",
@@ -71,11 +72,17 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
     },
     include: {
       _count: {
-        select: { courses: true }, // Ensure 'courses' matches your schema relation name
+        select: {
+          courses: {
+            where: {
+              isPublished: true
+            }
+          }
+        },
       },
     },
   });
-
+  
   return (
     <>
       <div className="space-y-4 p-4">
@@ -84,23 +91,27 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           courses={existingCourses}
           isFrontend
         />
+        <div className="flex gap-2 mb-2 max-w-3xl mx-auto lg:mr-auto lg:ml-0">
+          <Link
+            className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            href={"/search/favourite-courses"}
+            >
+            {currentLanguage.dashboard_courseTable_viewMyFavourties_button_text}
+          </Link>
+          <Link
+            className="w-full h-8 flex items-center justify-center rounded-full border-2 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
+            href={"/dashboard/favourite-chapters"}
+            >
+            {currentLanguage.dashboard_courseTable_viewFavoriteChapters_button_text}
+          </Link>
+        </div>
         <div className="flex w-full">
-          <div className="w-full lg:w-[85%]">
+          <div className="w-full">
           <Categories
             items={categoriesWithCourseCounts}
             ThemeColor={container?.ThemeColor!}
             DarkThemeColor={container?.DarkThemeColor!}
           />
-          </div>
-          <div className="hidden lg:block w-[15%] items-center justify-center">
-          <Link
-            className="w-full h-8 mt-1 flex items-center justify-center rounded-full border-2 px-2 py-1 text-xs transition duration-300 ease-in-out hover:bg-slate-200 dark:hover:bg-slate-700"
-            href={"/search/favourite-courses"}
-            >
-            {
-              currentLanguage.dashboard_courseTable_viewMyFavourties_button_text
-            }
-          </Link>
           </div>
         </div>
         <CoursesList

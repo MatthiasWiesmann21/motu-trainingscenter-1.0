@@ -51,6 +51,10 @@ const LiveEventIdPage = async ({
     },
   });
 
+  if (!liveEvent) {
+    return redirect("/");
+  }
+
   const categories = await db.category.findMany({
     where: {
       containerId: session?.user?.profile?.containerId,
@@ -69,10 +73,6 @@ const LiveEventIdPage = async ({
       name: "asc",
     },
   });
-
-  if (!liveEvent) {
-    return redirect("/");
-  }
 
   const requiredFields = [
     liveEvent.title,
@@ -129,6 +129,7 @@ const LiveEventIdPage = async ({
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
+                color: category.colorCode,
               }))}
             />
             <UsergroupForm

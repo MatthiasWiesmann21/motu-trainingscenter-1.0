@@ -10,7 +10,7 @@ import ClubyteLoader from "@/components/ui/clubyte-loader";
 import { useTheme } from "next-themes";
 import { Separator } from "@/components/ui/separator";
 import { PostFavoriteCard } from "./postFavorite-card";
-import { PlusCircle } from "lucide-react";
+import { CaptionsOff, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { ScrollArea } from "@/components/scroll-area";
@@ -130,6 +130,8 @@ const NewsWrapper = ({
               createdAt={new Date(item?.publishTime!).toDateString()}
               publisherName={item?.publisherName!}
               publisherImageUrl={item?.publisherImageUrl!}
+              courseId={item?.courseId ?? ""}
+              liveEventId={item?.liveEventId ?? ""}
               colorCode={item?.category?.colorCode!}
               likesCount={item?.likesCount}
               favoritesCount={item?.favoritesCount}
@@ -140,6 +142,8 @@ const NewsWrapper = ({
               updateLikeComment={getPosts}
               profileImage={profileImage}
               currentProfileId={currentProfileId}
+              ThemeColor={ThemeColor}
+              DarkThemeColor={DarkThemeColor}
             />
           ))}
           <div className="loading-indicator" />
@@ -162,9 +166,12 @@ const NewsWrapper = ({
           ) : (
             !isLoading &&
             posts?.length === 0 && (
-              <div className="mt-10 text-center text-sm text-muted-foreground">
+              <div className="mt-10 flex flex-col items-center justify-center text-sm text-muted-foreground">
+              <CaptionsOff className="h-8 w-8 text-slate-500 dark:text-slate-600" />
+              <p className="text-md mt-2 font-medium">
                 {currentLanguage.news_no_posts_found}
-              </div>
+              </p>
+            </div>
             )
           )}
         </div>
@@ -173,7 +180,7 @@ const NewsWrapper = ({
         <div className="top-10 w-full">
           {profileRole === "ADMIN" || profileRole === "CLIENT ADMIN" ? (
             <Button
-              className="w-42 mb-5 inline-flex hidden items-center rounded-lg border-2 text-sm text-slate-400 hover:border-transparent lg:inline-flex"
+              className="inline-flex hidden items-center border-2 lg:inline-flex"
               variant="outline"
               onClick={() => onOpen("createPost")}
             >

@@ -21,41 +21,76 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, Pencil, Trash } from "lucide-react";
+import { CalendarPlus, MoreVertical, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import toast from "react-hot-toast";
 import { useLanguage } from "@/lib/check-language";
 import { useIsAdmin, useIsClientAdmin } from "@/lib/roleCheck";
 import { getContainer } from "@/actions/get-container";
+import { cn } from "@/lib/utils";
+import { useContainerData } from "@/hooks/useContainerData";
+import { atcb_action } from "add-to-calendar-button-react";
 
 const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   const { theme } = useTheme();
-  const { data: session } = useSession(); // Get session data from NextAuth
+  const { data: session } = useSession();
   const [liveEvent, setLiveEvent] = useState<any>();
   const [category, setCategory] = useState<any>();
+  const container = useContainerData();
   const currentLanguage = useLanguage();
   const isAdmin = useIsAdmin();
   const isClientAdmin = useIsClientAdmin();
+  const router = useRouter();
 
   const canAccess = isAdmin || isClientAdmin;
 
   const getLiveEvent = async () => {
-    const response = await axios?.get(`/api/liveEvent/${params?.liveEventId}`, {
-      params: { liveEventId: params?.liveEventId },
-    });
-    setLiveEvent(response?.data?.liveEvent);
-    setCategory(response?.data?.category);
+    try {
+      const response = await axios?.get(`/api/liveEvent/${params?.liveEventId}`, {
+        params: { liveEventId: params?.liveEventId },
+      });
+      
+      // Check if user has access to this event based on usergroup if one is set
+      const userGroup = session?.user?.profile?.userGroupId;
+      const eventUserGroupId = response?.data?.liveEvent?.userGroupId;
+      
+      if (eventUserGroupId && userGroup !== eventUserGroupId) {
+        return redirect("/live-event");
+      }
+
+      setLiveEvent(response?.data?.liveEvent);
+      setCategory(response?.data?.category);
+    } catch (error) {
+      console.error("Error fetching live event:", error);
+      router.push("/live-event");
+    }
   };
-  const router = useRouter();
 
   useEffect(() => {
-    getLiveEvent();
-  }, []);
+    if (session?.user?.id) {
+      getLiveEvent();
+    }
+  }, [session?.user?.id]);
 
   if (!session?.user?.id) {
     return redirect("/");
   }
+
+  const handleCalendarClick = () => {
+    const config: any = {
+      name: liveEvent?.title,
+      description: liveEvent?.description,
+      startDate: moment(liveEvent?.startDateTime).format("YYYY-MM-DD"),
+      endDate: moment(liveEvent?.endDateTime).format("YYYY-MM-DD"),
+      startTime: moment(liveEvent?.startDateTime).format("HH:mm"),
+      endTime: moment(liveEvent?.endDateTime).format("HH:mm"),
+      options: ["Apple", "Google", "iCal", "Outlook.com"],
+      // timeZone: "America/Los_Angeles",
+    };
+
+    atcb_action(config);
+  };
 
   const onDelete = async () => {
     try {
@@ -68,13 +103,11 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
   };
 
   return liveEvent ? (
-    <div className="flex flex-wrap">
-      <div className="flex w-full flex-col lg:w-[69%] lg:pb-20">
+    <div className={cn("flex flex-col md:flex-row", liveEvent?.isStreamChat && "w-full")}>
+      <div className="flex w-full flex-col md:w-2/3">
         <div className="p-4">
           <VideoPlayer
-            // @ts-ignore remove this
-            liveEventId={params?.liveEventId}
-            videoUrl={liveEvent?.videoUrl} // Hier fügen wir die Vimeo-URL aus den chapter Daten hinzu.
+            videoUrl={liveEvent?.videoUrl}
             startDateTime={liveEvent?.startDateTime}
             endDateTime={liveEvent?.endDateTime}
           />
@@ -91,6 +124,13 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
               {liveEvent?.title}
             </h2>
             <div className="flex items-center space-x-2">
+              <Button
+                onClick={handleCalendarClick}
+                variant="outline"
+                className="flex p-0 h-10 w-10"
+              >
+                <CalendarPlus size={24} />
+              </Button>
               <Favorite liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               <Love liveEvent={liveEvent} getLiveEvent={getLiveEvent} />
               {canAccess && (
@@ -98,7 +138,7 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className="ml-auto h-11 w-10 p-0 border-[#fff] bg-slate-100 hover:shadow-sm dark:border-[#1e172a] dark:bg-[#0c0319]" // Add ml-auto to push it to the right
+                      className="flex h-10 w-10 p-0"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <span className="sr-only">Open menu</span>
@@ -134,11 +174,17 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
               startDateTime={liveEvent?.startDateTime!}
               endDateTime={liveEvent?.endDateTime!}
               isAdmin={false}
+              themeColor={container.container?.ThemeColor!}
+              darkThemeColor={container.container?.DarkThemeColor!}
             />
           </div>
         </div>
       </div>
-      {liveEvent?.isStreamChat && <Chat />}
+      {liveEvent?.isStreamChat && (
+        <div className="w-full md:w-1/2 lg:w-1/3">
+          <Chat />
+        </div>
+      )}
     </div>
   ) : (
     <div className="flex h-full w-full items-center justify-center">

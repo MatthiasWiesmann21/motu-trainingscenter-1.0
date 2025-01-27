@@ -1,62 +1,93 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import axios from "axios";
-import { useLanguage } from "@/lib/check-language";
-import { Button } from "../ui/button";
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { useLanguage } from "@/lib/check-language"
+import { Button } from "@/components/ui/button"
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { ExternalLink } from 'lucide-react'
+import toast from "react-hot-toast"
 
 interface PrivacyPolicyModalProps {
-  profile: { id: string; acceptedPrivacyPolicy: boolean } | null;
+  profile: { id: string; acceptedPrivacyPolicy: boolean } | null
 }
 
 export default function PrivacyPolicyModal({
   profile,
 }: PrivacyPolicyModalProps) {
-  const [isModalOpen, setIsModalOpen] = useState(
-    profile?.acceptedPrivacyPolicy === false
-  );
-  const currentLanguage = useLanguage();
+  const [isOpen, setIsOpen] = useState(false)
+  const currentLanguage = useLanguage()
 
-  const acceptedPrivacyPolicy = async () => {
-    const response = await axios.patch(`/api/profile/${profile?.id}`, {
-      acceptedPrivacyPolicy: true,
-    });
-
-    if (response.status === 200) {
-      window.location.pathname = "/profile";
+  useEffect(() => {
+    if (profile?.acceptedPrivacyPolicy === false) {
+      setIsOpen(true)
     }
-  };
+  }, [profile])
 
-  if (!isModalOpen) return null;
+  const acceptPrivacyPolicy = async () => {
+    try {
+      const response = await axios.patch(`/api/profile/${profile?.id}`, {
+        acceptedPrivacyPolicy: true,
+      })
+
+      if (response.status === 200) {
+        toast.success("Privacy policy accepted")
+        setIsOpen(false)
+      }
+    } catch (error) {
+      console.error("Error accepting privacy policy:", error)
+      toast.error("Something went wrong")
+    }
+  }
 
   return (
-    <div className="fixed w-full h-full inset-0 flex items-center justify-center z-50">
-      <div className="absolute inset-0 bg-black opacity-50 backdrop-filter backdrop-blur-sm"></div>
-      <div className="relative z-10 bg-white p-4 sm:m-20 md:m-32 lg:m-32 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-black mb-2">
-          {currentLanguage.privacy_policy_title}
-        </h2>
-        <p className="text-black text-sm">
-          {currentLanguage.privacy_policy_description}
-        </p>
-        <div className="flex justify-between items-center mt-2">
-          <div className="flex space-x-4 mt-4">
-            <a href="https://clubyte.live/privacy-policy" target="_blank" className="text-[#e72192]">
-              {currentLanguage.privacy_policy_link}
-            </a>
-            <a href="https://clubyte.live/terms-of-service" target="_blank" className="text-[#e72192]">
-              {currentLanguage.privacy_termsOfService_link}
-            </a>
+    <AlertDialog open={isOpen}>
+      <AlertDialogContent className="sm:max-w-2xl md:max-w-3xl">
+        <AlertDialogHeader>
+          <AlertDialogTitle>{currentLanguage.privacy_policy_title}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {currentLanguage.privacy_policy_description}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Button variant="outline" className="w-full" asChild>
+              <a
+                href="https://clubyte.live/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center"
+              >
+                {currentLanguage.privacy_policy_link}
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+            <Button variant="outline" className="w-full" asChild>
+              <a
+                href="https://clubyte.live/terms-of-service"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center"
+              >
+                {currentLanguage.privacy_termsOfService_link}
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
           </div>
-          <Button
-            className="ml-auto mt-4 bg-[#e72192] text-white px-4 py-2 rounded-md transition ease-in-out duration-300 cursor-pointer"
-            onClick={acceptedPrivacyPolicy}
-            variant="secondary"
-          >
+        </div>
+        <AlertDialogFooter>
+          <Button onClick={acceptPrivacyPolicy} className="w-full">
             {currentLanguage.privacy_policy_button}
           </Button>
-        </div>
-      </div>
-    </div>
-  );
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
 }
