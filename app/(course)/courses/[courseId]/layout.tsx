@@ -30,7 +30,7 @@ const CourseLayout = async ({
   const container = await db.container.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
-    },
+    }
   })
 
   const course = await db.course.findUnique({
@@ -61,11 +61,11 @@ const CourseLayout = async ({
     return redirect("/");
   }
 
-  // Check if user's usergroup matches the course's usergroup
+  // Check if user's usergroup matches the course's usergroup if one is set
   const userGroup = profile?.usergroupId;
   const courseUserGroup = course.usergroupId;
 
-  if (userGroup !== courseUserGroup) {
+  if (courseUserGroup && userGroup !== courseUserGroup) {
     return redirect("/search");
   }
 

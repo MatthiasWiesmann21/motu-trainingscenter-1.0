@@ -51,11 +51,11 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
         params: { liveEventId: params?.liveEventId },
       });
       
-      // Check if user has access to this event based on usergroup
+      // Check if user has access to this event based on usergroup if one is set
       const userGroup = session?.user?.profile?.userGroupId;
       const eventUserGroupId = response?.data?.liveEvent?.userGroupId;
       
-      if (userGroup !== eventUserGroupId) {
+      if (eventUserGroupId && userGroup !== eventUserGroupId) {
         return redirect("/live-event");
       }
 
