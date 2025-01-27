@@ -1,11 +1,20 @@
 import React from 'react';
-import Image from 'next/image';
 
-const AppSVGIcon = ({ icon, customclass }: { icon: string, customclass: string }) => {
-    const iconImport = require(`../assets/icons/${icon}.svg`) as string;
+interface AppSVGIconProps {
+    icon: string;
+    customclass: string;
+}
 
+const AppSVGIcon: React.FC<AppSVGIconProps> = ({ icon, customclass }) => {
     return (
-        <Image className={`${customclass} max-w-fit`} src={iconImport} alt={icon} width={24} height={24} />
+        <img
+            className={`${customclass} max-w-fit`}
+            src={`/icons/${icon}.svg`}
+            alt={icon}
+            width={24}
+            height={24}
+            style={{ width: '24px', height: '24px' }}
+        />
     );
 };
 

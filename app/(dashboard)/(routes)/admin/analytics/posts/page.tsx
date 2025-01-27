@@ -6,10 +6,10 @@ import { isAdmin, isClientAdmin, isOperator } from "@/lib/roleCheckServer";
 import { languageServer } from "@/lib/check-language-server";
 import authOptions from "@/lib/auth";
 
+import { DataCard } from "./_components/data-card";
 import { Chart } from "./_components/chart";
 import GoBackButton from "@/components/goBackButton";
 import { db } from "@/lib/db";
-import { DataCard } from "./_components/data-chart";
 
 const PostAnalyticsPage = async () => {
   const session = await getServerSession(authOptions);
@@ -74,8 +74,10 @@ const PostAnalyticsPage = async () => {
           value={avgCommentsPerPost}
         />
       </div>
-      <Chart data={postEngagementData} label={currentLanguage.analytic_posts_postEngagement_label} />
-      <Chart data={postLikesData} label={currentLanguage.analytic_posts_postLikeEngagement_label} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
+        <Chart data={postEngagementData} label={currentLanguage.analytic_posts_postEngagement_label} />
+        <Chart data={postLikesData} label={currentLanguage.analytic_posts_postLikeEngagement_label} />
+      </div>
     </div>
   );
 };

@@ -121,8 +121,10 @@ const CourseAnalyticsPage = async () => {
           value={completedCourses}
         />
       </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
       <Chart data={purchaseData} label={currentLanguage.analytic_courses_coursePurchasDistribution_label} />
       <Chart data={likesData} label={currentLanguage.analytic_courses_totalCourseLikes_label}/>
+      </div>
     </div>
   );
 };

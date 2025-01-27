@@ -60,7 +60,9 @@ const EventAnalyticsPage = async () => {
           value={pastEvents}
         />
       </div>
-      <Chart data={likesData} label={currentLanguage.analytic_events_totalEventsLikes_label} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
+        <Chart data={likesData} label={currentLanguage.analytic_events_totalEventsLikes_label} />
+      </div>
     </div>
   );
 };
