@@ -50,19 +50,17 @@ const LiveEventIdPage = ({ params }: { params: { liveEventId: string } }) => {
       const response = await axios?.get(`/api/liveEvent/${params?.liveEventId}`, {
         params: { liveEventId: params?.liveEventId },
       });
-      
-      // Check if user has access to this event based on usergroup if one is set
-      const userGroup = session?.user?.profile?.userGroupId;
-      const eventUserGroupId = response?.data?.liveEvent?.userGroupId;
-      
-      if (eventUserGroupId && userGroup !== eventUserGroupId) {
-        return redirect("/live-event");
-      }
 
       setLiveEvent(response?.data?.liveEvent);
       setCategory(response?.data?.category);
-    } catch (error) {
+
+    } catch (error: any) {
       console.error("Error fetching live event:", error);
+      if (error?.response?.status === 403) {
+        toast.error("You do not have access to this event");
+        router.push("/live-event");
+        return;
+      }
       router.push("/live-event");
     }
   };

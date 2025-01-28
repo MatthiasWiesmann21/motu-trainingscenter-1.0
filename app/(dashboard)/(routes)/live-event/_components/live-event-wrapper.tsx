@@ -56,8 +56,6 @@ export const LiveEventWrapper = ({
     return <></>; // Ensure a valid JSX element is always returned
   }
 
-  const userId = session.user?.id;
-
   return (
     <div className="space-y-4 p-4">
       <div className="mr-1 flex justify-between">
