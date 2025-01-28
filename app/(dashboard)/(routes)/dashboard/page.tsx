@@ -14,6 +14,7 @@ import { currentProfile } from "@/lib/current-profile";
 import { Metadata } from "next";
 import { languageServer } from "@/lib/check-language-server";
 import PrivacyPolicyModal from "@/components/modals/privacy-policy-modal";
+import { ResendVerificationButton } from "../../_components/resend-verification";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -56,7 +57,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
 
   const purchasedCourses = courses.filter((course) => course.isPurchased);
 
-  let container: any = await db.container.findUnique({
+  const container = await db.container.findUnique({
     where: {
       id: session?.user?.profile?.containerId,
     },
@@ -81,7 +82,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
   const coursess = await getCourses({
     userId,
     ...searchParams,
-    containerId: session?.user?.profile?.containerId,
+    containerId: container!.id,
   });
 
   const isEmailVerified = await db.profile.findFirst({
@@ -143,7 +144,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
           </svg>
           <span className="sr-only"></span>
           <div>
-            <span className="font-bold font-medium">
+            <span className="font-medium">
               {currentLanguage.dashboard_notificationBanner_verifyEmail_1}
             </span>
             <div className="font-medium">
@@ -152,6 +153,11 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
                 {userEmail}{" "}
               </span>
               {currentLanguage.dashboard_notificationBanner_verifyEmail_3}
+              &nbsp;
+              <ResendVerificationButton
+                userId={profileId}
+                label={currentLanguage.dashboard_notificationBanner_verifyEmail_resend || "Send again"}
+              />
             </div>
           </div>
         </div>
@@ -173,7 +179,7 @@ const Dashboard = async ({ searchParams }: SearchPageProps) => {
             </svg>
             <span className="sr-only"></span>
             <div>
-              <span className="font-bold font-medium">
+              <span className="font-medium">
                 {calculateDaysDifference(expiryDate)} {currentLanguage.dashboard_notificationBanner_subscriptionInfo_1} {" "}
                 <a href="/billing" className="font-bold capitalize underline">
                   {currentLanguage.dashboard_notificationBanner_subscriptionInfo_2}
