@@ -14,6 +14,8 @@ import {
 import { useLanguage } from "@/lib/check-language";
 
 interface ConfirmModalProps {
+  title?: string;
+  description?: string;
   children: React.ReactNode;
   onConfirm: () => void;
   dialogTitleClass?: string;
@@ -23,6 +25,8 @@ interface ConfirmModalProps {
 };
 
 export const ConfirmModal = ({
+  title,
+  description,
   children,
   onConfirm,
   dialogTitleClass,

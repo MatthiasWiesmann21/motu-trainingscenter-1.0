@@ -135,7 +135,7 @@ const PolygonChart = ({
   return (
     <TooltipProvider>
       <div className="graphParent flex flex-col lg:flex-row gap-4">
-        <div className="min-w-xs w-full rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
+        <div className="min-w-xs w-full rounded-md border-2 dark:border-[#221b2e] dark:bg-[#0D071A]">
           <div className="flex items-center justify-between p-2 text-lg">
             <div>{currentLanguage.dashboard_popularChapter_title}</div>
             <Link
@@ -255,7 +255,7 @@ const PolygonChart = ({
               </div>
             ))}
         </div>
-        <div className="w-full lg:w-[30%] min-w-[300px] rounded border-2 dark:border-[#221b2e] dark:bg-[#0D071A] p-4">
+        <div className="w-full lg:w-[30%] min-w-[300px] rounded-md border-2 dark:border-[#221b2e] dark:bg-[#0D071A] p-4">
           <div className="flex flex-col justify-between h-full">
             <div className="flex items-center justify-between mb-4">
               <div className="text-lg">{currentLanguage.dashboard_doughnutChart_title}</div>
