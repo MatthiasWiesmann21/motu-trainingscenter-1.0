@@ -38,7 +38,11 @@ const UsergroupIdPage = async ({
   }
 
   // Fetch all users and mark them based on their membership status
-  const allUsers = await db.profile.findMany();
+  const allUsers = await db.profile.findMany({
+    where: {
+      containerId: session?.user?.profile?.containerId,
+    },
+  });
   const users = allUsers.map((user) => ({
     ...user,
     isMember: user.usergroupId === usergroup.id,

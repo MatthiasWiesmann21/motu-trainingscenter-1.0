@@ -69,14 +69,10 @@ export async function GET(req: Request) {
     const liveEvents = await db.liveEvent.findMany({
       where: {
         isPublished: true,
-        containerId: session?.user?.profile?.containerId,
+        containerId: profile?.containerId,
         ...(categoryId && { categoryId: categoryId as string }),
         ...(title && { title: { contains: title as string } }),
         ...dateFilter,
-        OR: [
-          { usergroupId: profile.usergroupId }, // Only show if usergroupId matches
-          { usergroupId: null },                // Show public events (usergroupId is null)
-        ],
       },
       include: {
         favorites: true,
@@ -87,8 +83,13 @@ export async function GET(req: Request) {
       },
     });
 
+    // Filter courses to only include those that match userGroupId or have no usergroupId (public)
+    const filteredLiveEvents = liveEvents.filter(
+      (events) => !events.usergroupId || events.usergroupId === profile?.usergroupId
+    );
+
     // Map over the live events to add favorite status
-    const result = liveEvents.map((event) => {
+    const result = filteredLiveEvents.map((event) => {
       const currentFavorite = event.favorites.some(
         (favorite: any) => favorite.profileId === profile.id
       );
