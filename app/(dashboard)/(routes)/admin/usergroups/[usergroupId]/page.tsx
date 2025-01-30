@@ -87,7 +87,12 @@ const UsergroupIdPage = async ({
               {currentLanguage.requiredFields}
             </span>
           </div>
-          <TitleForm initialData={usergroup} usergroupId={usergroup.id} />
+          <TitleForm 
+            initialData={{ 
+              name: usergroup.name!
+            }} 
+            usergroupId={usergroup.id} 
+          />
           <div className="my-5 flex items-center gap-x-2">
             <IconBadge icon={LayoutGridIcon} />
             <h2 className="text-xl">

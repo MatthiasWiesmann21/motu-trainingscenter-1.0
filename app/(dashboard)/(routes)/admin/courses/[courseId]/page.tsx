@@ -153,9 +153,9 @@ const CourseIdPage = async ({
               initialData={course}
               courseId={course.id}
               options={usergroups.map((usergroup) => ({
-                label: usergroup.name,
-                value: usergroup.id,
-              }))}
+                  label: usergroup.name!,
+                  value: usergroup.id!,
+                }))}
             />
             <DurationForm
               initialData={course}

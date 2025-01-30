@@ -102,8 +102,8 @@ const PostIdPage = async ({ params }: { params: { postId: string } }) => {
   }));
 
   const usergroupOptions = usergroups.map((usergroup) => ({
-    label: usergroup.name,
-    value: usergroup.id,
+    label: usergroup.name!,
+    value: usergroup.id!,
   }));
 
   const requiredFields = [post.title, post.description];

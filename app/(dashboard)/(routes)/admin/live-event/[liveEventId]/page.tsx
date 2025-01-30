@@ -136,8 +136,8 @@ const LiveEventIdPage = async ({
               initialData={liveEvent}
               liveEventId={liveEvent.id}
               options={usergroups.map((usergroup) => ({
-                label: usergroup.name,
-                value: usergroup.id,
+                label: usergroup.name!,
+                value: usergroup.id!,
               }))}
             />
             <StartDateTimeForm

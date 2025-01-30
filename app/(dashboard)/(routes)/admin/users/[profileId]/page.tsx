@@ -86,8 +86,8 @@ const UserIdPage = async ({ params }: { params: { profileId: string } }) => {
               initialData={profile}
               profileId={profile.id}
               options={usergroups.map((usergroup) => ({
-                label: usergroup.name,
-                value: usergroup.id,
+                label: usergroup.name!,
+                value: usergroup.id!,
               }))}
             />
           </div>
