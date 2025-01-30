@@ -73,6 +73,10 @@ export async function GET(req: Request) {
         ...(categoryId && { categoryId: categoryId as string }),
         ...(title && { title: { contains: title as string } }),
         ...dateFilter,
+        OR: [
+          { usergroupId: null },
+          { usergroupId: profile?.usergroupId }
+        ]
       },
       include: {
         favorites: true,
@@ -83,13 +87,8 @@ export async function GET(req: Request) {
       },
     });
 
-    // Filter courses to only include those that match userGroupId or have no usergroupId (public)
-    const filteredLiveEvents = liveEvents.filter(
-      (events) => !events.usergroupId || events.usergroupId === profile?.usergroupId
-    );
-
     // Map over the live events to add favorite status
-    const result = filteredLiveEvents.map((event) => {
+    const result = liveEvents.map((event) => {
       const currentFavorite = event.favorites.some(
         (favorite: any) => favorite.profileId === profile.id
       );

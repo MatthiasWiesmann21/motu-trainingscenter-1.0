@@ -12,6 +12,8 @@ import { PlusCircle } from "lucide-react";
 import { useLanguage } from "@/lib/check-language";
 import axios from "axios";
 import { useModal } from "@/hooks/use-modal-store";
+import ClubyteLoader from "@/components/ui/clubyte-loader";
+import { useTheme } from "next-themes";
 
 interface LiveEventWrapperProps {
   liveEvents: any;
@@ -30,17 +32,26 @@ export const LiveEventWrapper = ({
 }: LiveEventWrapperProps) => {
   const { data: session, status } = useSession();
   const [liveEvent, setLiveEvent] = useState(liveEvents || []);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { theme } = useTheme();
   const currentLanguage = useLanguage();
   const { onOpen } = useModal();
 
   const getLiveEvents = async () => {
-    const response = await axios?.get(
-      `/api/liveEvent?categoryId=${searchParams?.categoryId || ""}&title=${
-        searchParams?.title || ""
-      }&state=${searchParams?.state}`
-    );
-    setLiveEvent(response?.data);
+    try {
+      setIsLoading(true);
+      const response = await axios?.get(
+        `/api/liveEvent?categoryId=${searchParams?.categoryId || ""}&title=${
+          searchParams?.title || ""
+        }&state=${searchParams?.state}`
+      );
+      setLiveEvent(response?.data);
+    } catch (error) {
+      console.error('Error fetching live events:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -101,6 +112,33 @@ export const LiveEventWrapper = ({
             ThemeColor={container?.ThemeColor!}
             DarkThemeColor={container?.DarkThemeColor!}
           />
+          {isLoading ? (
+            <div className="flex w-full items-center justify-center">
+            {theme === "dark" ? (
+              <ClubyteLoader
+                className="h-64 w-64"
+                theme="dark"
+                color="0c0319"
+              />
+            ) : (
+              <ClubyteLoader
+                className="h-64 w-64"
+                theme="light"
+                color="ffffff"
+              />
+            )}
+            </div>
+          ) : (
+            <EventsList
+              items={liveEvent?.map((each: any) => ({
+                ...each,
+                color: container?.navDarkBackgroundColor,
+              }))}
+              ThemeColor={container?.ThemeColor!}
+              DarkThemeColor={container?.DarkThemeColor!}
+              getLiveEvents={getLiveEvents}
+            />
+          )}
         </div>
 
         <div className="hidden lg:flex w-[15%] items-center justify-center">
@@ -112,15 +150,6 @@ export const LiveEventWrapper = ({
           </Link>
         </div>
       </div>
-      <EventsList
-        items={liveEvent?.map((each: any) => ({
-          ...each,
-          color: container?.navDarkBackgroundColor,
-        }))}
-        ThemeColor={container?.ThemeColor!}
-        DarkThemeColor={container?.DarkThemeColor!}
-        getLiveEvents={getLiveEvents}
-      />
     </div>
   );
 };

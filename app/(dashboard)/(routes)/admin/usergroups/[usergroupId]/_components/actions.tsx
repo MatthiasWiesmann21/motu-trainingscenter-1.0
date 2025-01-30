@@ -30,7 +30,7 @@ export const Actions = ({
   const isAdmin = useIsAdmin();
   const isClientAdmin = useIsClientAdmin();
 
-  const canAccess = isAdmin || isClientAdmin;
+  const canAccess = isClientAdmin || isAdmin;
 
   const onClick = async () => {
     try {
